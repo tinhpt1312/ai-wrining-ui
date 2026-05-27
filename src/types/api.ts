@@ -26,18 +26,15 @@ export interface User {
 
 // Writing Types
 export enum WritingType {
-  JOURNAL = "journal",
-  SOCIAL_ESSAY = "social_essay",
-  BLOG_POST = "blog_post",
-  SHORT_STORY = "short_story",
-  ARTICLE = "article",
+  SOCIAL_ESSAY = "BÀI LUẬN XÃ HỘI",
+  CATHOLIC_ESSAY = "BÀI LUẬN CÔNG GIÁO",
+  SHORT_STORY = "TRUYỆN NGẮN",
+  ARTICLE = "BÀI BÁO",
 }
 
 export enum WritingStatus {
   DRAFT = "draft",
-  IN_PROGRESS = "in_progress",
-  COMPLETED = "completed",
-  ARCHIVED = "archived",
+  PUBLIC = "public",
 }
 
 export interface Writing {

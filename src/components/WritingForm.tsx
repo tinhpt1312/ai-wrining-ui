@@ -36,7 +36,7 @@ export function WritingForm({
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     content: initialData?.content || "",
-    type: initialData?.type || types.WritingType.JOURNAL,
+    type: initialData?.type || types.WritingType.SOCIAL_ESSAY,
     status: initialData?.status || types.WritingStatus.DRAFT,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});

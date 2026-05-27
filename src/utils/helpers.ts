@@ -51,18 +51,15 @@ export const validationRules = {
 };
 
 export const writingTypeOptions = [
-  { value: types.WritingType.JOURNAL, label: "Journal" },
-  { value: types.WritingType.BLOG_POST, label: "Blog Post" },
-  { value: types.WritingType.ARTICLE, label: "Article" },
-  { value: types.WritingType.SHORT_STORY, label: "Short Story" },
-  { value: types.WritingType.SOCIAL_ESSAY, label: "Social Essay" },
+  { value: types.WritingType.SOCIAL_ESSAY, label: "Bài Luận Xã Hội" },
+  { value: types.WritingType.CATHOLIC_ESSAY, label: "Bài Luận Công Giáo" },
+  { value: types.WritingType.SHORT_STORY, label: "Truyện Ngắn" },
+  { value: types.WritingType.ARTICLE, label: "Bài Báo" },
 ];
 
 export const writingStatusOptions = [
-  { value: types.WritingStatus.DRAFT, label: "Draft" },
-  { value: types.WritingStatus.IN_PROGRESS, label: "In Progress" },
-  { value: types.WritingStatus.COMPLETED, label: "Completed" },
-  { value: types.WritingStatus.ARCHIVED, label: "Archived" },
+  { value: types.WritingStatus.DRAFT, label: "Bản Nháp" },
+  { value: types.WritingStatus.PUBLIC, label: "Công Khai" },
 ];
 
 export function formatDate(dateString: string): string {
