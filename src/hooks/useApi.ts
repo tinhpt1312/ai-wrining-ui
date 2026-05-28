@@ -9,6 +9,56 @@ import {
 } from "@tanstack/react-query";
 import { apiClient } from "@/api/client";
 import * as types from "@/types/api";
+import { useCallback } from "react";
+
+// Simple API wrapper for feature endpoints
+export function useApi() {
+  const getToken = useCallback(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("accessToken");
+    }
+    return null;
+  }, []);
+
+  const request = useCallback(
+    async (
+      method: "GET" | "POST" | "PATCH" | "DELETE",
+      url: string,
+      data?: any,
+    ) => {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const token = getToken();
+      const headers: any = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${baseUrl}${url}`, {
+        method,
+        headers,
+        body: data ? JSON.stringify(data) : undefined,
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
+      }
+
+      return response.json();
+    },
+    [getToken],
+  );
+
+  return {
+    get: (url: string) => request("GET", url),
+    post: (url: string, data: any) => request("POST", url, data),
+    patch: (url: string, data: any) => request("PATCH", url, data),
+    delete: (url: string) => request("DELETE", url),
+  };
+}
 
 // ============ AUTH HOOKS ============
 
@@ -127,14 +177,14 @@ export function useWritingStats(): UseQueryResult<types.WritingStats, Error> {
 
 // ============ ANALYSIS HOOKS ============
 
-export function useCreateAnalysis(): UseMutationResult<
-  types.Analysis,
+export function useCreateAnalytics(): UseMutationResult<
+  types.Analytics,
   Error,
-  types.CreateAnalysisPayload
+  types.CreateAnalyticsPayload
 > {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload) => apiClient.createAnalysis(payload),
+    mutationFn: (payload) => apiClient.createAnalytics(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["analyses"] });
       queryClient.invalidateQueries({
@@ -144,14 +194,14 @@ export function useCreateAnalysis(): UseMutationResult<
   });
 }
 
-export function useCreateAiAnalysis(): UseMutationResult<
-  types.Analysis,
+export function useCreateAiAnalytics(): UseMutationResult<
+  types.Analytics,
   Error,
-  types.CreateAiAnalysisPayload
+  types.CreateAiAnalyticsPayload
 > {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload) => apiClient.createAiAnalysis(payload),
+    mutationFn: (payload) => apiClient.createAiAnalytics(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["analyses"] });
       queryClient.invalidateQueries({
@@ -162,7 +212,7 @@ export function useCreateAiAnalysis(): UseMutationResult<
 }
 
 export function useAnalyses(
-  params?: types.QueryAnalysisParams,
+  params?: types.QueryAnalyticsParams,
 ): UseQueryResult<types.AnalysesListResponse, Error> {
   return useQuery({
     queryKey: ["analyses", params],
@@ -171,10 +221,12 @@ export function useAnalyses(
   });
 }
 
-export function useAnalysis(id: string): UseQueryResult<types.Analysis, Error> {
+export function useAnalytics(
+  id: string,
+): UseQueryResult<types.Analytics, Error> {
   return useQuery({
     queryKey: ["analyses", id],
-    queryFn: () => apiClient.getAnalysis(id),
+    queryFn: () => apiClient.getAnalytics(id),
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!id,
   });
@@ -191,14 +243,14 @@ export function useAnalysesByWriting(
   });
 }
 
-export function useUpdateAnalysis(): UseMutationResult<
-  types.Analysis,
+export function useUpdateAnalytics(): UseMutationResult<
+  types.Analytics,
   Error,
-  { id: string; payload: types.UpdateAnalysisPayload }
+  { id: string; payload: types.UpdateAnalyticsPayload }
 > {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, payload }) => apiClient.updateAnalysis(id, payload),
+    mutationFn: ({ id, payload }) => apiClient.updateAnalytics(id, payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["analyses"] });
       queryClient.setQueryData(["analyses", data.id], data);
@@ -206,24 +258,27 @@ export function useUpdateAnalysis(): UseMutationResult<
   });
 }
 
-export function useDeleteAnalysis(): UseMutationResult<
+export function useDeleteAnalytics(): UseMutationResult<
   { message: string },
   Error,
   string
 > {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id) => apiClient.deleteAnalysis(id),
+    mutationFn: (id) => apiClient.deleteAnalytics(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["analyses"] });
     },
   });
 }
 
-export function useAnalysisStats(): UseQueryResult<types.AnalysisStats, Error> {
+export function useAnalyticsStats(): UseQueryResult<
+  types.AnalyticsStats,
+  Error
+> {
   return useQuery({
     queryKey: ["analyses", "stats"],
-    queryFn: () => apiClient.getAnalysisStats(),
+    queryFn: () => apiClient.getAnalyticsStats(),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import {
   useWritingStats,
-  useAnalysisStats,
+  useAnalyticsStats,
   useTokenUsage,
   useWritings,
 } from "@/hooks/useApi";
@@ -15,7 +15,7 @@ export default function Dashboard() {
   const { data: writingStats, isLoading: writingStatsLoading } =
     useWritingStats();
   const { data: analysisStats, isLoading: analysisStatsLoading } =
-    useAnalysisStats();
+    useAnalyticsStats();
   const { data: tokenUsage, isLoading: tokenUsageLoading } = useTokenUsage();
   const { data: writings, isLoading: writingsLoading } = useWritings({
     limit: 5,
@@ -44,7 +44,9 @@ export default function Dashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-black dark:text-white">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-black dark:text-white">
+          Dashboard
+        </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Welcome back! Here's your overview
         </p>
@@ -85,7 +87,9 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Words</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                Total Words
+              </p>
               <p className="text-3xl font-bold text-black dark:text-white mt-2">
                 {writingStats?.totalWords || 0}
               </p>
@@ -108,7 +112,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Analysis Stats */}
+        {/* Analytics Stats */}
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -141,7 +145,9 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Token Usage</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                Token Usage
+              </p>
               <p className="text-3xl font-bold text-black dark:text-white mt-2">
                 {tokenPercentage}%
               </p>
@@ -230,7 +236,9 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400 text-sm">No writings yet</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              No writings yet
+            </p>
           )}
           <Link href="/writings">
             <Button className="w-full mt-4" variant="secondary">

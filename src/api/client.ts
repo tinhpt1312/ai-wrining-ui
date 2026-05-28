@@ -144,20 +144,20 @@ class ApiClient {
 
   // ============ ANALYSIS ENDPOINTS ============
 
-  async createAnalysis(
-    payload: types.CreateAnalysisPayload,
-  ): Promise<types.Analysis> {
-    const response = await this.client.post<types.Analysis>(
+  async createAnalytics(
+    payload: types.CreateAnalyticsPayload,
+  ): Promise<types.Analytics> {
+    const response = await this.client.post<types.Analytics>(
       "/analysis",
       payload,
     );
     return response.data;
   }
 
-  async createAiAnalysis(
-    payload: types.CreateAiAnalysisPayload,
-  ): Promise<types.Analysis> {
-    const response = await this.client.post<types.Analysis>(
+  async createAiAnalytics(
+    payload: types.CreateAiAnalyticsPayload,
+  ): Promise<types.Analytics> {
+    const response = await this.client.post<types.Analytics>(
       "/analysis/ai",
       payload,
     );
@@ -165,7 +165,7 @@ class ApiClient {
   }
 
   async getAnalyses(
-    params?: types.QueryAnalysisParams,
+    params?: types.QueryAnalyticsParams,
   ): Promise<types.AnalysesListResponse> {
     const response = await this.client.get<types.AnalysesListResponse>(
       "/analysis",
@@ -176,8 +176,8 @@ class ApiClient {
     return response.data;
   }
 
-  async getAnalysis(id: string): Promise<types.Analysis> {
-    const response = await this.client.get<types.Analysis>(`/analysis/${id}`);
+  async getAnalytics(id: string): Promise<types.Analytics> {
+    const response = await this.client.get<types.Analytics>(`/analysis/${id}`);
     return response.data;
   }
 
@@ -190,26 +190,26 @@ class ApiClient {
     return response.data;
   }
 
-  async updateAnalysis(
+  async updateAnalytics(
     id: string,
-    payload: types.UpdateAnalysisPayload,
-  ): Promise<types.Analysis> {
-    const response = await this.client.patch<types.Analysis>(
+    payload: types.UpdateAnalyticsPayload,
+  ): Promise<types.Analytics> {
+    const response = await this.client.patch<types.Analytics>(
       `/analysis/${id}`,
       payload,
     );
     return response.data;
   }
 
-  async deleteAnalysis(id: string): Promise<{ message: string }> {
+  async deleteAnalytics(id: string): Promise<{ message: string }> {
     const response = await this.client.delete<{ message: string }>(
       `/analysis/${id}`,
     );
     return response.data;
   }
 
-  async getAnalysisStats(): Promise<types.AnalysisStats> {
-    const response = await this.client.get<types.AnalysisStats>(
+  async getAnalyticsStats(): Promise<types.AnalyticsStats> {
+    const response = await this.client.get<types.AnalyticsStats>(
       "/analysis/stats/overview",
     );
     return response.data;

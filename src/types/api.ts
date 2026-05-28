@@ -84,7 +84,7 @@ export interface WritingStats {
   byStatus: Record<WritingStatus, number>;
 }
 
-export interface Analysis {
+export interface Analytics {
   id: string;
   writingId: string;
   userId: string;
@@ -93,36 +93,36 @@ export interface Analysis {
   updatedAt: string;
 }
 
-export interface CreateAnalysisPayload {
+export interface CreateAnalyticsPayload {
   writingId: string;
   feedbackJson?: Record<string, any>;
 }
 
-export interface UpdateAnalysisPayload {
+export interface UpdateAnalyticsPayload {
   feedbackJson?: Record<string, any>;
 }
 
-export interface CreateAiAnalysisPayload {
+export interface CreateAiAnalyticsPayload {
   writingId: string;
   triggerAi?: boolean;
   writingType?: WritingType;
   feedbackJson?: Record<string, any>;
 }
 
-export interface QueryAnalysisParams {
+export interface QueryAnalyticsParams {
   limit?: number;
   offset?: number;
   writingId?: string;
 }
 
 export interface AnalysesListResponse {
-  data: Analysis[];
+  data: Analytics[];
   total: number;
   limit: number;
   offset: number;
 }
 
-export interface AnalysisStats {
+export interface AnalyticsStats {
   totalAnalyses: number;
   analysesWithFeedback: number;
   percentageWithFeedback: number;

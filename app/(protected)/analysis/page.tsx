@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAnalyses, useDeleteAnalysis } from "@/hooks/useApi";
-import { Loading, Error as ErrorState, EmptyState } from "@/components/ui/States";
+import { useAnalyses, useDeleteAnalytics } from "@/hooks/useApi";
+import {
+  Loading,
+  Error as ErrorState,
+  EmptyState,
+} from "@/components/ui/States";
 import { Button } from "@/components/ui/Button";
 
-export default function AnalysisPage() {
+export default function AnalyticsPage() {
   const [limit] = useState(10);
   const [offset, setOffset] = useState(0);
 
@@ -20,11 +24,12 @@ export default function AnalysisPage() {
     offset,
   });
 
-  const { mutate: deleteAnalysis, isPending: isDeleting } = useDeleteAnalysis();
+  const { mutate: deleteAnalytics, isPending: isDeleting } =
+    useDeleteAnalytics();
 
   const handleDelete = (id: string) => {
     if (window.confirm("Are you sure you want to delete this analysis?")) {
-      deleteAnalysis(id);
+      deleteAnalytics(id);
     }
   };
 
@@ -49,7 +54,9 @@ export default function AnalysisPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-black dark:text-white">Analyses</h1>
+          <h1 className="text-3xl font-bold text-black dark:text-white">
+            Analyses
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
             Total: {analyses?.total || 0} analyses
           </p>
@@ -88,16 +95,13 @@ export default function AnalysisPage() {
                   )}
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
                     Created:{" "}
-                    {new Date(analysis.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      },
-                    )}
+                    {new Date(analysis.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
                 </div>
                 <div className="flex gap-2 flex-shrink-0">
@@ -124,7 +128,7 @@ export default function AnalysisPage() {
             description="Create an analysis from your writings to get started."
             action={{
               label: "Go to Writings",
-              onClick: () => window.location.href = "/writings",
+              onClick: () => (window.location.href = "/writings"),
             }}
           />
         )}

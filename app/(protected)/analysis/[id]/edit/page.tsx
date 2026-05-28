@@ -3,24 +3,25 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAnalysis, useUpdateAnalysis } from "@/hooks/useApi";
+import { useAnalytics, useUpdateAnalytics } from "@/hooks/useApi";
 import { Loading, Error as ErrorState } from "@/components/ui/States";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { formatDateTime } from "@/utils/helpers";
 
-interface AnalysisEditPageProps {
+interface AnalyticsEditPageProps {
   params: Promise<{
     id: string;
   }>;
 }
 
-export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
+export default function AnalyticsEditPage({ params }: AnalyticsEditPageProps) {
   const router = useRouter();
   const { id } = use(params);
 
-  const { data: analysis, isLoading, error } = useAnalysis(id);
-  const { mutate: updateAnalysis, isPending: isUpdating } = useUpdateAnalysis();
+  const { data: analysis, isLoading, error } = useAnalytics(id);
+  const { mutate: updateAnalytics, isPending: isUpdating } =
+    useUpdateAnalytics();
 
   const [feedbackJson, setFeedbackJson] = useState<string>("");
   const [editedFeedback, setEditedFeedback] = useState<string>("");
@@ -51,7 +52,7 @@ export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
         return;
       }
 
-      updateAnalysis(
+      updateAnalytics(
         {
           id,
           payload: {
@@ -60,7 +61,7 @@ export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
         },
         {
           onSuccess: () => {
-            alert("Analysis updated successfully!");
+            alert("Analytics updated successfully!");
             router.push(`/analysis/${id}`);
           },
           onError: (err) => {
@@ -85,7 +86,7 @@ export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
   if (error) {
     return (
       <ErrorState
-        title="Failed to Load Analysis"
+        title="Failed to Load Analytics"
         message="Could not fetch this analysis for editing."
       />
     );
@@ -106,20 +107,24 @@ export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
             <Button variant="secondary">Back</Button>
           </Link>
         </div>
-        <h1 className="text-3xl font-bold text-black dark:text-white">Edit Analysis</h1>
+        <h1 className="text-3xl font-bold text-black dark:text-white">
+          Edit Analytics
+        </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Update the feedback for this analysis
         </p>
       </div>
 
-      {/* Analysis Info */}
+      {/* Analytics Info */}
       <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
         <h2 className="text-lg font-semibold text-black dark:text-white mb-4">
-          Analysis Information
+          Analytics Information
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Analysis ID</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Analytics ID
+            </p>
             <p className="text-black dark:text-white font-mono text-sm mt-2 break-all">
               {analysis.id}
             </p>
@@ -131,13 +136,17 @@ export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Writing ID</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Writing ID
+            </p>
             <p className="text-black dark:text-white font-mono text-sm mt-2 break-all">
               {analysis.writingId}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Last Updated</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Last Updated
+            </p>
             <p className="text-black dark:text-white mt-2">
               {formatDateTime(analysis.updatedAt)}
             </p>
@@ -197,8 +206,7 @@ export default function AnalysisEditPage({ params }: AnalysisEditPageProps) {
             <Button variant="secondary" className="w-full">
               Cancel
             </Button>
-            </Link>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

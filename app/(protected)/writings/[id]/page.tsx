@@ -6,15 +6,9 @@ import Link from "next/link";
 import {
   useWriting,
   useAnalysesByWriting,
-  useCreateAiAnalysis,
+  useCreateAiAnalytics,
 } from "@/hooks/useApi";
-import {
-  Card,
-  Loading,
-  Error,
-  EmptyState,
-  Alert,
-} from "@/components/ui/States";
+import { Loading, Error, Alert, EmptyState } from "@/components/ui/States";
 import { Button } from "@/components/ui/Button";
 import {
   formatDateTime,
@@ -34,15 +28,15 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
   const { data: writing, isLoading, error } = useWriting(id);
   const { data: analysesData, isLoading: analysesLoading } =
     useAnalysesByWriting(id);
-  const createAiAnalysis = useCreateAiAnalysis();
+  const createAiAnalytics = useCreateAiAnalytics();
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const handleGenerateAiAnalysis = async () => {
+  const handleGenerateAiAnalytics = async () => {
     if (!writing) return;
 
     try {
       setAiError(null);
-      await createAiAnalysis.mutateAsync({
+      await createAiAnalytics.mutateAsync({
         writingId: id,
         writingType: writing.type,
         triggerAi: true,
@@ -82,7 +76,7 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
   const analyses = analysesData?.data || [];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
@@ -110,9 +104,11 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
           </div>
         </div>
 
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap flex-shrink-0">
           <Link href={`/writings/${id}/edit`}>
-            <Button>Edit</Button>
+            <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium">
+              Edit Writing
+            </Button>
           </Link>
           <Button variant="outline" onClick={() => router.back()}>
             Back
@@ -120,25 +116,31 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
         </div>
       </div>
 
-      {/* Content */}
-      <Card className="prose prose-invert max-w-none dark:prose-invert">
-        <div className="whitespace-pre-wrap text-black dark:text-white">
+      {/* Writing Content */}
+      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
+        <h2 className="text-lg font-semibold text-black dark:text-white mb-4">
+          Content
+        </h2>
+        <div className="whitespace-pre-wrap text-gray-700 dark:text-gray-300 leading-relaxed font-normal text-base">
           {writing.content}
         </div>
-      </Card>
+      </div>
 
       {/* Analyses Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-black dark:text-white">
-            Analyses
+            AI Analytics
           </h2>
           <Button
-            onClick={handleGenerateAiAnalysis}
-            isLoading={createAiAnalysis.isPending}
-            disabled={createAiAnalysis.isPending}
+            onClick={handleGenerateAiAnalytics}
+            isLoading={createAiAnalytics.isPending}
+            disabled={createAiAnalytics.isPending}
+            className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white font-medium"
           >
-            Generate AI Analysis
+            {createAiAnalytics.isPending
+              ? "Generating..."
+              : "Generate AI Analytics"}
           </Button>
         </div>
 
@@ -154,36 +156,55 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
         {analysesLoading ? (
           <Loading text="Loading analyses..." />
         ) : analyses.length === 0 ? (
-          <EmptyState
-            icon="📊"
-            title="No analyses yet"
-            description="Generate an AI analysis to get feedback on your writing."
-          />
+          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-12 text-center">
+            <div className="text-4xl mb-3">📊</div>
+            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+              No analyses yet
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Generate an AI analysis to get feedback on your writing.
+            </p>
+            <Button
+              onClick={handleGenerateAiAnalytics}
+              disabled={createAiAnalytics.isPending}
+              className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white font-medium mx-auto"
+            >
+              Generate First Analytics
+            </Button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {analyses.map((analysis) => (
-              <Card key={analysis.id} className="flex flex-col gap-4">
+              <div
+                key={analysis.id}
+                className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 flex flex-col gap-4"
+              >
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Analysis created {formatDateTime(analysis.createdAt)}
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Analytics Report
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                      Generated {formatDateTime(analysis.createdAt)}
                     </p>
                   </div>
                   <Link href={`/analysis/${analysis.id}`}>
-                    <Button variant="outline" size="sm">
+                    <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium">
                       View Details
                     </Button>
                   </Link>
                 </div>
 
                 {analysis.feedbackJson && (
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
-                    <pre className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap break-words">
-                      {JSON.stringify(analysis.feedbackJson, null, 2)}
-                    </pre>
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    <div className="bg-gray-50 dark:bg-gray-950 rounded border border-gray-200 dark:border-gray-800 p-4">
+                      <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words font-mono leading-relaxed">
+                        {JSON.stringify(analysis.feedbackJson, null, 2)}
+                      </pre>
+                    </div>
                   </div>
                 )}
-              </Card>
+              </div>
             ))}
           </div>
         )}

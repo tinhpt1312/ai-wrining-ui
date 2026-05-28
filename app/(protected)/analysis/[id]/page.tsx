@@ -3,23 +3,24 @@
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAnalysis, useWriting, useDeleteAnalysis } from "@/hooks/useApi";
+import { useAnalytics, useWriting, useDeleteAnalytics } from "@/hooks/useApi";
 import { Loading, Error, Card } from "@/components/ui/States";
 import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/utils/helpers";
 
-interface AnalysisViewPageProps {
+interface AnalyticsViewPageProps {
   params: Promise<{
     id: string;
   }>;
 }
 
-export default function AnalysisViewPage({ params }: AnalysisViewPageProps) {
+export default function AnalyticsViewPage({ params }: AnalyticsViewPageProps) {
   const router = useRouter();
   const { id } = use(params);
-  const { data: analysis, isLoading, error } = useAnalysis(id);
+  const { data: analysis, isLoading, error } = useAnalytics(id);
   const { data: writing } = useWriting(analysis?.writingId || "");
-  const { mutate: deleteAnalysis, isPending: isDeleting } = useDeleteAnalysis();
+  const { mutate: deleteAnalytics, isPending: isDeleting } =
+    useDeleteAnalytics();
 
   if (isLoading) {
     return <Loading fullScreen text="Loading analysis..." />;
@@ -28,7 +29,7 @@ export default function AnalysisViewPage({ params }: AnalysisViewPageProps) {
   if (error) {
     return (
       <Error
-        title="Failed to Load Analysis"
+        title="Failed to Load Analytics"
         message="Could not fetch this analysis. Please try again."
         retry={() => router.back()}
       />
@@ -41,7 +42,7 @@ export default function AnalysisViewPage({ params }: AnalysisViewPageProps) {
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this analysis?")) {
-      deleteAnalysis(id, {
+      deleteAnalytics(id, {
         onSuccess: () => {
           router.push("/analysis");
         },
@@ -55,7 +56,7 @@ export default function AnalysisViewPage({ params }: AnalysisViewPageProps) {
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-black dark:text-white">
-            Analysis Report
+            Analytics Report
           </h1>
           <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
             <span>Created: {formatDateTime(analysis.createdAt)}</span>
