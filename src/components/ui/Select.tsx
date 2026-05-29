@@ -12,29 +12,49 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   helperText?: string;
   options: SelectOption[];
   placeholder?: string;
+  size?: "sm" | "md" | "lg";
 }
+
+const sizeClasses = {
+  sm: "h-8 px-3 text-sm",
+  md: "h-10 px-4 text-base",
+  lg: "h-12 px-4 text-lg",
+};
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (
-    { className, label, error, helperText, options, placeholder, ...props },
+    {
+      className,
+      label,
+      error,
+      helperText,
+      options,
+      placeholder,
+      size = "md",
+      ...props
+    },
     ref,
   ) => (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-black dark:text-white mb-2">
+        <label className="block text-sm font-medium text-fg dark:text-fg mb-2">
           {label}
-          {props.required && <span className="text-red-500 ml-1">*</span>}
+          {props.required && <span className="text-error ml-1">*</span>}
         </label>
       )}
       <select
         className={cn(
-          "w-full px-4 py-2 text-base border border-gray-300 rounded-lg",
-          "bg-white text-black",
-          "focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent",
-          "disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50",
-          "dark:bg-black dark:border-gray-700 dark:text-white",
-          "dark:focus:ring-white",
-          error && "border-red-500 focus:ring-red-500",
+          "w-full border-2 rounded-lg transition-colors duration-200",
+          "bg-bg text-fg",
+          "border-border dark:border-border",
+          "focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500",
+          "disabled:bg-bg-secondary disabled:cursor-not-allowed disabled:opacity-60",
+          "dark:bg-bg dark:text-fg",
+          "dark:focus:ring-primary-400/50 dark:focus:border-primary-400",
+          "appearance-none cursor-pointer",
+          error &&
+            "border-error focus:ring-error/50 focus:border-error dark:border-error",
+          sizeClasses[size],
           className,
         )}
         ref={ref}
@@ -51,9 +71,11 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           </option>
         ))}
       </select>
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="mt-1.5 text-sm text-error font-medium">{error}</p>
+      )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+        <p className="mt-1.5 text-sm text-fg-secondary">{helperText}</p>
       )}
     </div>
   ),

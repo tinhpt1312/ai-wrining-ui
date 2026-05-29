@@ -26,8 +26,13 @@ export function useApi() {
       url: string,
       data?: any,
     ) => {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const configuredBaseUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+      const baseUrl = configuredBaseUrl.replace(/\/$/, "");
+      const requestUrl =
+        baseUrl.endsWith("/api") && url.startsWith("/api/")
+          ? `${baseUrl}${url.slice(4)}`
+          : `${baseUrl}${url}`;
       const token = getToken();
       const headers: any = {
         "Content-Type": "application/json",
@@ -37,7 +42,7 @@ export function useApi() {
         headers.Authorization = `Bearer ${token}`;
       }
 
-      const response = await fetch(`${baseUrl}${url}`, {
+      const response = await fetch(requestUrl, {
         method,
         headers,
         body: data ? JSON.stringify(data) : undefined,

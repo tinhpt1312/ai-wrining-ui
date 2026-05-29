@@ -110,6 +110,9 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
               Edit Writing
             </Button>
           </Link>
+          <Link href={`/writings/${id}/suggestions`}>
+            <Button variant="secondary">Suggestions</Button>
+          </Link>
           <Button variant="outline" onClick={() => router.back()}>
             Back
           </Button>

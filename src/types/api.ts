@@ -15,6 +15,11 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface BackendAuthResponse {
+  accessToken: string;
+  user: User;
+}
+
 // User Types
 export interface User {
   id: string;
@@ -69,12 +74,30 @@ export interface QueryWritingParams {
   status?: WritingStatus;
 }
 
-export interface WritingsListResponse {
-  data: Writing[];
+export interface PaginationMeta {
   total: number;
   limit: number;
   offset: number;
+  hasMore?: boolean;
 }
+
+export interface ListResponse<T> {
+  data: T[];
+  total: number;
+  limit: number;
+  offset: number;
+  pagination?: PaginationMeta;
+}
+
+export interface BackendListResponse<T> {
+  data: T[];
+  total?: number;
+  limit?: number;
+  offset?: number;
+  pagination?: PaginationMeta;
+}
+
+export type WritingsListResponse = ListResponse<Writing>;
 
 export interface WritingStats {
   totalWritings: number;
@@ -89,6 +112,7 @@ export interface Analytics {
   writingId: string;
   userId: string;
   feedbackJson?: Record<string, any>;
+  writing?: Writing;
   createdAt: string;
   updatedAt: string;
 }
@@ -109,18 +133,19 @@ export interface CreateAiAnalyticsPayload {
   feedbackJson?: Record<string, any>;
 }
 
+export interface CreateAiAnalyticsResponse {
+  analysis: Analytics;
+  tokensUsed: number;
+  error?: unknown;
+}
+
 export interface QueryAnalyticsParams {
   limit?: number;
   offset?: number;
   writingId?: string;
 }
 
-export interface AnalysesListResponse {
-  data: Analytics[];
-  total: number;
-  limit: number;
-  offset: number;
-}
+export type AnalysesListResponse = ListResponse<Analytics>;
 
 export interface AnalyticsStats {
   totalAnalyses: number;

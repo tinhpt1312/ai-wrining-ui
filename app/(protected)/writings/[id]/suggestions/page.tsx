@@ -1,37 +1,46 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { use } from "react";
 import Link from "next/link";
 import WritingSuggestions from "@/components/WritingSuggestions";
+import { useWriting } from "@/hooks/useApi";
+import { Loading, Error as ErrorState } from "@/components/ui/States";
+import { Button } from "@/components/ui/Button";
 
 export default function WritingDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const writingId = params.id;
-  const [writing, setWriting] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { id: writingId } = use(params);
+  const { data: writing, isLoading, error } = useWriting(writingId);
 
-  useEffect(() => {
-    fetchWriting();
-  }, [writingId]);
+  if (isLoading) {
+    return <Loading text="Loading writing..." />;
+  }
 
-  const fetchWriting = async () => {
-    try {
-      // Fetch from API
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch writing:", error);
-    }
-  };
+  if (error || !writing) {
+    return (
+      <ErrorState
+        title="Failed to Load Writing"
+        message="Could not fetch this writing for suggestions."
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Writing Feedback</h1>
-        <Link href="/writings" className="text-blue-600 hover:underline">
-          ← Back to Writings
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-black dark:text-white">
+            Writing Suggestions
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            {writing.title}
+          </p>
+        </div>
+        <Link href={`/writings/${writingId}`}>
+          <Button variant="outline">Back to Writing</Button>
         </Link>
       </div>
 

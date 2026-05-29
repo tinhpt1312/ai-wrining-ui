@@ -75,10 +75,10 @@ export default function WritingSuggestions({
 
   const applySuggestion = async (suggestionId: string) => {
     try {
-      await api.patch(`/api/writing-suggestions/${suggestionId}/apply`, {
-        writingId,
-        updateWriting: false,
-      });
+      await api.patch(
+        `/api/writing-suggestions/${suggestionId}/apply?writingId=${writingId}&updateWriting=false`,
+        {},
+      );
       await fetchSuggestions();
     } catch (error) {
       console.error("Failed to apply suggestion:", error);

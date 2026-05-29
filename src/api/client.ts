@@ -56,7 +56,10 @@ class ApiClient {
   // ============ AUTH ENDPOINTS ============
 
   async register(payload: types.RegisterPayload): Promise<types.AuthResponse> {
-    const response = await this.client.post<any>("/auth/register", payload);
+    const response = await this.client.post<types.BackendAuthResponse>(
+      "/auth/register",
+      payload,
+    );
     if (response.data.accessToken) {
       this.setToken(response.data.accessToken);
     }
@@ -67,7 +70,10 @@ class ApiClient {
   }
 
   async login(payload: types.LoginPayload): Promise<types.AuthResponse> {
-    const response = await this.client.post<any>("/auth/login", payload);
+    const response = await this.client.post<types.BackendAuthResponse>(
+      "/auth/login",
+      payload,
+    );
     if (response.data.accessToken) {
       this.setToken(response.data.accessToken);
     }
@@ -103,13 +109,12 @@ class ApiClient {
   async getWritings(
     params?: types.QueryWritingParams,
   ): Promise<types.WritingsListResponse> {
-    const response = await this.client.get<types.WritingsListResponse>(
-      "/writings",
-      {
-        params,
-      },
-    );
-    return response.data;
+    const response = await this.client.get<
+      types.BackendListResponse<types.Writing>
+    >("/writings", {
+      params,
+    });
+    return this.normalizeListResponse(response.data);
   }
 
   async getWriting(id: string): Promise<types.Writing> {
@@ -148,7 +153,7 @@ class ApiClient {
     payload: types.CreateAnalyticsPayload,
   ): Promise<types.Analytics> {
     const response = await this.client.post<types.Analytics>(
-      "/analysis",
+      "/analytics",
       payload,
     );
     return response.data;
@@ -157,27 +162,25 @@ class ApiClient {
   async createAiAnalytics(
     payload: types.CreateAiAnalyticsPayload,
   ): Promise<types.Analytics> {
-    const response = await this.client.post<types.Analytics>(
-      "/analysis/ai",
-      payload,
-    );
-    return response.data;
+    const response = await this.client.post<
+      types.Analytics | types.CreateAiAnalyticsResponse
+    >("/analytics/ai", payload);
+    return "analysis" in response.data ? response.data.analysis : response.data;
   }
 
   async getAnalyses(
     params?: types.QueryAnalyticsParams,
   ): Promise<types.AnalysesListResponse> {
-    const response = await this.client.get<types.AnalysesListResponse>(
-      "/analysis",
-      {
-        params,
-      },
-    );
-    return response.data;
+    const response = await this.client.get<
+      types.BackendListResponse<types.Analytics>
+    >("/analytics", {
+      params,
+    });
+    return this.normalizeListResponse(response.data);
   }
 
   async getAnalytics(id: string): Promise<types.Analytics> {
-    const response = await this.client.get<types.Analytics>(`/analysis/${id}`);
+    const response = await this.client.get<types.Analytics>(`/analytics/${id}`);
     return response.data;
   }
 
@@ -185,9 +188,9 @@ class ApiClient {
     writingId: string,
   ): Promise<types.AnalysesListResponse> {
     const response = await this.client.get<types.AnalysesListResponse>(
-      `/analysis/writing/${writingId}`,
+      `/analytics/writing/${writingId}`,
     );
-    return response.data;
+    return this.normalizeListResponse(response.data);
   }
 
   async updateAnalytics(
@@ -195,7 +198,7 @@ class ApiClient {
     payload: types.UpdateAnalyticsPayload,
   ): Promise<types.Analytics> {
     const response = await this.client.patch<types.Analytics>(
-      `/analysis/${id}`,
+      `/analytics/${id}`,
       payload,
     );
     return response.data;
@@ -203,30 +206,46 @@ class ApiClient {
 
   async deleteAnalytics(id: string): Promise<{ message: string }> {
     const response = await this.client.delete<{ message: string }>(
-      `/analysis/${id}`,
+      `/analytics/${id}`,
     );
     return response.data;
   }
 
   async getAnalyticsStats(): Promise<types.AnalyticsStats> {
     const response = await this.client.get<types.AnalyticsStats>(
-      "/analysis/stats/overview",
+      "/analytics/stats/overview",
     );
     return response.data;
   }
 
   async getTokenUsage(): Promise<types.TokenUsage> {
     const response = await this.client.get<types.TokenUsage>(
-      "/analysis/tokens/usage",
+      "/analytics/tokens/usage",
     );
     return response.data;
   }
 
   async getTokenStats(): Promise<types.TokenStats> {
     const response = await this.client.get<types.TokenStats>(
-      "/analysis/tokens/stats",
+      "/analytics/tokens/stats",
     );
     return response.data;
+  }
+
+  private normalizeListResponse<T>(
+    response: types.BackendListResponse<T>,
+  ): types.ListResponse<T> {
+    return {
+      data: response.data || [],
+      total: response.total ?? response.pagination?.total ?? 0,
+      limit:
+        response.limit ??
+        response.pagination?.limit ??
+        response.data?.length ??
+        0,
+      offset: response.offset ?? response.pagination?.offset ?? 0,
+      pagination: response.pagination,
+    };
   }
 }
 

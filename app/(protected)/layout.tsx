@@ -34,7 +34,7 @@ export default function ProtectedLayout({
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen bg-bg">
       <Header />
       <main className="container mx-auto px-4 py-8">{children}</main>
     </div>
