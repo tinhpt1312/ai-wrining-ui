@@ -1,63 +1,30 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useApi } from "@/hooks/useApi";
+import React, { useState } from "react";
+import { useAnalyticsStats, useWritingStats } from "@/hooks/useApi";
 import DailyTipsCard from "@/components/DailyTipsCard";
 import AchievementsPanel from "@/components/AchievementsPanel";
 
-interface AnalyticsData {
-  totalSubmissions: number;
-  totalWords: number;
-  averageScore: number;
-  submissionsByDate: { date: string; count: number }[];
-  scoresTrend: { date: string; score: number }[];
-  wordCountTrend: { date: string; words: number }[];
-  improvementPercentage: number;
-}
-
-interface DailyStats {
-  today: number;
-  thisWeek: number;
-  thisMonth: number;
-}
-
-interface WritingType {
-  type: string;
-  count: number;
-}
-
 export default function AnalyticsPage() {
-  const api = useApi();
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [dailyStats, setDailyStats] = useState<DailyStats | null>(null);
-  const [writingTypes, setWritingTypes] = useState<WritingType[]>([]);
-  const [loading, setLoading] = useState(true);
   const [timeframe, setTimeframe] = useState<"week" | "month" | "year">(
     "month",
   );
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeframe]);
+  // Fetch analytics stats
+  const {
+    data: analyticsStats,
+    isLoading: isAnalyticsLoading,
+    error: analyticsError,
+  } = useAnalyticsStats();
 
-  const fetchAnalytics = async () => {
-    try {
-      setLoading(true);
-      const [analyticsRes, dailyRes, typesRes] = await Promise.all([
-        api.get("/api/analytics/dashboard"),
-        api.get("/api/analytics/daily"),
-        api.get("/api/analytics/by-type"),
-      ]);
+  // Fetch writing stats
+  const {
+    data: writingStats,
+    isLoading: isWritingStatsLoading,
+    error: writingStatsError,
+  } = useWritingStats();
 
-      setAnalytics(analyticsRes.data);
-      setDailyStats(dailyRes.data);
-      setWritingTypes(typesRes.data || []);
-    } catch (error) {
-      console.error("Failed to fetch analytics:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loading = isAnalyticsLoading || isWritingStatsLoading;
 
   if (loading) {
     return (
@@ -66,6 +33,21 @@ export default function AnalyticsPage() {
       </div>
     );
   }
+
+  // Transform writing stats data for display
+  const writingTypesList = writingStats
+    ? Object.entries(writingStats.byType).map(([type, count]) => ({
+        type,
+        count: count as number,
+      }))
+    : [];
+
+  const writingStatusList = writingStats
+    ? Object.entries(writingStats.byStatus).map(([status, count]) => ({
+        status,
+        count: count as number,
+      }))
+    : [];
 
   return (
     <div className="space-y-6">
@@ -94,77 +76,86 @@ export default function AnalyticsPage() {
         ))}
       </div>
 
+      {/* Error Messages */}
+      {(analyticsError || writingStatsError) && (
+        <div className="bg-red-100 text-red-800 p-4 rounded">
+          {analyticsError && <p>Failed to load analytics: {analyticsError.message}</p>}
+          {writingStatsError && <p>Failed to load writing stats: {writingStatsError.message}</p>}
+        </div>
+      )}
+
       {/* Main Stats */}
-      {analytics && (
+      {writingStats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-blue-600">
-              {analytics.totalSubmissions}
+              {writingStats.totalWritings}
             </div>
             <div className="text-gray-600 text-sm mt-1">Total Writings</div>
           </div>
           <div className="bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-purple-600">
-              {analytics.totalWords}
+              {writingStats.totalWords}
             </div>
             <div className="text-gray-600 text-sm mt-1">Total Words</div>
           </div>
           <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-green-600">
-              {analytics.averageScore.toFixed(1)}
+              {writingStats.averageLength.toFixed(0)}
             </div>
-            <div className="text-gray-600 text-sm mt-1">Avg Score</div>
+            <div className="text-gray-600 text-sm mt-1">Avg Words/Writing</div>
           </div>
           <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-orange-600">
-              {analytics.improvementPercentage.toFixed(0)}%
+              {analyticsStats?.analysesWithFeedback || 0}
             </div>
-            <div className="text-gray-600 text-sm mt-1">Improvement</div>
+            <div className="text-gray-600 text-sm mt-1">With Feedback</div>
           </div>
         </div>
       )}
 
-      {/* Daily Stats */}
-      {dailyStats && (
+      {/* Analytics Stats */}
+      {analyticsStats && (
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold mb-4">📅 Activity Overview</h2>
+          <h2 className="text-xl font-bold mb-4">📈 Feedback Overview</h2>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-blue-50 rounded">
               <div className="text-2xl font-bold text-blue-600">
-                {dailyStats.today}
+                {analyticsStats.totalAnalyses}
               </div>
-              <div className="text-sm text-gray-600 mt-1">Today</div>
+              <div className="text-sm text-gray-600 mt-1">Total Analyses</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded">
               <div className="text-2xl font-bold text-purple-600">
-                {dailyStats.thisWeek}
+                {analyticsStats.analysesWithFeedback}
               </div>
-              <div className="text-sm text-gray-600 mt-1">This Week</div>
+              <div className="text-sm text-gray-600 mt-1">With Feedback</div>
             </div>
             <div className="text-center p-4 bg-green-50 rounded">
               <div className="text-2xl font-bold text-green-600">
-                {dailyStats.thisMonth}
+                {analyticsStats.percentageWithFeedback.toFixed(1)}%
               </div>
-              <div className="text-sm text-gray-600 mt-1">This Month</div>
+              <div className="text-sm text-gray-600 mt-1">Coverage</div>
             </div>
           </div>
         </div>
       )}
 
       {/* Writing Types */}
-      {writingTypes.length > 0 && (
+      {writingTypesList.length > 0 && (
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-bold mb-4">📝 Writings by Type</h2>
           <div className="space-y-4">
-            {writingTypes.map((typeData) => {
-              const maxCount = Math.max(...writingTypes.map((t) => t.count), 1);
+            {writingTypesList.map((typeData) => {
+              const maxCount = Math.max(
+                ...writingTypesList.map((t) => t.count),
+                1,
+              );
               const percentage = (typeData.count / maxCount) * 100;
               return (
                 <div key={typeData.type}>
                   <div className="flex justify-between mb-2">
-                    <span className="font-semibold capitalize">
-                      {typeData.type}
-                    </span>
+                    <span className="font-semibold">{typeData.type}</span>
                     <span className="text-gray-600 font-semibold">
                       {typeData.count}
                     </span>
@@ -172,6 +163,44 @@ export default function AnalyticsPage() {
                   <div className="w-full bg-gray-300 rounded-full h-2">
                     <div
                       className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all"
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Writing Status */}
+      {writingStatusList.length > 0 && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-bold mb-4">📌 Writings by Status</h2>
+          <div className="space-y-4">
+            {writingStatusList.map((statusData) => {
+              const maxCount = Math.max(
+                ...writingStatusList.map((t) => t.count),
+                1,
+              );
+              const percentage = (statusData.count / maxCount) * 100;
+              return (
+                <div key={statusData.status}>
+                  <div className="flex justify-between mb-2">
+                    <span className="font-semibold capitalize">
+                      {statusData.status}
+                    </span>
+                    <span className="text-gray-600 font-semibold">
+                      {statusData.count}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-300 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all ${
+                        statusData.status === "draft"
+                          ? "bg-yellow-500"
+                          : "bg-green-500"
+                      }`}
                       style={{ width: `${percentage}%` }}
                     ></div>
                   </div>

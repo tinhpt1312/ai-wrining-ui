@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 const buttonVariants = {
   solid:
     "bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90",
+  secondary:
+    "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
   outline:
     "border border-black bg-transparent text-black hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black",
   ghost: "text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10",
