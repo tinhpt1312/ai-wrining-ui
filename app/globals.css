@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/**
+ * Design tokens — minimal, neutral palette with a single indigo accent.
+ * Semantic variables auto-switch in dark mode; `@theme inline` exposes them
+ * as Tailwind utilities (bg-surface, text-muted, border-border, bg-primary, ...).
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-error: var(--error);
+  --color-error-soft: var(--error-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+:root {
+  --bg: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #f1f1f4;
+
+  --fg: #18181b;
+  --muted: #52525b;
+  --subtle: #8e8e98;
+
+  --border: #e6e6ea;
+  --border-strong: #d4d4d8;
+
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-fg: #ffffff;
+  --primary-soft: #eef2ff;
+
+  --success: #16a34a;
+  --success-soft: #f0fdf4;
+  --warning: #d97706;
+  --warning-soft: #fffbeb;
+  --error: #dc2626;
+  --error-soft: #fef2f2;
+  --info: #2563eb;
+  --info-soft: #eff6ff;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #0a0a0b;
+    --surface: #141417;
+    --surface-2: #1d1d21;
+
+    --fg: #fafafa;
+    --muted: #a1a1aa;
+    --subtle: #71717a;
+
+    --border: #292930;
+    --border-strong: #3f3f46;
+
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --primary-fg: #ffffff;
+    --primary-soft: #1f1d39;
+
+    --success: #22c55e;
+    --success-soft: #0e2417;
+    --warning: #f59e0b;
+    --warning-soft: #2a1f08;
+    --error: #ef4444;
+    --error-soft: #2a1213;
+    --info: #3b82f6;
+    --info-soft: #11203c;
   }
 }
 
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--primary-fg);
 }

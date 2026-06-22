@@ -36,7 +36,7 @@ export default function ProtectedLayout({
   return (
     <div className="min-h-screen bg-bg">
       <Header />
-      <main className="container mx-auto px-4 py-8">{children}</main>
+      <main className="container mx-auto px-4 py-8 max-w-6xl">{children}</main>
     </div>
   );
 }

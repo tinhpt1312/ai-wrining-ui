@@ -80,25 +80,25 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-black dark:text-white">
+          <h1 className="text-2xl font-bold text-fg tracking-tight">
             {writing.title}
           </h1>
-          <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-sm text-muted">
             <span>
-              <span className="font-medium">Type:</span>{" "}
+              <span className="text-subtle">Type:</span>{" "}
               {writing.type.replace("_", " ")}
             </span>
             <span>
-              <span className="font-medium">Status:</span>{" "}
+              <span className="text-subtle">Status:</span>{" "}
               {writing.status.replace("_", " ")}
             </span>
             <span>
-              <span className="font-medium">Words:</span>{" "}
+              <span className="text-subtle">Words:</span>{" "}
               {wordCount(writing.content)}
             </span>
             <span>{estimateReadingTime(writing.content)}</span>
             <span>
-              <span className="font-medium">Updated:</span>{" "}
+              <span className="text-subtle">Updated:</span>{" "}
               {formatDateTime(writing.updatedAt)}
             </span>
           </div>
@@ -106,9 +106,7 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
 
         <div className="flex gap-2 flex-wrap flex-shrink-0">
           <Link href={`/writings/${id}/edit`}>
-            <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium">
-              Edit Writing
-            </Button>
+            <Button>Edit Writing</Button>
           </Link>
           <Link href={`/writings/${id}/suggestions`}>
             <Button variant="secondary">Suggestions</Button>
@@ -120,11 +118,9 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
       </div>
 
       {/* Writing Content */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
-        <h2 className="text-lg font-semibold text-black dark:text-white mb-4">
-          Content
-        </h2>
-        <div className="whitespace-pre-wrap text-gray-700 dark:text-gray-300 leading-relaxed font-normal text-base">
+      <div className="bg-surface border border-border rounded-xl p-6">
+        <h2 className="text-sm font-semibold text-fg mb-4">Content</h2>
+        <div className="whitespace-pre-wrap text-fg/90 leading-relaxed text-base">
           {writing.content}
         </div>
       </div>
@@ -132,14 +128,13 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
       {/* Analyses Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-black dark:text-white">
+          <h2 className="text-lg font-bold text-fg tracking-tight">
             AI Analytics
           </h2>
           <Button
             onClick={handleGenerateAiAnalytics}
             isLoading={createAiAnalytics.isPending}
             disabled={createAiAnalytics.isPending}
-            className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white font-medium"
           >
             {createAiAnalytics.isPending
               ? "Generating..."
@@ -159,52 +154,49 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
         {analysesLoading ? (
           <Loading text="Loading analyses..." />
         ) : analyses.length === 0 ? (
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-12 text-center">
-            <div className="text-4xl mb-3">📊</div>
-            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">
+          <div className="bg-surface border border-border rounded-xl p-12 text-center">
+            <div className="text-4xl mb-3 opacity-60">📊</div>
+            <h3 className="text-lg font-semibold text-fg mb-1.5">
               No analyses yet
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-sm text-muted mb-6">
               Generate an AI analysis to get feedback on your writing.
             </p>
-            <Button
-              onClick={handleGenerateAiAnalytics}
-              disabled={createAiAnalytics.isPending}
-              className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white font-medium mx-auto"
-            >
-              Generate First Analytics
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                onClick={handleGenerateAiAnalytics}
+                disabled={createAiAnalytics.isPending}
+              >
+                Generate First Analytics
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {analyses.map((analysis) => (
               <div
                 key={analysis.id}
-                className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 flex flex-col gap-4"
+                className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4"
               >
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <p className="text-sm font-medium text-fg">
                       Analytics Report
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    <p className="text-xs text-subtle mt-1">
                       Generated {formatDateTime(analysis.createdAt)}
                     </p>
                   </div>
                   <Link href={`/analysis/${analysis.id}`}>
-                    <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium">
-                      View Details
-                    </Button>
+                    <Button size="sm">View Details</Button>
                   </Link>
                 </div>
 
                 {analysis.feedbackJson && (
-                  <div className="space-y-3 max-h-96 overflow-y-auto">
-                    <div className="bg-gray-50 dark:bg-gray-950 rounded border border-gray-200 dark:border-gray-800 p-4">
-                      <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words font-mono leading-relaxed">
-                        {JSON.stringify(analysis.feedbackJson, null, 2)}
-                      </pre>
-                    </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    <pre className="bg-surface-2 rounded-lg border border-border p-4 text-sm text-muted whitespace-pre-wrap break-words font-mono leading-relaxed">
+                      {JSON.stringify(analysis.feedbackJson, null, 2)}
+                    </pre>
                   </div>
                 )}
               </div>

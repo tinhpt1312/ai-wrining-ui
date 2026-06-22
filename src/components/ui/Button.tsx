@@ -3,20 +3,19 @@ import { cn } from "@/lib/utils";
 
 const buttonVariants = {
   solid:
-    "bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90",
+    "bg-primary text-primary-fg hover:bg-primary-hover shadow-sm",
   secondary:
-    "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+    "bg-surface-2 text-fg hover:bg-border",
   outline:
-    "border border-black bg-transparent text-black hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black",
-  ghost: "text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10",
-  destructive:
-    "bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800",
+    "border border-border-strong bg-transparent text-fg hover:bg-surface-2",
+  ghost: "text-muted hover:bg-surface-2 hover:text-fg",
+  destructive: "bg-error text-white hover:opacity-90 shadow-sm",
 };
 
 const buttonSizes = {
-  sm: "h-8 px-3 text-sm rounded-md",
-  md: "h-10 px-4 py-2 text-base rounded-lg",
-  lg: "h-12 px-6 py-3 text-lg rounded-lg",
+  sm: "h-8 px-3 text-sm rounded-lg",
+  md: "h-10 px-4 text-sm rounded-lg",
+  lg: "h-12 px-6 text-base rounded-xl",
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -40,7 +39,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center gap-2 font-medium transition-all",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+        "disabled:opacity-50 disabled:pointer-events-none",
         buttonVariants[variant],
         buttonSizes[size],
         className,

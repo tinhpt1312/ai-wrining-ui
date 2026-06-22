@@ -11,29 +11,27 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type = "text", label, error, helperText, ...props }, ref) => (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-black dark:text-white mb-2">
+        <label className="block text-sm font-medium text-fg mb-1.5">
           {label}
-          {props.required && <span className="text-red-500 ml-1">*</span>}
+          {props.required && <span className="text-error ml-1">*</span>}
         </label>
       )}
       <input
         type={type}
         className={cn(
-          "w-full px-4 py-2 text-base border border-gray-300 rounded-lg",
-          "bg-white text-black placeholder:text-gray-400",
-          "focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent",
-          "disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50",
-          "dark:bg-black dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500",
-          "dark:focus:ring-white",
-          error && "border-red-500 focus:ring-red-500",
+          "w-full h-10 px-3 text-sm rounded-lg border border-border bg-surface text-fg",
+          "placeholder:text-subtle transition-colors",
+          "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
+          "disabled:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-60",
+          error && "border-error focus:border-error focus:ring-error/20",
           className,
         )}
         ref={ref}
         {...props}
       />
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && <p className="mt-1.5 text-sm text-error">{error}</p>}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+        <p className="mt-1.5 text-sm text-muted">{helperText}</p>
       )}
     </div>
   ),

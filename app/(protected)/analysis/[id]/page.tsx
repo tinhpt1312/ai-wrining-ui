@@ -4,7 +4,7 @@ import { use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAnalytics, useWriting, useDeleteAnalytics } from "@/hooks/useApi";
-import { Loading, Error, Card } from "@/components/ui/States";
+import { Loading, Error } from "@/components/ui/States";
 import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/utils/helpers";
 
@@ -55,17 +55,15 @@ export default function AnalyticsViewPage({ params }: AnalyticsViewPageProps) {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-black dark:text-white">
+          <h1 className="text-2xl font-bold text-fg tracking-tight">
             Analytics Report
           </h1>
-          <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted">
             <span>Created: {formatDateTime(analysis.createdAt)}</span>
             {writing && (
               <span>
                 Writing:{" "}
-                <span className="font-medium text-black dark:text-white">
-                  {writing.title}
-                </span>
+                <span className="font-medium text-fg">{writing.title}</span>
               </span>
             )}
           </div>
@@ -80,13 +78,13 @@ export default function AnalyticsViewPage({ params }: AnalyticsViewPageProps) {
               <Button variant="outline">View Writing</Button>
             </Link>
           )}
-          <button
+          <Button
+            variant="destructive"
             onClick={handleDelete}
             disabled={isDeleting}
-            className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 border border-red-300 dark:border-red-700 rounded hover:bg-red-50 dark:hover:bg-red-900/20 disabled:opacity-50 transition-colors"
           >
             {isDeleting ? "Deleting..." : "Delete"}
-          </button>
+          </Button>
           <Button variant="outline" onClick={() => router.back()}>
             Back
           </Button>
@@ -95,19 +93,17 @@ export default function AnalyticsViewPage({ params }: AnalyticsViewPageProps) {
 
       {/* Feedback Content */}
       {analysis.feedbackJson ? (
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
-          <h2 className="text-xl font-semibold text-black dark:text-white mb-6">
-            AI Feedback
-          </h2>
+        <div className="bg-surface border border-border rounded-xl p-6">
+          <h2 className="text-sm font-semibold text-fg mb-4">AI Feedback</h2>
           <div className="w-full overflow-x-auto">
-            <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words bg-gray-50 dark:bg-gray-950 p-6 rounded-lg border border-gray-200 dark:border-gray-800 font-mono leading-relaxed">
+            <pre className="text-sm text-muted whitespace-pre-wrap break-words bg-surface-2 p-5 rounded-lg border border-border font-mono leading-relaxed">
               {JSON.stringify(analysis.feedbackJson, null, 2)}
             </pre>
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 text-center">
-          <p className="text-gray-600 dark:text-gray-400">
+        <div className="bg-surface border border-border rounded-xl p-12 text-center">
+          <p className="text-muted text-sm">
             No feedback available for this analysis yet.
           </p>
         </div>

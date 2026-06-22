@@ -94,10 +94,10 @@ export default function WritingsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-black dark:text-white">
+          <h1 className="text-2xl font-bold text-fg tracking-tight">
             My Writings
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             {totalWritings} {totalWritings === 1 ? "writing" : "writings"} found
           </p>
         </div>
@@ -156,35 +156,35 @@ export default function WritingsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {writings.map((writing) => (
-            <Card key={writing.id} className="flex flex-col gap-4">
+            <Card key={writing.id} className="flex flex-col gap-4 hover:border-border-strong">
               <div className="flex flex-col gap-2">
                 <Link href={`/writings/${writing.id}`}>
-                  <h3 className="text-xl font-semibold text-black dark:text-white hover:opacity-80 transition-opacity line-clamp-2">
+                  <h3 className="text-lg font-semibold text-fg hover:text-primary transition-colors line-clamp-2">
                     {writing.title}
                   </h3>
                 </Link>
-                <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
+                <p className="text-sm text-muted line-clamp-2">
                   {truncateText(writing.content, 150)}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 text-sm rounded-full capitalize">
+                <span className="inline-block px-2.5 py-0.5 bg-surface-2 text-muted text-xs font-medium rounded-full capitalize">
                   {writing.type.replace("_", " ")}
                 </span>
                 <span
-                  className={`inline-block px-3 py-1 text-sm rounded-full capitalize ${
+                  className={`inline-block px-2.5 py-0.5 text-xs font-medium rounded-full capitalize ${
                     writing.status === "public"
-                      ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300"
-                      : "bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300"
+                      ? "bg-success-soft text-success"
+                      : "bg-warning-soft text-warning"
                   }`}
                 >
                   {writing.status.replace("_", " ")}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
-                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex items-center justify-between pt-4 border-t border-border">
+                <div className="flex items-center gap-4 text-xs text-subtle">
                   <span>{wordCount(writing.content)} words</span>
                   <span>{formatDate(writing.updatedAt)}</span>
                 </div>
@@ -225,7 +225,7 @@ export default function WritingsPage() {
           >
             Previous
           </Button>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted">
             Page {currentPage} of {totalPages}
           </div>
           <Button

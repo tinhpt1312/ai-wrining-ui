@@ -26,24 +26,22 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-black px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-bg px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-black dark:text-white mb-2">
-            AI Writing
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Create your account to get started
-          </p>
+          <h1 className="text-2xl font-bold text-fg mb-1.5">AI Writing</h1>
+          <p className="text-sm text-muted">Create your account to get started</p>
         </div>
 
-        <AuthForm mode="register" onSuccess={() => router.push("/writings")} />
+        <div className="bg-surface border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
+          <AuthForm mode="register" onSuccess={() => router.push("/writings")} />
+        </div>
 
-        <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
+        <p className="text-center text-sm text-muted mt-6">
           Already have an account?{" "}
           <button
             onClick={() => router.push("/login")}
-            className="text-black dark:text-white font-medium hover:underline"
+            className="text-primary font-medium hover:underline"
           >
             Sign in
           </button>

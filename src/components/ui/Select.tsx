@@ -17,8 +17,8 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 
 const sizeClasses = {
   sm: "h-8 px-3 text-sm",
-  md: "h-10 px-4 text-base",
-  lg: "h-12 px-4 text-lg",
+  md: "h-10 px-3 text-sm",
+  lg: "h-12 px-4 text-base",
 };
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
@@ -37,45 +37,49 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ) => (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-fg dark:text-fg mb-2">
+        <label className="block text-sm font-medium text-fg mb-1.5">
           {label}
           {props.required && <span className="text-error ml-1">*</span>}
         </label>
       )}
-      <select
-        className={cn(
-          "w-full border-2 rounded-lg transition-colors duration-200",
-          "bg-bg text-fg",
-          "border-border dark:border-border",
-          "focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500",
-          "disabled:bg-bg-secondary disabled:cursor-not-allowed disabled:opacity-60",
-          "dark:bg-bg dark:text-fg",
-          "dark:focus:ring-primary-400/50 dark:focus:border-primary-400",
-          "appearance-none cursor-pointer",
-          error &&
-            "border-error focus:ring-error/50 focus:border-error dark:border-error",
-          sizeClasses[size],
-          className,
-        )}
-        ref={ref}
-        {...props}
-      >
-        {placeholder && (
-          <option value="" disabled selected hidden>
-            {placeholder}
-          </option>
-        )}
-        {options.map((option, index) => (
-          <option key={`${option.value}-${index}`} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {error && (
-        <p className="mt-1.5 text-sm text-error font-medium">{error}</p>
-      )}
+      <div className="relative">
+        <select
+          className={cn(
+            "w-full rounded-lg border border-border bg-surface text-fg transition-colors",
+            "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
+            "disabled:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-60",
+            "appearance-none cursor-pointer pr-10",
+            error && "border-error focus:border-error focus:ring-error/20",
+            sizeClasses[size],
+            className,
+          )}
+          ref={ref}
+          {...props}
+        >
+          {placeholder && (
+            <option value="" disabled hidden>
+              {placeholder}
+            </option>
+          )}
+          {options.map((option, index) => (
+            <option key={`${option.value}-${index}`} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <svg
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-subtle"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      {error && <p className="mt-1.5 text-sm text-error">{error}</p>}
       {helperText && !error && (
-        <p className="mt-1.5 text-sm text-fg-secondary">{helperText}</p>
+        <p className="mt-1.5 text-sm text-muted">{helperText}</p>
       )}
     </div>
   ),
