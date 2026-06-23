@@ -1,0 +1,73 @@
+---
+description: Cấu trúc shared components — một component một folder, không dùng ui/ chung
+globs: **/*
+alwaysApply: false
+---
+
+# Shared Components (ai-writing-ui)
+
+## Cấu trúc bắt buộc
+
+**Mỗi component một folder riêng** — không gom chung `src/components/ui/`.
+
+```
+src/components/
+  button/
+    Button.tsx
+    index.ts
+  input/
+    Input.tsx
+    index.ts
+  loading/
+    Loading.tsx
+    index.ts
+  error-state/
+    Error.tsx
+    index.ts
+  ...
+  index.ts          # barrel export toàn bộ (tuỳ chọn)
+```
+
+## Quy tắc đặt tên
+
+| Loại | Folder | File chính |
+|------|--------|------------|
+| Primitive | `kebab-case` | `PascalCase.tsx` |
+| Feedback | `loading`, `error-state`, `empty-state`, `alert` | tách riêng, **không** gom `States.tsx` |
+| Layout block | `page-header`, `section`, `panel` | mỗi export một folder nếu tách file |
+
+## Import
+
+```typescript
+// ✅ Ưu tiên — import đúng folder component
+import { Button } from "@/components/button";
+import { Loading } from "@/components/loading";
+import { PageHeader } from "@/components/page-header";
+
+// ✅ Được phép — barrel khi import nhiều primitive
+import { Button, Loading, EmptyState } from "@/components";
+
+// ❌ Cấm — folder ui monolith
+import { Button } from "@/components/ui/Button";
+import { Loading } from "@/components/ui/States";
+```
+
+## Feature vs shared
+
+- **`src/components/`** — primitive dùng chéo app (Button, Input, Tabs, Loading…).
+- **`src/features/{module}/components/`** — UI gắn domain (WritingCard, AnalysisFeedback…).
+- **Không** đặt feature component vào `src/components/`.
+
+## Thêm component mới
+
+1. Tạo `src/components/{tên-folder}/ComponentName.tsx`
+2. Tạo `index.ts` re-export public API
+3. Thêm vào `src/components/index.ts` nếu cần barrel
+4. Import từ `@/components/{tên-folder}`
+
+## index.ts mẫu
+
+```typescript
+// src/components/button/index.ts
+export { Button, buttonVariants, type ButtonProps } from "./Button";
+```

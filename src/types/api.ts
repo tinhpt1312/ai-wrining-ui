@@ -21,12 +21,40 @@ export interface BackendAuthResponse {
 }
 
 // User Types
+export type UserRole = 'user' | 'admin';
+
 export interface User {
   id: string;
   username: string;
   email?: string;
   fullName?: string;
   isActive?: boolean;
+  role?: UserRole;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface WritingAuthor {
+  username: string;
+  fullName?: string | null;
+}
+
+export interface UpdateProfilePayload {
+  username?: string;
+  email?: string;
+  fullName?: string;
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface PublicUserProfile {
+  username: string;
+  fullName?: string | null;
+  createdAt: string;
+  publicWritingsCount: number;
 }
 
 // Writing Types
@@ -51,6 +79,7 @@ export interface Writing {
   status: WritingStatus;
   createdAt: string;
   updatedAt: string;
+  author?: WritingAuthor;
 }
 
 export interface CreateWritingPayload {
@@ -72,6 +101,7 @@ export interface QueryWritingParams {
   offset?: number;
   type?: WritingType;
   status?: WritingStatus;
+  search?: string;
 }
 
 export interface PaginationMeta {
@@ -157,6 +187,25 @@ export interface AnalyticsStats {
   percentageWithFeedback: number;
 }
 
+// Structured AI grading feedback (matches backend WritingAnalyticsSchema)
+export interface FeedbackCriterion {
+  score: number;
+  feedback: string;
+  suggestions: string[];
+}
+
+export interface AnalysisFeedback {
+  structure?: FeedbackCriterion;
+  clarity?: FeedbackCriterion;
+  tone?: FeedbackCriterion;
+  coherence?: FeedbackCriterion;
+  overallFeedback?: string;
+  strengths?: string[];
+  areasForImprovement?: string[];
+  actionItems?: string[];
+  sampleWriting?: string;
+}
+
 export interface TokenUsage {
   used: number;
   remaining: number;
@@ -171,87 +220,6 @@ export interface TokenStats {
     tokensUsed: number;
   }>;
 }
-
-// Daily Tips Types
-export interface DailyTip {
-  id: string;
-  userId: string;
-  tipDate: string;
-  category: string;
-  title: string;
-  content: string;
-  exampleBefore?: string;
-  exampleAfter?: string;
-  basedOnAnalyticsIds?: string[];
-  isRead: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateDailyTipPayload {
-  tipDate: string;
-  category: string;
-  title: string;
-  content: string;
-  exampleBefore?: string;
-  exampleAfter?: string;
-  basedOnAnalyticsIds?: string[];
-}
-
-export interface UpdateDailyTipPayload {
-  isRead?: boolean;
-  category?: string;
-  title?: string;
-  content?: string;
-  exampleBefore?: string;
-  exampleAfter?: string;
-}
-
-export interface QueryDailyTipsParams {
-  limit?: number;
-  offset?: number;
-  isRead?: boolean;
-  category?: string;
-}
-
-export type DailyTipsListResponse = ListResponse<DailyTip>;
-
-// Achievements Types
-export interface Achievement {
-  id: string;
-  key: string;
-  name: string;
-  description: string;
-  iconEmoji?: string;
-  badgeColor?: string;
-  pointsReward: number;
-  requirementType: string;
-  requirementValue: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface UserAchievementStatus {
-  achievement: Achievement;
-  progress: number;
-  isUnlocked: boolean;
-  unlockedAt?: string;
-}
-
-export interface UserAchievementsStats {
-  totalPoints: number;
-  level: number;
-  achievementsUnlocked: number;
-  achievementsTotal: number;
-  nextMilestone?: {
-    name: string;
-    pointsNeeded: number;
-  };
-}
-
-export type AchievementsListResponse = ListResponse<Achievement>;
-export type UserAchievementsStatusListResponse =
-  ListResponse<UserAchievementStatus>;
 
 // Writing Suggestions Types
 export interface WritingSuggestion {
@@ -325,53 +293,6 @@ export interface RefactoredWriting {
 }
 
 export type WritingSuggestionsListResponse = ListResponse<WritingSuggestion>;
-
-// Feedback Categories Types
-export interface FeedbackCategory {
-  id: string;
-  key: string;
-  name: string;
-  description: string;
-  iconEmoji?: string;
-  learningResources?: {
-    tips?: string[];
-    exercises?: Array<{
-      title: string;
-      description: string;
-    }>;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateFeedbackCategoryPayload {
-  key: string;
-  name: string;
-  description: string;
-  iconEmoji?: string;
-  learningResources?: {
-    tips?: string[];
-    exercises?: Array<{
-      title: string;
-      description: string;
-    }>;
-  };
-}
-
-export interface UpdateFeedbackCategoryPayload {
-  name?: string;
-  description?: string;
-  iconEmoji?: string;
-  learningResources?: {
-    tips?: string[];
-    exercises?: Array<{
-      title: string;
-      description: string;
-    }>;
-  };
-}
-
-export type FeedbackCategoriesListResponse = ListResponse<FeedbackCategory>;
 
 // API Error Response
 export interface ApiError {

@@ -1,0 +1,49 @@
+---
+description: UI stack và design system cho ai-writing-ui
+globs: **/*
+alwaysApply: false
+---
+
+# UI & Design System
+
+## Stack UI (đã tích hợp)
+
+| Package | Mục đích |
+|---------|----------|
+| **Tailwind CSS v4** | Utility styling + semantic tokens |
+| **Radix UI** | Primitives accessible (dialog, dropdown, slot) |
+| **next-themes** | Chế độ sáng / tối / hệ thống |
+| **lucide-react** | Icon set thống nhất |
+| **@radix-ui/react-tabs** | Lọc loại bài (Khám phá) |
+| **@radix-ui/react-avatar** | Avatar tác giả (initials) |
+| **class-variance-authority** | Variant components |
+
+**Không** thêm UI framework nặng (MUI, Ant Design) — giữ stack nhẹ, tương thích shadcn-style.
+
+## Theme (sáng / tối)
+
+- Provider: `src/layouts/ThemeProvider.tsx` bọc trong `Providers`.
+- Toggle: `ThemeToggle` — Header (app) + AuthFormPanel (login/register).
+- CSS variables trong `app/globals.css`: `:root` (light) + `.dark` (dark).
+- **Không** dùng `@media (prefers-color-scheme)` làm nguồn chính; `next-themes` quản lý class `.dark` trên `<html>`.
+
+## Design tokens
+
+- Màu semantic: `bg-bg`, `bg-surface`, `text-fg`, `text-muted`, `bg-primary`, …
+- Utility CSS: `.app-bg` (gradient nền), `.card-elevated` (card có shadow).
+- Icon: **lucide-react** — không dùng emoji làm icon chính trong UI mới.
+- Thông báo ngắn (xóa thành công, lỗi API…): `import { toast } from "@/lib/toast"` — **không** dùng Alert inline cho feedback tạm.
+- Nội dung văn bản dài: class `prose-content` (plugin `@tailwindcss/typography`).
+- Trong `app/globals.css`, khai báo plugin bằng đường dẫn tương đối: `@plugin "../node_modules/@tailwindcss/typography"` (Tailwind v4 resolve từ thư mục `app/`).
+
+## Package manager
+
+- FE dùng **Yarn** — xem rule `package-manager.mdc`.
+
+## Component guidelines
+
+- Card/panel: ưu tiên class `card-elevated` hoặc `Panel` từ `@/components/panel`.
+- Import primitive: `@/components/{folder}` — xem `components.mdc`.
+- Nav/action: kèm icon Lucide + label.
+- Stat/metric: dùng `StatCard` với `icon` + `tone` (primary | success | warning | info).
+- Route link: dùng `ROUTES` từ constants, không hard-code path.

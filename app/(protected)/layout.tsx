@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
-import { Loading } from "@/components/ui/States";
-import Header from "@/components/Header";
+import { useAuth } from "@/features/auth";
+import { Loading } from "@/components";
+import { AppShell } from "@/layouts";
 
 export default function ProtectedLayout({
   children,
@@ -26,17 +26,12 @@ export default function ProtectedLayout({
   }, [isAuthenticated, mounted, isLoading, router]);
 
   if (!mounted || isLoading) {
-    return <Loading fullScreen text="Loading..." />;
+    return <Loading fullScreen text="Đang tải..." />;
   }
 
   if (!isAuthenticated) {
     return null;
   }
 
-  return (
-    <div className="min-h-screen bg-bg">
-      <Header />
-      <main className="container mx-auto px-4 py-8 max-w-6xl">{children}</main>
-    </div>
-  );
+  return <AppShell>{children}</AppShell>;
 }

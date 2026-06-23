@@ -1,0 +1,107 @@
+---
+description: Kiến trúc Frontend — component, axios service, hooks theo module
+globs: **/*
+alwaysApply: false
+---
+
+# Frontend Architecture (ai-writing-ui)
+
+## Cấu trúc feature-based
+
+```
+src/
+  api/
+    client.ts              # Axios instance + interceptors + token helpers
+    response.helpers.ts    # normalize response BE
+    auth.service.ts        # 1 service = 1 module API
+    writings.service.ts
+    analytics.service.ts
+    suggestions.service.ts
+    users.service.ts
+    index.ts               # barrel export services
+  constants/
+    index.ts
+    api.constants.ts
+    routes.constants.ts
+    query-keys.constants.ts
+    cache.constants.ts
+    auth.constants.ts
+  features/{module}/
+    components/
+    hooks/use{Module}Api.ts
+    index.ts               # export components + hooks
+  layouts/
+  components/
+    button/              # 1 folder = 1 component (xem components.mdc)
+    input/
+    loading/
+    ...
+    index.ts             # barrel export (tuỳ chọn)
+```
+
+**Không** dùng `components/ui/` gom nhiều file — xem rule `components.mdc`.
+
+## Luồng gọi API (bắt buộc)
+
+```
+Component/Page → feature hook (useXxxApi) → module service (*.service.ts) → http (axios)
+```
+
+- **Axios chỉ** xuất hiện trong `api/client.ts` (export `http`).
+- Service dùng `http` + `API_PATHS` từ constants; **không** hard-code URL.
+- Component **không** import axios, **không** gọi `fetch`, **không** import `@/api` trực tiếp (trừ AuthContext).
+
+```typescript
+// ✅ api/writings.service.ts
+export const writingsService = {
+  getAll: (params) => http.get(..., API_PATHS.WRITINGS.ROOT, { params }),
+};
+
+// ✅ features/writings/hooks/useWritingsApi.ts
+export function useWritings(params) {
+  return useQuery({
+    queryKey: QUERY_KEYS.writings.all(params),
+    queryFn: () => writingsService.getAll(params),
+    staleTime: CACHE_TIME.MEDIUM,
+  });
+}
+
+// ✅ app/page hoặc component — import từ feature barrel
+import { useWritings } from "@/features/writings";
+```
+
+## Component — một nhiệm vụ
+
+- Tách component khi file > ~150 dòng hoặc có nhiều concern (form + list + modal → tách).
+- `useState`/`useReducer` trong component chỉ cho **UI local** (modal open, tab active).
+- State server (loading, data, error) đặt trong **hook** của module, không trong component.
+
+## Import convention
+
+- Page/component: `@/features/{module}` (barrel `index.ts`).
+- Hook nội bộ feature: import service từ `@/api`, constants từ `@/constants`.
+- **Cấm** file `src/hooks/useApi.ts` hoặc hook/API monolith tương tự.
+
+## Hooks theo module
+
+- File hook đặt tên `use{Module}Api.ts`: `useAuthApi`, `useWritingsApi`, `useAnalysisApi`, `useSuggestionsApi`.
+- React Query keys lấy từ `QUERY_KEYS`; staleTime từ `CACHE_TIME`.
+- Auth session state: `AuthContext` gọi `authService` + `usersService`, không gọi `http` trực tiếp.
+
+## Constants FE
+
+| File | Nội dung |
+|------|----------|
+| `api.constants.ts` | `API_PATHS`, `API_CONFIG` |
+| `routes.constants.ts` | `ROUTES` |
+| `query-keys.constants.ts` | `QUERY_KEYS` (factory functions) |
+| `cache.constants.ts` | `CACHE_TIME` |
+| `auth.constants.ts` | `AUTH_STORAGE_KEYS`, roles |
+
+## Page route (Next.js App Router)
+
+- `app/**/page.tsx` mỏng: import hook/component từ `@/features/*`, không logic API nặng.
+
+## Package manager
+
+- **Yarn only** — xem `package-manager.mdc`. Không tạo `package-lock.json`.

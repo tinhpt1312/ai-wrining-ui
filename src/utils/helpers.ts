@@ -16,37 +16,60 @@ export function getErrorMessage(error: unknown): string {
   if (isApiError(error)) {
     return error.message;
   }
-  return "An unexpected error occurred";
+  return "Đã xảy ra lỗi không mong muốn";
+}
+
+export function extractAnalysisFeedback(
+  feedback: Record<string, unknown> | null | undefined,
+): types.AnalysisFeedback {
+  if (!feedback) return {};
+  const nested = feedback.aiAnalytics;
+  if (nested && typeof nested === "object") {
+    return nested as types.AnalysisFeedback;
+  }
+  return feedback as types.AnalysisFeedback;
+}
+
+export function getAnalysisSummary(
+  feedback: Record<string, unknown> | null | undefined,
+): string | undefined {
+  return extractAnalysisFeedback(feedback).overallFeedback;
 }
 
 export const validationRules = {
   username: {
-    required: "Username is required",
-    minLength: { value: 3, message: "Username must be at least 3 characters" },
-    maxLength: { value: 50, message: "Username must not exceed 50 characters" },
+    required: "Vui lòng nhập tên đăng nhập",
+    minLength: {
+      value: 3,
+      message: "Tên đăng nhập phải có ít nhất 3 ký tự",
+    },
+    maxLength: {
+      value: 50,
+      message: "Tên đăng nhập không được quá 50 ký tự",
+    },
   },
   email: {
-    required: "Email is required",
+    required: "Vui lòng nhập email",
     pattern: {
       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      message: "Please enter a valid email",
+      message: "Email không hợp lệ",
     },
   },
   password: {
-    required: "Password is required",
+    required: "Vui lòng nhập mật khẩu",
     minLength: {
       value: 6,
-      message: "Password must be at least 6 characters",
+      message: "Mật khẩu phải có ít nhất 6 ký tự",
     },
   },
   title: {
-    required: "Title is required",
-    minLength: { value: 3, message: "Title must be at least 3 characters" },
-    maxLength: { value: 255, message: "Title must not exceed 255 characters" },
+    required: "Vui lòng nhập tiêu đề",
+    minLength: { value: 3, message: "Tiêu đề phải có ít nhất 3 ký tự" },
+    maxLength: { value: 255, message: "Tiêu đề không được quá 255 ký tự" },
   },
   content: {
-    required: "Content is required",
-    minLength: { value: 10, message: "Content must be at least 10 characters" },
+    required: "Vui lòng nhập nội dung",
+    minLength: { value: 10, message: "Nội dung phải có ít nhất 10 ký tự" },
   },
 };
 
@@ -62,8 +85,16 @@ export const writingStatusOptions = [
   { value: types.WritingStatus.PUBLIC, label: "Công Khai" },
 ];
 
+export function getWritingTypeLabel(type: string): string {
+  return writingTypeOptions.find((o) => o.value === type)?.label || type;
+}
+
+export function getWritingStatusLabel(status: string): string {
+  return writingStatusOptions.find((o) => o.value === status)?.label || status;
+}
+
 export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return new Date(dateString).toLocaleDateString("vi-VN", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -71,7 +102,7 @@ export function formatDate(dateString: string): string {
 }
 
 export function formatDateTime(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return new Date(dateString).toLocaleDateString("vi-VN", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -92,5 +123,5 @@ export function wordCount(text: string): number {
 export function estimateReadingTime(text: string): string {
   const words = wordCount(text);
   const readingTimeMinutes = Math.ceil(words / 200);
-  return `${readingTimeMinutes} min read`;
+  return `${readingTimeMinutes} phút đọc`;
 }

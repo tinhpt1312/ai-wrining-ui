@@ -2,34 +2,18 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
+import { FileText, AlignLeft, Sparkles, Zap } from "lucide-react";
 import {
   useWritingStats,
   useAnalyticsStats,
   useTokenUsage,
   useWritings,
-} from "@/hooks/useApi";
-import { Loading } from "@/components/ui/States";
-import { Button } from "@/components/ui/Button";
-
-function StatCard({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: string | number;
-  hint?: string;
-}) {
-  return (
-    <div className="bg-surface border border-border rounded-xl p-5">
-      <p className="text-sm font-medium text-muted">{label}</p>
-      <p className="text-3xl font-semibold text-fg mt-2 tracking-tight">
-        {value}
-      </p>
-      {hint && <p className="text-xs text-subtle mt-1">{hint}</p>}
-    </div>
-  );
-}
+} from "@/features/dashboard";
+import { Loading } from "@/components";
+import { Button } from "@/components/button";
+import { PageHeader } from "@/components/page-header";
+import { StatCard } from "@/features/dashboard";
+import { ROUTES } from "@/constants/routes.constants";
 
 export default function Dashboard() {
   const { data: writingStats, isLoading: writingStatsLoading } =
@@ -57,43 +41,57 @@ export default function Dashboard() {
   }, [writings]);
 
   if (isLoading) {
-    return <Loading text="Loading dashboard..." />;
+    return <Loading text="Đang tải tổng quan..." />;
   }
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-fg tracking-tight">Dashboard</h1>
-        <p className="text-sm text-muted mt-1">
-          Welcome back! Here&apos;s your overview.
-        </p>
-      </div>
+      <PageHeader
+        title="Tổng quan"
+        description="Chào mừng bạn quay lại! Đây là tóm tắt hoạt động viết của bạn."
+        actions={
+          <Link href={ROUTES.WRITING_NEW}>
+            <Button>Viết bài mới</Button>
+          </Link>
+        }
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Total Writings"
+          label="Tổng bài viết"
           value={writingStats?.totalWritings || 0}
+          icon={FileText}
+          tone="primary"
         />
-        <StatCard label="Total Words" value={writingStats?.totalWords || 0} />
         <StatCard
-          label="Total Analyses"
+          label="Tổng số chữ"
+          value={writingStats?.totalWords || 0}
+          icon={AlignLeft}
+          tone="info"
+        />
+        <StatCard
+          label="Lần chấm bài"
           value={analysisStats?.totalAnalyses || 0}
+          icon={Sparkles}
+          tone="success"
         />
         <StatCard
-          label="Token Usage"
+          label="Token đã dùng"
           value={`${tokenPercentage}%`}
+          icon={Zap}
+          tone="warning"
           hint={
             tokenUsage
-              ? `${tokenUsage.used.toLocaleString()} / ${tokenUsage.limit.toLocaleString()}`
+              ? `${tokenUsage.used.toLocaleString("vi-VN")} / ${tokenUsage.limit.toLocaleString("vi-VN")}`
               : undefined
           }
         />
       </div>
 
       {tokenUsage && (
-        <div className="bg-surface border border-border rounded-xl p-5">
+        <div className="card-elevated p-5">
           <h2 className="text-sm font-semibold text-fg mb-3">
-            Daily Token Budget
+            Hạn mức token hôm nay
           </h2>
           <div className="w-full bg-surface-2 rounded-full h-2 overflow-hidden">
             <div
@@ -108,10 +106,10 @@ export default function Dashboard() {
             />
           </div>
           <div className="flex justify-between mt-2 text-xs text-muted">
-            <span>Used: {tokenUsage.used.toLocaleString()} tokens</span>
+            <span>Đã dùng: {tokenUsage.used.toLocaleString("vi-VN")} token</span>
             <span>
-              Resets:{" "}
-              {new Date(tokenUsage.resetAt).toLocaleDateString("en-US", {
+              Làm mới:{" "}
+              {new Date(tokenUsage.resetAt).toLocaleDateString("vi-VN", {
                 month: "short",
                 day: "numeric",
                 hour: "2-digit",
@@ -123,14 +121,14 @@ export default function Dashboard() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-surface border border-border rounded-xl p-5">
+        <div className="card-elevated p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-fg">Recent Writings</h2>
+            <h2 className="text-sm font-semibold text-fg">Bài viết gần đây</h2>
             <Link
-              href="/writings"
+              href={ROUTES.WRITINGS}
               className="text-sm text-primary font-medium hover:underline"
             >
-              View all
+              Xem tất cả
             </Link>
           </div>
           {recentWritings.length > 0 ? (
@@ -138,14 +136,14 @@ export default function Dashboard() {
               {recentWritings.map((writing) => (
                 <Link
                   key={writing.id}
-                  href={`/writings/${writing.id}`}
+                  href={ROUTES.writing(writing.id)}
                   className="block px-3 py-2.5 rounded-lg hover:bg-surface-2 transition-colors"
                 >
                   <p className="font-medium text-fg truncate text-sm">
                     {writing.title}
                   </p>
                   <p className="text-xs text-subtle mt-0.5">
-                    {new Date(writing.createdAt).toLocaleDateString("en-US", {
+                    {new Date(writing.createdAt).toLocaleDateString("vi-VN", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
@@ -155,24 +153,24 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <p className="text-muted text-sm py-4">No writings yet</p>
+            <p className="text-muted text-sm py-4">Chưa có bài viết nào</p>
           )}
         </div>
 
-        <div className="bg-surface border border-border rounded-xl p-5">
-          <h2 className="text-sm font-semibold text-fg mb-4">Quick Actions</h2>
+        <div className="card-elevated p-5">
+          <h2 className="text-sm font-semibold text-fg mb-4">Thao tác nhanh</h2>
           <div className="space-y-2.5">
-            <Link href="/writings/new" className="block">
-              <Button className="w-full">Create New Writing</Button>
+            <Link href={ROUTES.WRITING_NEW} className="block">
+              <Button className="w-full">Viết bài mới</Button>
             </Link>
-            <Link href="/analysis" className="block">
+            <Link href={ROUTES.ANALYSIS} className="block">
               <Button className="w-full" variant="secondary">
-                View Analyses
+                Xem kết quả chấm
               </Button>
             </Link>
-            <Link href="/writings" className="block">
+            <Link href={ROUTES.WRITINGS} className="block">
               <Button className="w-full" variant="secondary">
-                Browse Writings
+                Danh sách bài viết
               </Button>
             </Link>
           </div>

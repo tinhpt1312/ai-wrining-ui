@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { useAuth } from "@/context/AuthContext";
-import { Loading } from "@/components/ui/States";
+import { useAuth } from "@/features/auth";
+import { Loading } from "@/components";
 
 export default function Home() {
   const router = useRouter();
@@ -21,5 +21,5 @@ export default function Home() {
     }
   }, [isAuthenticated, isLoading, router]);
 
-  return <Loading fullScreen text="Loading..." />;
+  return <Loading fullScreen text="Đang tải..." />;
 }

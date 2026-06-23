@@ -1,0 +1,42 @@
+---
+description: Quản lý package Frontend — bắt buộc dùng Yarn
+globs: **/*
+alwaysApply: false
+---
+
+# Package Manager — ai-writing-ui
+
+## Yarn only
+
+Project FE dùng **Yarn** để quản lý dependencies.
+
+- **Luôn dùng:** `yarn`, `yarn add`, `yarn remove`, `yarn install`
+- **Không dùng:** `npm install`, `npm add`, `npx` (trừ khi không có lựa chọn yarn tương đương)
+- Lockfile chuẩn: `yarn.lock` — **không** commit `package-lock.json`
+
+```bash
+# ✅ Cài dependency
+yarn add lucide-react
+
+# ✅ Chạy dev
+yarn dev
+
+# ❌ Không dùng
+npm install
+npm run dev
+```
+
+## Khi thêm/sửa package
+
+1. Chạy lệnh trong thư mục `ai-writing-ui/`
+2. Commit cả `package.json` và `yarn.lock`
+3. Nếu phát hiện `package-lock.json` → xóa, chạy `yarn install` lại
+
+## Scripts
+
+| Lệnh | Mục đích |
+|------|----------|
+| `yarn dev` | Development server |
+| `yarn build` | Production build |
+| `yarn start` | Chạy production |
+| `yarn lint` | ESLint |

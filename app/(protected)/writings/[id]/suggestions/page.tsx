@@ -2,10 +2,12 @@
 
 import { use } from "react";
 import Link from "next/link";
-import WritingSuggestions from "@/components/WritingSuggestions";
-import { useWriting } from "@/hooks/useApi";
-import { Loading, Error as ErrorState } from "@/components/ui/States";
-import { Button } from "@/components/ui/Button";
+import { WritingSuggestions } from "@/features/suggestions";
+import { useWriting } from "@/features/writings";
+import { Loading, Error as ErrorState } from "@/components";
+import { Button } from "@/components/button";
+import { PageHeader } from "@/components/page-header";
+import { ROUTES } from "@/constants/routes.constants";
 
 export default function WritingDetailsPage({
   params,
@@ -16,31 +18,29 @@ export default function WritingDetailsPage({
   const { data: writing, isLoading, error } = useWriting(writingId);
 
   if (isLoading) {
-    return <Loading text="Loading writing..." />;
+    return <Loading text="Đang tải bài viết..." />;
   }
 
   if (error || !writing) {
     return (
       <ErrorState
-        title="Failed to Load Writing"
-        message="Could not fetch this writing for suggestions."
+        title="Không tải được bài viết"
+        message="Không thể lấy bài viết để hiển thị gợi ý."
       />
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-fg tracking-tight">
-            Writing Suggestions
-          </h1>
-          <p className="text-sm text-muted mt-1">{writing.title}</p>
-        </div>
-        <Link href={`/writings/${writingId}`}>
-          <Button variant="outline">Back to Writing</Button>
-        </Link>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Gợi ý sửa bài"
+        description={writing.title}
+        actions={
+          <Link href={ROUTES.writing(writingId)}>
+            <Button variant="outline">Về bài viết</Button>
+          </Link>
+        }
+      />
 
       <WritingSuggestions writingId={writingId} />
     </div>

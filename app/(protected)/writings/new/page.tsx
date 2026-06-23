@@ -1,46 +1,30 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCreateWriting } from "@/hooks/useApi";
-import { WritingForm } from "@/components/WritingForm";
-import { Alert } from "@/components/ui/States";
-import { useState } from "react";
+import { useCreateWriting, WritingForm } from "@/features/writings";
+import { PageHeader } from "@/components/page-header";
+import { toast } from "@/lib/toast";
+import { ROUTES } from "@/constants/routes.constants";
+import type * as types from "@/types/api";
 
 export default function NewWritingPage() {
   const router = useRouter();
   const createWriting = useCreateWriting();
-  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (payload: any) => {
-    try {
-      await createWriting.mutateAsync(payload);
-      setSuccess(true);
-      setTimeout(() => {
-        router.push("/writings");
-      }, 1500);
-    } catch (error) {
-      throw error;
-    }
+  const handleSubmit = async (
+    payload: types.CreateWritingPayload | types.UpdateWritingPayload,
+  ) => {
+    await createWriting.mutateAsync(payload as types.CreateWritingPayload);
+    toast.success("Đã tạo bài viết");
+    router.push(ROUTES.WRITINGS);
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-fg tracking-tight">
-          Create New Writing
-        </h1>
-        <p className="text-sm text-muted mt-1">
-          Write your thoughts, ideas, or stories
-        </p>
-      </div>
-
-      {success && (
-        <Alert
-          type="success"
-          title="Success"
-          message="Your writing has been created successfully!"
-        />
-      )}
+    <div className="space-y-8">
+      <PageHeader
+        title="Viết bài mới"
+        description="Viết suy nghĩ, ý tưởng hoặc câu chuyện của bạn"
+      />
 
       <WritingForm
         isLoading={createWriting.isPending}

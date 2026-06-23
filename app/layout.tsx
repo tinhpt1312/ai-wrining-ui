@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "@/components/Providers";
+import { Providers } from "@/layouts";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Writing",
-  description: "Write and analyze your thoughts with AI assistance",
+  title: "Viết & Chấm Văn",
+  description: "Viết văn và nhận phản hồi chấm bài bằng AI",
 };
 
 export default function RootLayout({
@@ -25,10 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="vi"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col app-bg">
         <Providers>{children}</Providers>
       </body>
     </html>

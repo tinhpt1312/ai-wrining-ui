@@ -3,23 +3,20 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useWritings, useDeleteWriting } from "@/hooks/useApi";
+import { FileText, Plus } from "lucide-react";
 import {
-  Card,
-  Loading,
-  Error,
-  EmptyState,
-  Alert,
-} from "@/components/ui/States";
-import { Button } from "@/components/ui/Button";
-import { Select } from "@/components/ui/Select";
-import {
-  writingTypeOptions,
-  writingStatusOptions,
-  formatDate,
-  truncateText,
-  wordCount,
-} from "@/utils/helpers";
+  useWritings,
+  useDeleteWriting,
+  WritingsFilterTabs,
+  WritingCardGrid,
+} from "@/features/writings";
+import { Loading, Error, EmptyState } from "@/components";
+import { Button } from "@/components/button";
+import { PageHeader } from "@/components/page-header";
+import { Section } from "@/components/section";
+import { useConfirmDialog } from "@/components/confirm-dialog";
+import { toast } from "@/lib/toast";
+import { ROUTES } from "@/constants/routes.constants";
 import * as types from "@/types/api";
 
 export default function WritingsPage() {
@@ -32,8 +29,6 @@ export default function WritingsPage() {
     searchParams.get("status") || "",
   );
   const [offset, setOffset] = useState(0);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [deletedId, setDeletedId] = useState<string | null>(null);
 
   const limit = 10;
   const params: types.QueryWritingParams = {
@@ -45,18 +40,24 @@ export default function WritingsPage() {
 
   const { data, isLoading, error } = useWritings(params);
   const deleteWriting = useDeleteWriting();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const handleDeleteClick = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this writing?")) {
-      return;
-    }
+    const ok = await confirm({
+      title: "Xóa bài viết",
+      description:
+        "Bạn có chắc muốn xóa bài viết này? Hành động này không thể hoàn tác.",
+      confirmLabel: "Xóa bài viết",
+      cancelLabel: "Hủy",
+      variant: "destructive",
+    });
+    if (!ok) return;
 
     try {
       await deleteWriting.mutateAsync(id);
-      setDeletedId(id);
-      setTimeout(() => setDeletedId(null), 3000);
-    } catch (err) {
-      setDeleteError("Failed to delete writing");
+      toast.success("Đã xóa bài viết");
+    } catch {
+      toast.error("Không thể xóa bài viết");
     }
   };
 
@@ -70,14 +71,14 @@ export default function WritingsPage() {
   };
 
   if (isLoading) {
-    return <Loading fullScreen text="Loading writings..." />;
+    return <Loading fullScreen text="Đang tải danh sách bài viết..." />;
   }
 
   if (error) {
     return (
       <Error
-        title="Failed to Load Writings"
-        message="Could not fetch your writings. Please try again."
+        title="Không tải được danh sách"
+        message="Không thể lấy danh sách bài viết. Vui lòng thử lại."
         retry={() => window.location.reload()}
       />
     );
@@ -90,153 +91,71 @@ export default function WritingsPage() {
   const totalPages = Math.ceil(totalWritings / limit);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-fg tracking-tight">
-            My Writings
-          </h1>
-          <p className="text-sm text-muted mt-1">
-            {totalWritings} {totalWritings === 1 ? "writing" : "writings"} found
-          </p>
-        </div>
-        <Link href="/writings/new">
-          <Button>Create New Writing</Button>
-        </Link>
-      </div>
+    <>
+      <ConfirmDialog />
+      <div className="space-y-8">
+      <PageHeader
+        title="Bài viết của tôi"
+        description={`${totalWritings} bài viết trong thư viện`}
+        actions={
+          <Link href={ROUTES.WRITING_NEW}>
+            <Button className="gap-1.5">
+              <Plus className="h-4 w-4" />
+              Viết bài mới
+            </Button>
+          </Link>
+        }
+      />
 
-      {/* Alerts */}
-      {deleteError && (
-        <Alert
-          type="error"
-          title="Error"
-          message={deleteError}
-          onClose={() => setDeleteError(null)}
+      <Section title="Bộ lọc">
+        <WritingsFilterTabs
+          typeValue={typeFilter}
+          statusValue={statusFilter}
+          onTypeChange={(value) => handleFilterChange("type", value)}
+          onStatusChange={(value) => handleFilterChange("status", value)}
         />
-      )}
-      {deletedId && (
-        <Alert
-          type="success"
-          title="Success"
-          message="Writing deleted successfully"
-        />
-      )}
+      </Section>
 
-      {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Select
-          label="Filter by Type"
-          value={typeFilter}
-          onChange={(e) => handleFilterChange("type", e.target.value)}
-          options={[{ value: "", label: "All Types" }, ...writingTypeOptions]}
-        />
-        <Select
-          label="Filter by Status"
-          value={statusFilter}
-          onChange={(e) => handleFilterChange("status", e.target.value)}
-          options={[
-            { value: "", label: "All Status" },
-            ...writingStatusOptions,
-          ]}
-        />
-      </div>
-
-      {/* Writings List */}
       {writings.length === 0 ? (
         <EmptyState
-          icon="📝"
-          title="No writings yet"
-          description="Start creating your first writing to see it here."
+          icon={<FileText className="h-10 w-10" />}
+          title="Chưa có bài viết"
+          description="Hãy tạo bài viết đầu tiên để bắt đầu hành trình viết văn của bạn."
           action={{
-            label: "Create Writing",
-            onClick: () => router.push("/writings/new"),
+            label: "Viết bài mới",
+            onClick: () => router.push(ROUTES.WRITING_NEW),
           }}
         />
       ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {writings.map((writing) => (
-            <Card key={writing.id} className="flex flex-col gap-4 hover:border-border-strong">
-              <div className="flex flex-col gap-2">
-                <Link href={`/writings/${writing.id}`}>
-                  <h3 className="text-lg font-semibold text-fg hover:text-primary transition-colors line-clamp-2">
-                    {writing.title}
-                  </h3>
-                </Link>
-                <p className="text-sm text-muted line-clamp-2">
-                  {truncateText(writing.content, 150)}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <span className="inline-block px-2.5 py-0.5 bg-surface-2 text-muted text-xs font-medium rounded-full capitalize">
-                  {writing.type.replace("_", " ")}
-                </span>
-                <span
-                  className={`inline-block px-2.5 py-0.5 text-xs font-medium rounded-full capitalize ${
-                    writing.status === "public"
-                      ? "bg-success-soft text-success"
-                      : "bg-warning-soft text-warning"
-                  }`}
-                >
-                  {writing.status.replace("_", " ")}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-border">
-                <div className="flex items-center gap-4 text-xs text-subtle">
-                  <span>{wordCount(writing.content)} words</span>
-                  <span>{formatDate(writing.updatedAt)}</span>
-                </div>
-
-                <div className="flex gap-2">
-                  <Link href={`/writings/${writing.id}`}>
-                    <Button variant="outline" size="sm">
-                      View
-                    </Button>
-                  </Link>
-                  <Link href={`/writings/${writing.id}/edit`}>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                  </Link>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDeleteClick(writing.id)}
-                    disabled={deleteWriting.isPending}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+        <WritingCardGrid
+          writings={writings}
+          onDelete={handleDeleteClick}
+          isDeleting={deleteWriting.isPending}
+        />
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <div className="flex items-center justify-center gap-3 pt-2">
           <Button
             variant="outline"
             onClick={() => setOffset(Math.max(0, offset - limit))}
             disabled={offset === 0}
           >
-            Previous
+            Trước
           </Button>
-          <div className="text-sm text-muted">
-            Page {currentPage} of {totalPages}
-          </div>
+          <span className="text-sm text-muted">
+            Trang {currentPage} / {totalPages}
+          </span>
           <Button
             variant="outline"
             onClick={() => setOffset(offset + limit)}
             disabled={!hasMore}
           >
-            Next
+            Sau
           </Button>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
