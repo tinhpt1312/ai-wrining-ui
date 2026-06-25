@@ -10,6 +10,10 @@ interface EmptyStateProps {
     label: string;
     onClick: () => void;
   };
+  secondaryAction?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 export function EmptyState({
@@ -17,6 +21,7 @@ export function EmptyState({
   title,
   description,
   action,
+  secondaryAction,
 }: EmptyStateProps) {
   return (
     <div className="card-elevated flex flex-col items-center justify-center gap-4 p-10 sm:p-12 text-center">
@@ -29,13 +34,25 @@ export function EmptyState({
           </p>
         )}
       </div>
-      {action && (
-        <button
-          onClick={action.onClick}
-          className="mt-2 px-5 h-10 bg-primary text-primary-fg rounded-lg hover:bg-primary-hover transition-colors font-medium text-sm"
-        >
-          {action.label}
-        </button>
+      {(action || secondaryAction) && (
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+          {action && (
+            <button
+              onClick={action.onClick}
+              className="px-5 h-10 bg-primary text-primary-fg rounded-lg hover:bg-primary-hover transition-colors font-medium text-sm"
+            >
+              {action.label}
+            </button>
+          )}
+          {secondaryAction && (
+            <button
+              onClick={secondaryAction.onClick}
+              className="px-5 h-10 border border-border bg-surface text-fg rounded-lg hover:bg-surface-hover transition-colors font-medium text-sm"
+            >
+              {secondaryAction.label}
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

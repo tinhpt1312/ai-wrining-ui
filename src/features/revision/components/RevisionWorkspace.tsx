@@ -54,6 +54,11 @@ export function RevisionWorkspace({
         onGenerateAi={workspace.handleGenerateSuggestions}
         isGenerating={workspace.isGenerating}
         hasAnalysisContext={!!workspace.analysisId}
+        suggestionsLocked={!workspace.selfEditUnlocked}
+        selfEditBaseline={workspace.selfEditBaseline}
+        selfEditCurrent={workspace.draftContent}
+        writingId={writingId}
+        analysisId={analysisId}
       />
     </div>
   );
@@ -90,6 +95,11 @@ export function RevisionWorkspace({
           hasAnalysis={!!workspace.analysisId}
           onUseSample={workspace.handleUseSample}
           onCopySample={workspace.handleCopySample}
+          selfEditUnlocked={workspace.selfEditUnlocked}
+          selfEditBaseline={workspace.selfEditBaseline}
+          selfEditCurrent={workspace.draftContent}
+          writingId={writingId}
+          analysisId={analysisId}
           editor={editorBlock}
         />
 

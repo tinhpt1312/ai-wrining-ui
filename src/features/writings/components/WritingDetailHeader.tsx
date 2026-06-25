@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { ShareFacebookButton } from "@/components/share-button";
+import { ExportWritingButton } from "@/components/export-button";
 import { ROUTES } from "@/constants/routes.constants";
 import {
   formatDateTime,
@@ -77,42 +78,42 @@ export function WritingDetailHeader({
         </div>
       </div>
 
-      <div className="relative flex flex-col sm:flex-row flex-wrap gap-2 pt-4 border-t border-border/60">
-        {isOwner && latestAnalysisId && (
-          <Link
-            href={ROUTES.writingRevise(writing.id, latestAnalysisId)}
-            className="flex-1 sm:flex-none"
-          >
-            <Button className="gap-1.5 w-full sm:w-auto btn-glow-solid">
-              <PenLine className="h-4 w-4" />
-              Chữa bài
-            </Button>
-          </Link>
-        )}
-        {isOwner && showJourney && (
-          <Link
-            href={ROUTES.writingJourney(writing.id)}
-            className="flex-1 sm:flex-none"
-          >
-            <Button
-              variant={latestAnalysisId ? "secondary" : "solid"}
-              className={cn(
-                "gap-1.5 w-full sm:w-auto",
-                !latestAnalysisId && "btn-glow-solid",
-              )}
+      <div className="relative flex flex-col gap-3 pt-4 border-t border-border/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+          {isOwner && latestAnalysisId && (
+            <Link
+              href={ROUTES.writingRevise(writing.id, latestAnalysisId)}
+              className="flex-1 sm:flex-none"
             >
-              <History className="h-4 w-4" />
-              Hành trình
-              {revisionCount != null && revisionCount > 0 && (
-                <Badge variant="neutral" className="ml-0.5">
-                  {revisionCount}
-                </Badge>
-              )}
-            </Button>
-          </Link>
-        )}
-        {isOwner && (
-          <>
+              <Button className="gap-1.5 w-full sm:w-auto btn-glow-solid">
+                <PenLine className="h-4 w-4" />
+                Chữa bài
+              </Button>
+            </Link>
+          )}
+          {isOwner && showJourney && (
+            <Link
+              href={ROUTES.writingJourney(writing.id)}
+              className="flex-1 sm:flex-none"
+            >
+              <Button
+                variant={latestAnalysisId ? "secondary" : "solid"}
+                className={cn(
+                  "gap-1.5 w-full sm:w-auto",
+                  !latestAnalysisId && "btn-glow-solid",
+                )}
+              >
+                <History className="h-4 w-4" />
+                Hành trình
+                {revisionCount != null && revisionCount > 0 && (
+                  <Badge variant="neutral" className="ml-0.5">
+                    {revisionCount}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
+          )}
+          {isOwner && (
             <Link
               href={ROUTES.writingEdit(writing.id)}
               className="flex-1 sm:flex-none"
@@ -125,19 +126,29 @@ export function WritingDetailHeader({
                 Thông tin bài
               </Button>
             </Link>
+          )}
+          <Link href={ROUTES.WRITINGS} className="flex-1 sm:flex-none">
+            <Button variant="outline" className="gap-1.5 w-full sm:w-auto">
+              <ArrowLeft className="h-4 w-4" />
+              Danh sách
+            </Button>
+          </Link>
+        </div>
+
+        {isOwner && (
+          <div className="flex flex-col sm:flex-row gap-2 sm:shrink-0">
+            <ExportWritingButton
+              writingId={writing.id}
+              writingTitle={writing.title}
+              className="w-full sm:w-auto"
+            />
             <ShareFacebookButton
               shareUrl={buildShareWritingUrl(writing.id)}
               isPublic={isPublic}
-              className="flex-1 sm:flex-none"
+              className="w-full sm:w-auto"
             />
-          </>
+          </div>
         )}
-        <Link href={ROUTES.WRITINGS} className="flex-1 sm:flex-none">
-          <Button variant="outline" className="gap-1.5 w-full sm:w-auto">
-            <ArrowLeft className="h-4 w-4" />
-            Danh sách
-          </Button>
-        </Link>
       </div>
     </section>
   );

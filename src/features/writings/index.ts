@@ -11,6 +11,8 @@ export {
 } from "./components/WritingDetailHeader";
 export { WritingAiPanel } from "./components/WritingAiPanel";
 export { WritingJourneyView } from "./components/WritingJourneyView";
+export { WritingPromptPicker } from "./components/WritingPromptPicker";
+export { OutlineBuilder } from "./components/OutlineBuilder";
 export {
   useCreateWriting,
   useWritings,
@@ -18,4 +20,5 @@ export {
   useUpdateWriting,
   useDeleteWriting,
   useWritingStats,
+  useGenerateOutline,
 } from "./hooks/useWritingsApi";

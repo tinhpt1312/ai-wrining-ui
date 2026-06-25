@@ -6,6 +6,7 @@ export { ScoreProgress } from "./components/ScoreProgress";
 export { TextDiffView } from "./components/TextDiffView";
 export { RevisionTimeline } from "./components/RevisionTimeline";
 export { SuggestionDrawer } from "./components/SuggestionDrawer";
+export { SelfEditGate } from "./components/SelfEditGate";
 export { AiFeedbackPanel } from "./components/AiFeedbackPanel";
 export {
   useWritingRevisions,

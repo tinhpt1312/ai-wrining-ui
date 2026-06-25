@@ -14,6 +14,11 @@ interface RevisionWorkspacePanelsProps {
   onUseSample: () => void;
   onCopySample: () => void;
   editor: ReactNode;
+  selfEditUnlocked?: boolean;
+  selfEditBaseline?: string;
+  selfEditCurrent?: string;
+  writingId?: string;
+  analysisId?: string;
 }
 
 function FeedbackSidebar({
@@ -21,6 +26,11 @@ function FeedbackSidebar({
   hasAnalysis,
   onUseSample,
   onCopySample,
+  selfEditUnlocked,
+  selfEditBaseline,
+  selfEditCurrent,
+  writingId,
+  analysisId,
 }: Omit<RevisionWorkspacePanelsProps, "editor">) {
   return (
     <AiFeedbackPanel
@@ -28,6 +38,11 @@ function FeedbackSidebar({
       hasAnalysis={hasAnalysis}
       onUseSample={onUseSample}
       onCopySample={onCopySample}
+      selfEditUnlocked={selfEditUnlocked}
+      selfEditBaseline={selfEditBaseline}
+      selfEditCurrent={selfEditCurrent}
+      writingId={writingId}
+      analysisId={analysisId}
     />
   );
 }
@@ -38,6 +53,11 @@ export function RevisionWorkspacePanels({
   onUseSample,
   onCopySample,
   editor,
+  selfEditUnlocked,
+  selfEditBaseline,
+  selfEditCurrent,
+  writingId,
+  analysisId,
 }: RevisionWorkspacePanelsProps) {
   return (
     <>
@@ -57,6 +77,11 @@ export function RevisionWorkspacePanels({
                   hasAnalysis={hasAnalysis}
                   onUseSample={onUseSample}
                   onCopySample={onCopySample}
+                  selfEditUnlocked={selfEditUnlocked}
+                  selfEditBaseline={selfEditBaseline}
+                  selfEditCurrent={selfEditCurrent}
+                  writingId={writingId}
+                  analysisId={analysisId}
                 />
               </div>
             </aside>
@@ -83,6 +108,11 @@ export function RevisionWorkspacePanels({
             hasAnalysis={hasAnalysis}
             onUseSample={onUseSample}
             onCopySample={onCopySample}
+            selfEditUnlocked={selfEditUnlocked}
+            selfEditBaseline={selfEditBaseline}
+            selfEditCurrent={selfEditCurrent}
+            writingId={writingId}
+            analysisId={analysisId}
           />
         </section>
         <section className="panel-glass overflow-hidden min-h-[360px] flex-1">

@@ -123,9 +123,13 @@ export function WritingsListView() {
           <EmptyState
             icon={<FileText className="h-10 w-10" />}
             title="Chưa có bài viết"
-            description="Hãy tạo bài viết đầu tiên để bắt đầu hành trình viết văn của bạn."
+            description="Bắt đầu bằng đề gợi ý để luyện viết có chủ đích, hoặc tạo bài tự do."
             action={{
-              label: "Viết bài mới",
+              label: "Chọn đề gợi ý",
+              onClick: () => router.push(`${ROUTES.WRITING_NEW}?tab=prompts`),
+            }}
+            secondaryAction={{
+              label: "Viết tự do",
               onClick: () => router.push(ROUTES.WRITING_NEW),
             }}
           />

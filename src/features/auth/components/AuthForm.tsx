@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { PasswordInput } from "@/components/password-input";
 import { Alert } from "@/components/alert";
 import { useAuth } from "../context/AuthContext";
-import { getErrorMessage, validationRules } from "@/utils/helpers";
+import { mapAuthApiError } from "../utils/auth-errors";
+import { validationRules } from "@/utils/helpers";
 import type * as types from "@/types/api";
 
 interface AuthFormProps {
@@ -65,6 +67,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
 
     setIsLoading(true);
     setError(null);
+    setErrors({});
 
     try {
       if (mode === "login") {
@@ -81,7 +84,16 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       }
       onSuccess?.();
     } catch (err) {
-      setError(getErrorMessage(err));
+      const { fieldErrors, generalError } = mapAuthApiError(err, mode);
+      if (Object.keys(fieldErrors).length > 0) {
+        setErrors((prev) => ({
+          ...prev,
+          ...Object.fromEntries(
+            Object.entries(fieldErrors).filter(([, value]) => !!value),
+          ),
+        }));
+      }
+      setError(generalError);
     } finally {
       setIsLoading(false);
     }
@@ -97,12 +109,15 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
         return newErrors;
       });
     }
+    if (error) {
+      setError(null);
+    }
   };
 
   const isRegister = mode === "register";
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-5">
+    <form onSubmit={handleSubmit} noValidate className="w-full space-y-5">
       {error && (
         <Alert
           type="error"
@@ -126,7 +141,9 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
         <Input
           label="Email"
           name="email"
-          type="email"
+          type="text"
+          inputMode="email"
+          autoComplete="email"
           placeholder="Nhập email"
           value={formData.email}
           onChange={handleChange}
@@ -135,10 +152,9 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
         />
       )}
 
-      <Input
+      <PasswordInput
         label="Mật khẩu"
         name="password"
-        type="password"
         placeholder="Nhập mật khẩu"
         value={formData.password}
         onChange={handleChange}
@@ -147,10 +163,9 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       />
 
       {isRegister && (
-        <Input
+        <PasswordInput
           label="Xác nhận mật khẩu"
           name="confirmPassword"
-          type="password"
           placeholder="Nhập lại mật khẩu"
           value={formData.confirmPassword}
           onChange={handleChange}

@@ -17,7 +17,7 @@ export function ShareFacebookButton({
   shareUrl,
   isPublic = true,
   label = "Chia sẻ Facebook",
-  size = "sm",
+  size = "md",
   className,
 }: ShareFacebookButtonProps) {
   const handleShare = () => {
@@ -41,7 +41,7 @@ export function ShareFacebookButton({
       type="button"
       variant="outline"
       size={size}
-      className={`gap-1.5 w-full sm:w-auto ${className ?? ""}`}
+      className={`gap-1.5 ${className ?? ""}`}
       onClick={handleShare}
     >
       <Share2 className="h-4 w-4" />

@@ -22,6 +22,7 @@ export const QUERY_KEYS = {
     detail: (id: string) => ["analyses", id] as const,
     byWriting: (writingId: string) => ["analyses", "writing", writingId] as const,
     stats: ["analyses", "stats"] as const,
+    progress: ["analyses", "progress"] as const,
   },
   tokens: {
     usage: ["tokens", "usage"] as const,

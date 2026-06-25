@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PenLine } from "lucide-react";
+import { PenLine, BookOpen } from "lucide-react";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 
@@ -12,6 +12,12 @@ export function QuickActionsPanel() {
           <Button className="w-full gap-2 btn-glow-solid">
             <PenLine className="h-4 w-4" />
             Viết bài mới
+          </Button>
+        </Link>
+        <Link href={`${ROUTES.WRITING_NEW}?tab=prompts`} className="block">
+          <Button className="w-full gap-2" variant="secondary">
+            <BookOpen className="h-4 w-4" />
+            Luyện với đề gợi ý
           </Button>
         </Link>
         <Link href={ROUTES.ANALYSIS} className="block">

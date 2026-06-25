@@ -12,6 +12,15 @@ export const writingsService = {
     return response.data;
   },
 
+  async generateOutline(
+    payload: types.GenerateOutlinePayload,
+  ): Promise<types.WritingOutline> {
+    const response = await http.post<
+      types.BackendDataResponse<types.WritingOutline> | types.WritingOutline
+    >(API_PATHS.WRITINGS.OUTLINE, payload);
+    return "data" in response.data ? response.data.data : response.data;
+  },
+
   async getAll(
     params?: types.QueryWritingParams,
   ): Promise<types.WritingsListResponse> {
@@ -121,5 +130,48 @@ export const writingsService = {
       types.BackendDataResponse<types.Writing> | types.Writing
     >(API_PATHS.WRITINGS.RESTORE_REVISION(writingId, revisionId));
     return "data" in response.data ? response.data.data : response.data;
+  },
+
+  async downloadExport(
+    id: string,
+    format: "docx" | "pdf",
+  ): Promise<void> {
+    const path =
+      format === "docx"
+        ? API_PATHS.WRITINGS.EXPORT_DOCX(id)
+        : API_PATHS.WRITINGS.EXPORT_PDF(id);
+    const mimeType =
+      format === "docx"
+        ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        : "application/pdf";
+
+    const response = await http.get<Blob>(path, {
+      responseType: "blob",
+    });
+
+    const disposition = response.headers["content-disposition"] as
+      | string
+      | undefined;
+    let fileName = `bai-viet.${format}`;
+    if (disposition) {
+      const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+      const asciiMatch = disposition.match(/filename="([^"]+)"/);
+      if (utf8Match?.[1]) {
+        fileName = decodeURIComponent(utf8Match[1]);
+      } else if (asciiMatch?.[1]) {
+        fileName = asciiMatch[1];
+      }
+    }
+
+    const url = window.URL.createObjectURL(
+      new Blob([response.data], { type: mimeType }),
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
   },
 };

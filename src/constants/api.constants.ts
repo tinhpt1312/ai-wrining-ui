@@ -17,6 +17,8 @@ export const API_PATHS = {
   WRITINGS: {
     ROOT: "/writings",
     PUBLIC: "/writings/public",
+    EXPORT_DOCX: (id: string) => `/writings/${id}/export/docx`,
+    EXPORT_PDF: (id: string) => `/writings/${id}/export/pdf`,
     BY_ID: (id: string) => `/writings/${id}`,
     REVISIONS: (id: string) => `/writings/${id}/revisions`,
     REVISION_TIMELINE: (id: string) => `/writings/${id}/revisions/timeline`,
@@ -26,6 +28,10 @@ export const API_PATHS = {
     RESTORE_REVISION: (writingId: string, revisionId: string) =>
       `/writings/${writingId}/revisions/${revisionId}/restore`,
     STATS: "/writings/stats/overview",
+    OUTLINE: "/writings/outline",
+  },
+  DOCUMENTS: {
+    PARSE: "/documents/parse",
   },
   ANALYTICS: {
     ROOT: "/analytics",
@@ -33,8 +39,11 @@ export const API_PATHS = {
     BY_ID: (id: string) => `/analytics/${id}`,
     BY_WRITING: (writingId: string) => `/analytics/writing/${writingId}`,
     STATS: "/analytics/stats/overview",
+    PROGRESS: "/analytics/progress",
     TOKEN_USAGE: "/analytics/tokens/usage",
     TOKEN_STATS: "/analytics/tokens/stats",
+    EXPORT_DOCX: (id: string) => `/analytics/${id}/export/docx`,
+    EXPORT_PDF: (id: string) => `/analytics/${id}/export/pdf`,
   },
   SHARE: {
     WRITING: (id: string) => `/share/writings/${id}`,

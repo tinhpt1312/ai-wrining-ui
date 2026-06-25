@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/page-header";
 import { StatCard } from "./StatCard";
 import { TokenUsagePanel } from "./TokenUsagePanel";
 import { QuickActionsPanel } from "./QuickActionsPanel";
+import { ProgressPanel } from "./ProgressPanel";
 import { RecentWritingsPanel } from "./RecentWritingsPanel";
 import { ROUTES } from "@/constants/routes.constants";
 
@@ -100,6 +101,8 @@ export function DashboardView() {
         )}
         <QuickActionsPanel />
       </div>
+
+      <ProgressPanel />
 
       <RecentWritingsPanel writings={recentWritings} />
     </div>

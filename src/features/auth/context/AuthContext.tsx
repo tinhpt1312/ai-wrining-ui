@@ -12,6 +12,8 @@ import * as types from "@/types/api";
 
 interface AuthContextType {
   user: types.User | null;
+  isInitializing: boolean;
+  /** @deprecated Dùng isInitializing */
   isLoading: boolean;
   isAuthenticated: boolean;
   register: (payload: types.RegisterPayload) => Promise<void>;
@@ -24,7 +26,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<types.User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -39,45 +41,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(null);
         }
       }
-      setIsLoading(false);
+      setIsInitializing(false);
     };
 
     initializeAuth();
   }, []);
 
   const register = async (payload: types.RegisterPayload) => {
-    setIsLoading(true);
-    try {
-      const response = await authService.register(payload);
+    const response = await authService.register(payload);
+    if (response.user) {
       setUser(response.user);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const login = async (payload: types.LoginPayload) => {
-    setIsLoading(true);
-    try {
-      const response = await authService.login(payload);
-      setUser(response.user);
-    } finally {
-      setIsLoading(false);
-    }
+    const response = await authService.login(payload);
+    setUser(response.user);
   };
 
   const logout = async () => {
-    setIsLoading(true);
-    try {
-      await authService.logout();
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
+    await authService.logout();
+    setUser(null);
   };
 
   const value: AuthContextType = {
     user,
-    isLoading,
+    isInitializing,
+    isLoading: isInitializing,
     isAuthenticated: !!user,
     register,
     login,

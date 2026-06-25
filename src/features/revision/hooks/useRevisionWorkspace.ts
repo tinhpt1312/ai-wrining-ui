@@ -18,6 +18,7 @@ import {
   useGenerateSuggestionsFromAnalysis,
   useApplySuggestion,
 } from "@/features/suggestions";
+import { useSelfEditUnlock } from "./useSelfEditUnlock";
 import { getOverallAnalysisScore } from "@/features/analysis/utils/score.utils";
 import type { AnalysisFeedback, Writing, WritingSuggestion } from "@/types/api";
 
@@ -75,6 +76,18 @@ export function useRevisionWorkspace({
     [timelineRevisions],
   );
 
+  const selfEditBaseline = useMemo(
+    () => gradingBaseline?.content ?? writing?.content ?? "",
+    [gradingBaseline?.content, writing?.content],
+  );
+
+  const selfEditUnlocked = useSelfEditUnlock(
+    writingId,
+    analysisId,
+    selfEditBaseline,
+    draftContent,
+  );
+
   useEffect(() => {
     if (writing?.content == null) return;
     setDraftContent(writing.content);
@@ -116,6 +129,7 @@ export function useRevisionWorkspace({
   useEffect(() => {
     if (
       !analysisId ||
+      !selfEditUnlocked ||
       autoLoadedAnalysis.current ||
       isSuggestionsLoading ||
       suggestions.length > 0
@@ -132,6 +146,7 @@ export function useRevisionWorkspace({
   }, [
     analysisId,
     writingId,
+    selfEditUnlocked,
     isSuggestionsLoading,
     suggestions.length,
     generateFromAnalysis,
@@ -233,6 +248,10 @@ export function useRevisionWorkspace({
   };
 
   const handleUseSample = () => {
+    if (!selfEditUnlocked) {
+      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi dùng bài mẫu");
+      return;
+    }
     if (!feedback.sampleWriting) return;
     setDraftContent(feedback.sampleWriting);
     setHasUnsavedChanges(feedback.sampleWriting !== savedContent);
@@ -240,12 +259,20 @@ export function useRevisionWorkspace({
   };
 
   const handleCopySample = async () => {
+    if (!selfEditUnlocked) {
+      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi xem bài mẫu");
+      return;
+    }
     if (!feedback.sampleWriting) return;
     await navigator.clipboard.writeText(feedback.sampleWriting);
     toast.success("Đã sao chép bài mẫu");
   };
 
   const handleGenerateFromAnalysis = async () => {
+    if (!selfEditUnlocked) {
+      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi xem gợi ý");
+      return;
+    }
     if (!analysisId) return;
     try {
       await generateFromAnalysis.mutateAsync({ writingId, analysisId });
@@ -257,6 +284,10 @@ export function useRevisionWorkspace({
   };
 
   const handleGenerateSuggestions = async () => {
+    if (!selfEditUnlocked) {
+      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi xem gợi ý");
+      return;
+    }
     try {
       await generateSuggestions.mutateAsync({ writingId });
       setSuggestionsOpen(true);
@@ -291,6 +322,8 @@ export function useRevisionWorkspace({
     isGenerating:
       generateFromAnalysis.isPending || generateSuggestions.isPending,
     isApplying: applySuggestion.isPending,
+    selfEditUnlocked,
+    selfEditBaseline,
     handleContentChange,
     handleSave,
     handleApplySuggestion,

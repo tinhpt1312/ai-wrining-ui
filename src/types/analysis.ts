@@ -48,6 +48,24 @@ export interface AnalyticsStats {
   percentageWithFeedback: number;
 }
 
+export interface ProgressScorePoint {
+  id: string;
+  writingId: string;
+  date: string;
+  score: number;
+}
+
+export interface WritingProgress {
+  scoreHistory: ProgressScorePoint[];
+  criterionAverages: Record<string, number | null>;
+  weakestCriterion: { key: string; label: string; score: number } | null;
+  writingStreak: number;
+  totalGraded: number;
+  averageRecentScore: number | null;
+  averageEarlyScore: number | null;
+  scoreDelta: number | null;
+}
+
 export interface FeedbackCriterion {
   score: number;
   feedback: string;

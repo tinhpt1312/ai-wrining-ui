@@ -11,9 +11,9 @@ import { LandingCta } from "./LandingCta";
 import { LandingFooter } from "./LandingFooter";
 
 export function LandingView() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isInitializing } = useAuth();
 
-  if (isLoading) {
+  if (isInitializing) {
     return <Loading fullScreen text="Đang tải..." />;
   }
 

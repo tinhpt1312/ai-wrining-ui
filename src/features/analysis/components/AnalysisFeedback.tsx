@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Copy, PenLine } from "lucide-react";
 import type { AnalysisFeedback, FeedbackCriterion } from "@/types/api";
 import { extractAnalysisFeedback } from "@/features/analysis/utils/feedback.utils";
+import { SelfEditGate } from "@/features/revision/components/SelfEditGate";
+import { useSelfEditUnlock } from "@/features/revision/hooks/useSelfEditUnlock";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
@@ -12,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
 import { isCriterion } from "../utils/score.utils";
 import { CriterionCard } from "./feedback/CriterionCard";
 import { FeedbackListCard } from "./feedback/FeedbackListCard";
+import { SampleComparisonView } from "./SampleComparisonView";
 
 const CRITERIA: { key: keyof AnalysisFeedback; label: string }[] = [
   { key: "structure", label: "Bố cục & Tổ chức" },
@@ -24,12 +27,15 @@ export default function AnalysisFeedbackView({
   feedback,
   writingId,
   analysisId,
+  writingContent,
 }: {
   feedback: Record<string, unknown> | null | undefined;
   writingId?: string;
   analysisId?: string;
+  writingContent?: string;
 }) {
   const data = useMemo(() => extractAnalysisFeedback(feedback), [feedback]);
+  const selfEditUnlocked = useSelfEditUnlock(writingId, analysisId);
 
   const criteria = useMemo(
     () =>
@@ -86,6 +92,9 @@ export default function AnalysisFeedbackView({
         )}
         {data.sampleWriting && (
           <TabsTrigger value="sample">Bài mẫu</TabsTrigger>
+        )}
+        {data.sampleWriting && writingContent && (
+          <TabsTrigger value="compare">So sánh</TabsTrigger>
         )}
       </TabsList>
 
@@ -153,6 +162,15 @@ export default function AnalysisFeedbackView({
 
       {data.sampleWriting && (
         <TabsContent value="sample" className="mt-2">
+          <SelfEditGate
+            unlocked={selfEditUnlocked}
+            baseline=""
+            current=""
+            writingId={writingId}
+            analysisId={analysisId}
+            title="Tự sửa trước khi xem bài mẫu"
+            description="Vào không gian chữa bài và tự chỉnh sửa ít nhất 50 ký tự trước khi xem bài mẫu — giúp bạn chủ động học hơn."
+          >
           <div className="panel-glass border-primary/20 p-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
               <div>
@@ -193,6 +211,27 @@ export default function AnalysisFeedbackView({
               </div>
             </div>
           </div>
+          </SelfEditGate>
+        </TabsContent>
+      )}
+
+      {data.sampleWriting && writingContent && (
+        <TabsContent value="compare" className="mt-2">
+          <SelfEditGate
+            unlocked={selfEditUnlocked}
+            baseline=""
+            current=""
+            writingId={writingId}
+            analysisId={analysisId}
+            title="Tự sửa trước khi so sánh với bài mẫu"
+            description="Vào không gian chữa bài và tự chỉnh sửa ít nhất 50 ký tự trước khi xem so sánh chi tiết."
+          >
+            <SampleComparisonView
+              userContent={writingContent}
+              sampleWriting={data.sampleWriting}
+              feedback={data}
+            />
+          </SelfEditGate>
         </TabsContent>
       )}
     </Tabs>

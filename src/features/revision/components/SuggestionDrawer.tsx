@@ -4,6 +4,7 @@ import { Check, PanelRightClose, PanelRightOpen, Wand2 } from "lucide-react";
 import { Button } from "@/components/button";
 import { Badge } from "@/components/badge";
 import { Loading } from "@/components/loading";
+import { SelfEditGate } from "./SelfEditGate";
 import type { WritingSuggestion } from "@/types/api";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,11 @@ interface SuggestionDrawerProps {
   onGenerateAi?: () => void;
   isGenerating?: boolean;
   hasAnalysisContext?: boolean;
+  suggestionsLocked?: boolean;
+  selfEditBaseline?: string;
+  selfEditCurrent?: string;
+  writingId?: string;
+  analysisId?: string;
 }
 
 export function SuggestionDrawer({
@@ -35,6 +41,11 @@ export function SuggestionDrawer({
   onGenerateAi,
   isGenerating,
   hasAnalysisContext,
+  suggestionsLocked = false,
+  selfEditBaseline = "",
+  selfEditCurrent = "",
+  writingId,
+  analysisId,
 }: SuggestionDrawerProps) {
   return (
     <>
@@ -77,8 +88,21 @@ export function SuggestionDrawer({
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {isLoading ? (
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 relative">
+          {suggestionsLocked ? (
+            <SelfEditGate
+              unlocked={false}
+              baseline={selfEditBaseline}
+              current={selfEditCurrent}
+              writingId={writingId}
+              analysisId={analysisId}
+              title="Tự sửa trước khi xem gợi ý"
+              description="Chỉnh sửa ít nhất 50 ký tự trong trình soạn thảo bên trái để mở gợi ý chi tiết."
+              className="min-h-[280px]"
+            >
+              <div className="h-32" />
+            </SelfEditGate>
+          ) : isLoading ? (
             <Loading text="Đang tải gợi ý..." />
           ) : suggestions.length === 0 ? (
             <div className="space-y-3 py-6 text-center">

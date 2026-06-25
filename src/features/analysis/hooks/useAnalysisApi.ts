@@ -109,6 +109,14 @@ export function useAnalyticsStats(): UseQueryResult<
   });
 }
 
+export function useProgress(): UseQueryResult<types.WritingProgress, Error> {
+  return useQuery({
+    queryKey: QUERY_KEYS.analyses.progress,
+    queryFn: () => analyticsService.getProgress(),
+    staleTime: CACHE_TIME.MEDIUM,
+  });
+}
+
 export function useTokenUsage(): UseQueryResult<types.TokenUsage, Error> {
   return useQuery({
     queryKey: QUERY_KEYS.tokens.usage,

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/button";
 import { ShareFacebookButton } from "@/components/share-button";
+import { ExportReportButton } from "@/components/export-button";
 import { ROUTES } from "@/constants/routes.constants";
 import { formatDateTime } from "@/utils/helpers";
 import { buildShareAnalysisUrl } from "@/utils/share.utils";
@@ -120,6 +121,12 @@ export function AnalysisDetailHeader({
           isPublic={writing?.status === "public"}
           className="flex-1 sm:flex-none"
         />
+        {analysis.feedbackJson && (
+          <ExportReportButton
+            analysisId={analysis.id}
+            className="flex-1 sm:flex-none"
+          />
+        )}
         <Button
           variant="destructive"
           size="sm"

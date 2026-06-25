@@ -13,6 +13,18 @@ export enum WritingStatus {
   PUBLIC = "public",
 }
 
+export interface WritingOutlineSection {
+  id: string;
+  label: string;
+  keyPoints: string[];
+  hint?: string;
+}
+
+export interface WritingOutline {
+  title: string;
+  sections: WritingOutlineSection[];
+}
+
 export interface Writing {
   id: string;
   userId: string;
@@ -20,9 +32,16 @@ export interface Writing {
   content: string;
   type: WritingType;
   status: WritingStatus;
+  outlineJson?: WritingOutline | null;
   createdAt: string;
   updatedAt: string;
   author?: WritingAuthor;
+}
+
+export interface GenerateOutlinePayload {
+  title: string;
+  type: WritingType;
+  topic?: string;
 }
 
 export interface CreateWritingPayload {
@@ -30,6 +49,7 @@ export interface CreateWritingPayload {
   content: string;
   type: WritingType;
   status?: WritingStatus;
+  outlineJson?: WritingOutline;
 }
 
 export interface UpdateWritingPayload {
@@ -37,6 +57,7 @@ export interface UpdateWritingPayload {
   content?: string;
   type?: WritingType;
   status?: WritingStatus;
+  outlineJson?: WritingOutline | null;
 }
 
 export interface QueryWritingParams {

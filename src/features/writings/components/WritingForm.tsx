@@ -7,9 +7,11 @@ import { Input } from "@/components/input";
 import { Textarea } from "@/components/textarea";
 import { Select } from "@/components/select";
 import { Alert } from "@/components/alert";
+import { DocxUploadButton } from "@/features/writings/components/DocxUploadButton";
 import {
   writingTypeOptions,
   writingStatusOptions,
+  getWritableTypeOptions,
   validationRules,
   getErrorMessage,
 } from "@/utils/helpers";
@@ -41,6 +43,7 @@ export function WritingForm({
     status: initialData?.status || types.WritingStatus.DRAFT,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const typeOptions = getWritableTypeOptions(initialData?.type);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -112,6 +115,26 @@ export function WritingForm({
 
   const isPublic = formData.status === types.WritingStatus.PUBLIC;
 
+  const handleDocxParsed = (parsed: {
+    title: string;
+    content: string;
+    fileName: string;
+  }) => {
+    setFormData((prev) => ({
+      ...prev,
+      title: prev.title || parsed.title,
+      content: parsed.content,
+    }));
+    setCharCount(parsed.content.length);
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.content;
+      if (parsed.title) delete next.title;
+      return next;
+    });
+    setError(null);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       {error && (
@@ -145,17 +168,28 @@ export function WritingForm({
             name="type"
             value={formData.type}
             onChange={handleChange}
-            options={writingTypeOptions}
+            options={typeOptions}
             required
           />
         </div>
       </div>
 
       <div className="panel-glass p-5 sm:p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
-          <Type className="h-4 w-4 text-primary" />
-          Nội dung
-        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
+            <Type className="h-4 w-4 text-primary" />
+            Nội dung
+          </h2>
+          <DocxUploadButton
+            onParsed={handleDocxParsed}
+            onError={setError}
+            disabled={isSaving}
+          />
+        </div>
+        <p className="text-xs text-muted leading-relaxed">
+          Bạn có thể nhập trực tiếp hoặc tải lên file Word (.docx). Hệ thống
+          sẽ tự động đọc nội dung và điền vào ô bên dưới.
+        </p>
 
         <Textarea
           label="Nội dung bài viết"

@@ -98,6 +98,7 @@ export function AnalysisDetailView({ id }: AnalysisDetailViewProps) {
             feedback={analysis.feedbackJson}
             writingId={analysis.writingId}
             analysisId={analysis.id}
+            writingContent={writing?.content}
           />
         ) : (
           <div className="panel-glass p-12 text-center">

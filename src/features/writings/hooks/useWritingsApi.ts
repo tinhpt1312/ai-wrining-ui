@@ -80,3 +80,13 @@ export function useWritingStats(): UseQueryResult<types.WritingStats, Error> {
     staleTime: CACHE_TIME.LONG,
   });
 }
+
+export function useGenerateOutline(): UseMutationResult<
+  types.WritingOutline,
+  Error,
+  types.GenerateOutlinePayload
+> {
+  return useMutation({
+    mutationFn: (payload) => writingsService.generateOutline(payload),
+  });
+}

@@ -12,7 +12,7 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isInitializing } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -20,12 +20,12 @@ export default function ProtectedLayout({
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated && mounted && !isLoading) {
+    if (!isAuthenticated && mounted && !isInitializing) {
       router.push("/login");
     }
-  }, [isAuthenticated, mounted, isLoading, router]);
+  }, [isAuthenticated, mounted, isInitializing, router]);
 
-  if (!mounted || isLoading) {
+  if (!mounted || isInitializing) {
     return <Loading fullScreen text="Đang tải..." />;
   }
 

@@ -14,7 +14,7 @@ interface AuthPageProps {
 
 export function AuthPage({ mode }: AuthPageProps) {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isInitializing } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export function AuthPage({ mode }: AuthPageProps) {
     }
   }, [isAuthenticated, mounted, router]);
 
-  if (!mounted || isLoading) {
+  if (!mounted || isInitializing) {
     return <Loading fullScreen text="Đang tải..." />;
   }
 

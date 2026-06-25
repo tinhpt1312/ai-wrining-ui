@@ -69,6 +69,13 @@ export const analyticsService = {
     return response.data;
   },
 
+  async getProgress(): Promise<types.WritingProgress> {
+    const response = await http.get<types.WritingProgress>(
+      API_PATHS.ANALYTICS.PROGRESS,
+    );
+    return response.data;
+  },
+
   async getTokenUsage(): Promise<types.TokenUsage> {
     const response = await http.get<types.TokenUsage>(
       API_PATHS.ANALYTICS.TOKEN_USAGE,
@@ -81,5 +88,48 @@ export const analyticsService = {
       API_PATHS.ANALYTICS.TOKEN_STATS,
     );
     return response.data;
+  },
+
+  async downloadExport(
+    id: string,
+    format: "docx" | "pdf",
+  ): Promise<void> {
+    const path =
+      format === "docx"
+        ? API_PATHS.ANALYTICS.EXPORT_DOCX(id)
+        : API_PATHS.ANALYTICS.EXPORT_PDF(id);
+    const mimeType =
+      format === "docx"
+        ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        : "application/pdf";
+
+    const response = await http.get<Blob>(path, {
+      responseType: "blob",
+    });
+
+    const disposition = response.headers["content-disposition"] as
+      | string
+      | undefined;
+    let fileName = `bao-cao-cham-bai.${format}`;
+    if (disposition) {
+      const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+      const asciiMatch = disposition.match(/filename="([^"]+)"/);
+      if (utf8Match?.[1]) {
+        fileName = decodeURIComponent(utf8Match[1]);
+      } else if (asciiMatch?.[1]) {
+        fileName = asciiMatch[1];
+      }
+    }
+
+    const url = window.URL.createObjectURL(
+      new Blob([response.data], { type: mimeType }),
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
   },
 };

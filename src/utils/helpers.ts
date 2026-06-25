@@ -15,5 +15,6 @@ export {
   writingStatusOptions,
   getWritingTypeLabel,
   getWritingStatusLabel,
+  getWritableTypeOptions,
 } from "@/features/writings/utils/writing-options";
 export { validationRules } from "@/features/auth/utils/validation";
