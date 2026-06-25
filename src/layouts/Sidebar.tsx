@@ -3,12 +3,7 @@
 import type { ComponentType } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  PenLine,
-  LogOut,
-  UserCircle,
-  ChevronRight,
-} from "lucide-react";
+import { PenLine, LogOut, UserCircle, ChevronRight } from "lucide-react";
 import { useAuth } from "@/features/auth";
 import { Button } from "@/components/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -45,9 +40,7 @@ function NavLink({
       <span
         className={cn(
           "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors",
-          active
-            ? "bg-primary/20 text-primary"
-            : "bg-surface-2 text-muted group-hover:text-fg",
+          active ? "bg-primary/20 text-primary" : "bg-surface-2 text-muted group-hover:text-fg",
         )}
       >
         <Icon className="h-4 w-4" />
@@ -128,7 +121,7 @@ export function SidebarNav({
             <Link
               href={ROUTES.PROFILE}
               onClick={onNavigate}
-              className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-primary max-w-[8rem] truncate transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-primary max-w-32 truncate transition-colors"
               title="Hồ sơ cá nhân"
             >
               <UserCircle className="h-4 w-4 shrink-0" />
