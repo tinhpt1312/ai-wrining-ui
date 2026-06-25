@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GridBackground } from "@/components/ui/grid-background";
+import { GridBackground } from "@/components/grid-background";
 import { LayoutProvider, LayoutMain } from "./LayoutProvider";
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";

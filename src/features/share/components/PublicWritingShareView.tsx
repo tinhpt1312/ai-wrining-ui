@@ -3,7 +3,7 @@ import { Clock, FileText, User } from "lucide-react";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
-import type { PublicShareWriting } from "@/api/share.service";
+import type { PublicShareWriting } from "@/types/api";
 import {
   formatDateTime,
   wordCount,

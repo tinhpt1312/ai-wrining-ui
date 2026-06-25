@@ -1,30 +1,8 @@
 import { API_CONFIG, API_PATHS } from "@/constants/api.constants";
-import type { Writing, WritingAuthor } from "@/types/api";
-
-export interface PublicShareWriting {
-  id: string;
-  title: string;
-  content: string;
-  type: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  author: WritingAuthor;
-}
-
-export interface PublicShareAnalysis {
-  id: string;
-  writingId: string;
-  feedbackJson: Record<string, unknown> | null;
-  createdAt: string;
-  writing: {
-    id: string;
-    title: string;
-    content: string;
-    type: string;
-    author: WritingAuthor;
-  };
-}
+import type {
+  PublicShareAnalysis,
+  PublicShareWriting,
+} from "@/types/share";
 
 async function publicFetch<T>(path: string): Promise<T> {
   const response = await fetch(`${API_CONFIG.BASE_URL}${path}`, {
@@ -50,5 +28,3 @@ export const shareService = {
     return publicFetch<PublicShareAnalysis>(API_PATHS.SHARE.ANALYSIS(id));
   },
 };
-
-export type { Writing };

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { PenLine } from "lucide-react";
-import { GridBackground } from "@/components/ui/grid-background";
+import { GridBackground } from "@/components/grid-background";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ROUTES } from "@/constants/routes.constants";
 

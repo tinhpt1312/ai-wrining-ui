@@ -1,6 +1,6 @@
 "use client";
 
-import { GridBackground } from "@/components/ui/grid-background";
+import { GridBackground } from "@/components/grid-background";
 import { Loading } from "@/components/loading";
 import { useAuth } from "@/features/auth";
 import { LandingNavbar } from "./LandingNavbar";

@@ -7,15 +7,16 @@ import { Button } from "@/components/button";
 import { Loading } from "@/components/loading";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
+import { useWriting } from "@/features/writings";
+import { useAnalysesByWriting } from "@/features/analysis";
 import {
-  useWriting,
   useRevisionTimeline,
   useRestoreWritingRevision,
-} from "@/features/writings";
-import { useAnalysesByWriting } from "@/features/analysis";
-import { ScoreProgress, RevisionTimeline } from "@/features/revision";
+  ScoreProgress,
+  RevisionTimeline,
+} from "@/features/revision";
 import { AnalysisResultCard } from "@/features/analysis";
-import type { RevisionTimelineItem } from "@/features/revision/components/RevisionTimeline";
+import type { RevisionTimelineItem } from "@/features/revision";
 
 interface WritingJourneyViewProps {
   writingId: string;

@@ -1,14 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import {
-  PenLine,
-  Sparkles,
-  Lightbulb,
-  FileEdit,
-} from "lucide-react";
+import { PenLine, Sparkles, Lightbulb, FileEdit } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { GridBackground } from "@/components/ui/grid-background";
+import { GridBackground } from "@/components/grid-background";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes.constants";
 
@@ -40,7 +35,7 @@ export function AuthHero({ className }: { className?: string }) {
     >
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-br from-primary via-[#4338ca] to-[#0f0a2e]"
+        className="absolute inset-0 bg-linear-to-br from-primary via-[#4338ca] to-[#0f0a2e]"
       />
       <div
         aria-hidden
@@ -64,12 +59,10 @@ export function AuthHero({ className }: { className?: string }) {
         <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm ring-1 ring-white/25 shadow-[0_0_32px_rgba(255,255,255,0.15)]">
           <PenLine className="h-5 w-5" />
         </div>
-        <h1 className="mt-8 text-4xl font-bold tracking-tight">
-          Viết & Chấm Văn
-        </h1>
+        <h1 className="mt-8 text-4xl font-bold tracking-tight">Viết & Chấm Văn</h1>
         <p className="mt-3 max-w-md text-base leading-relaxed text-indigo-100/90">
-          Nền tảng viết văn thông minh — luyện viết, nhận phản hồi AI và cải
-          thiện từng bài một cách có hệ thống.
+          Nền tảng viết văn thông minh — luyện viết, nhận phản hồi AI và cải thiện từng bài một cách
+          có hệ thống.
         </p>
       </div>
 

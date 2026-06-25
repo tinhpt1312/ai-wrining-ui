@@ -2,6 +2,8 @@ export { WritingForm } from "./components/WritingForm";
 export { WritingsFilterTabs } from "./components/WritingsFilterTabs";
 export { WritingCard } from "./components/WritingCard";
 export { WritingCardGrid } from "./components/WritingCardGrid";
+export { WritingsListView } from "./components/WritingsListView";
+export { WritingDetailView } from "./components/WritingDetailView";
 export {
   WritingDetailHeader,
   WritingContentPanel,
@@ -16,9 +18,4 @@ export {
   useUpdateWriting,
   useDeleteWriting,
   useWritingStats,
-  useWritingRevisions,
-  useRevisionTimeline,
-  useCreateWritingRevision,
-  useEnsureBaselineRevision,
-  useRestoreWritingRevision,
 } from "./hooks/useWritingsApi";

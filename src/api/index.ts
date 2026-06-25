@@ -10,7 +10,4 @@ export { writingsService } from "./writings.service";
 export { analyticsService } from "./analytics.service";
 export { suggestionsService } from "./suggestions.service";
 export { shareService } from "./share.service";
-export type {
-  PublicShareWriting,
-  PublicShareAnalysis,
-} from "./share.service";
+export type { PublicShareWriting, PublicShareAnalysis } from "@/types/share";

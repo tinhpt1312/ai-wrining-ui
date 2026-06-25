@@ -2,6 +2,8 @@ export { PublicWritingCard } from "./components/PublicWritingCard";
 export { PublicWritingGrid } from "./components/PublicWritingGrid";
 export { ExploreSearchBar } from "./components/ExploreSearchBar";
 export { ExploreTypeTabs } from "./components/ExploreTypeTabs";
+export { ExploreView } from "./components/ExploreView";
+export { UserProfileView } from "./components/UserProfileView";
 export { AuthorChip } from "./components/AuthorChip";
 export { UserPublicProfileHeader } from "./components/UserPublicProfileHeader";
 export { PublicReadBanner } from "./components/PublicReadBanner";

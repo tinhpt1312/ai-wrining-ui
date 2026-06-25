@@ -1,5 +1,5 @@
 import type { AnalysisFeedback, FeedbackCriterion } from "@/types/api";
-import { extractAnalysisFeedback } from "@/utils/helpers";
+import { extractAnalysisFeedback } from "./feedback.utils";
 
 const CRITERIA_KEYS: (keyof AnalysisFeedback)[] = [
   "structure",

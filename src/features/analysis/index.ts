@@ -4,6 +4,7 @@ export { AnalysisResultGrid } from "./components/AnalysisResultGrid";
 export { AnalysisDetailHeader } from "./components/AnalysisDetailHeader";
 export { AnalysisScoreCompare } from "./components/AnalysisScoreCompare";
 export { AnalysisListView } from "./components/AnalysisListView";
+export { AnalysisDetailView } from "./components/AnalysisDetailView";
 export {
   useCreateAnalytics,
   useCreateAiAnalytics,

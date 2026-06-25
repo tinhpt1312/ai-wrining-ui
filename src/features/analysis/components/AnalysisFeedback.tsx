@@ -4,16 +4,14 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { Copy, PenLine } from "lucide-react";
 import type { AnalysisFeedback, FeedbackCriterion } from "@/types/api";
-import { extractAnalysisFeedback } from "@/utils/helpers";
+import { extractAnalysisFeedback } from "@/features/analysis/utils/feedback.utils";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
-import {
-  isCriterion,
-  scoreBgColor,
-  scoreTextColor,
-} from "../utils/score.utils";
+import { isCriterion } from "../utils/score.utils";
+import { CriterionCard } from "./feedback/CriterionCard";
+import { FeedbackListCard } from "./feedback/FeedbackListCard";
 
 const CRITERIA: { key: keyof AnalysisFeedback; label: string }[] = [
   { key: "structure", label: "Bố cục & Tổ chức" },
@@ -21,81 +19,6 @@ const CRITERIA: { key: keyof AnalysisFeedback; label: string }[] = [
   { key: "tone", label: "Giọng điệu & Phong cách" },
   { key: "coherence", label: "Sự liên kết" },
 ];
-
-function CriterionCard({
-  label,
-  criterion,
-}: {
-  label: string;
-  criterion: FeedbackCriterion;
-}) {
-  const pct = Math.round(
-    (Math.min(Math.max(criterion.score, 0), 10) / 10) * 100,
-  );
-
-  return (
-    <div className="panel-glass p-4 sm:p-5">
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-fg">{label}</h3>
-        <span
-          className={`stat-value text-sm font-bold ${scoreTextColor(criterion.score)}`}
-        >
-          {criterion.score}/10
-        </span>
-      </div>
-      <div className="w-full bg-surface-2 rounded-full h-1.5 overflow-hidden mt-2">
-        <div
-          className={`h-full rounded-full transition-all ${scoreBgColor(criterion.score)}`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-      {criterion.feedback && (
-        <p className="text-sm text-muted mt-3 leading-relaxed">
-          {criterion.feedback}
-        </p>
-      )}
-      {criterion.suggestions?.length > 0 && (
-        <ul className="mt-3 space-y-1.5">
-          {criterion.suggestions.map((s, i) => (
-            <li key={i} className="flex gap-2 text-sm text-fg leading-relaxed">
-              <span className="text-primary flex-shrink-0">→</span>
-              <span>{s}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-function ListCard({
-  title,
-  items,
-  marker,
-  markerClass,
-}: {
-  title: string;
-  items: string[];
-  marker: string;
-  markerClass: string;
-}) {
-  if (!items || items.length === 0) return null;
-  return (
-    <div className="panel-glass p-4 sm:p-5">
-      <h3 className="text-sm font-semibold text-fg mb-3">{title}</h3>
-      <ul className="space-y-2">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2 text-sm text-fg leading-relaxed">
-            <span className={`flex-shrink-0 font-bold ${markerClass}`}>
-              {marker}
-            </span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 export default function AnalysisFeedbackView({
   feedback,
@@ -180,13 +103,13 @@ export default function AnalysisFeedbackView({
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ListCard
+            <FeedbackListCard
               title="Điểm mạnh"
               items={data.strengths || []}
               marker="✓"
               markerClass="text-success"
             />
-            <ListCard
+            <FeedbackListCard
               title="Cần cải thiện"
               items={data.areasForImprovement || []}
               marker="!"
@@ -194,7 +117,7 @@ export default function AnalysisFeedbackView({
             />
           </div>
 
-          <ListCard
+          <FeedbackListCard
             title="Việc nên làm tiếp theo"
             items={data.actionItems || []}
             marker="→"
@@ -255,9 +178,7 @@ export default function AnalysisFeedbackView({
                   Sao chép
                 </Button>
                 {writingId && (
-                  <Link
-                    href={ROUTES.writingRevise(writingId, analysisId)}
-                  >
+                  <Link href={ROUTES.writingRevise(writingId, analysisId)}>
                     <Button size="sm" className="gap-1.5 btn-glow-solid">
                       <PenLine className="h-4 w-4" />
                       Chữa bài với bài mẫu

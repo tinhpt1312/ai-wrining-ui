@@ -12,8 +12,8 @@ import {
 import { useAuth } from "@/features/auth";
 import { Button } from "@/components/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/separator";
+import { ScrollArea } from "@/components/scroll-area";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes.constants";
 import { MAIN_NAV_ITEMS, isNavActive } from "./nav.config";

@@ -3,7 +3,7 @@ import { FileText, Sparkles, User } from "lucide-react";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
-import type { PublicShareAnalysis } from "@/api/share.service";
+import type { PublicShareAnalysis } from "@/types/api";
 import {
   formatDateTime,
   getAnalysisSummary,
