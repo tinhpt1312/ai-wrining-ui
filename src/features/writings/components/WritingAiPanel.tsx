@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { AnalysisResultCard } from "@/features/analysis";
-import { Loading } from "@/components";
+import { ScoreProgress } from "@/features/revision";
+import { Loading } from "@/components/loading";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
@@ -68,7 +69,11 @@ export function WritingAiPanel({
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <>
+          {analyses.length >= 2 && (
+            <ScoreProgress analyses={analyses} />
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {analyses.map((analysis) => (
             <AnalysisResultCard
               key={analysis.id}
@@ -78,7 +83,8 @@ export function WritingAiPanel({
               isPublic={isPublic}
             />
           ))}
-        </div>
+          </div>
+        </>
       )}
 
       {analyses.length > 0 && (

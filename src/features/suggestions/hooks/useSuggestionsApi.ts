@@ -140,6 +140,21 @@ export function useGenerateSuggestions(): UseMutationResult<
   });
 }
 
+export function useGenerateSuggestionsFromAnalysis(): UseMutationResult<
+  types.WritingSuggestionsListResponse,
+  Error,
+  { writingId: string; analysisId: string }
+> {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ writingId, analysisId }) =>
+      suggestionsService.generateFromAnalysis(writingId, analysisId),
+    onSuccess: (_data, variables) => {
+      invalidateSuggestionQueries(queryClient, variables.writingId);
+    },
+  });
+}
+
 export function useApplySuggestion(): UseMutationResult<
   types.WritingSuggestion,
   Error,

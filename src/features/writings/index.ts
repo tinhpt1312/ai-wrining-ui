@@ -8,6 +8,7 @@ export {
   WritingAiSectionHeader,
 } from "./components/WritingDetailHeader";
 export { WritingAiPanel } from "./components/WritingAiPanel";
+export { WritingJourneyView } from "./components/WritingJourneyView";
 export {
   useCreateWriting,
   useWritings,
@@ -15,4 +16,9 @@ export {
   useUpdateWriting,
   useDeleteWriting,
   useWritingStats,
+  useWritingRevisions,
+  useRevisionTimeline,
+  useCreateWritingRevision,
+  useEnsureBaselineRevision,
+  useRestoreWritingRevision,
 } from "./hooks/useWritingsApi";

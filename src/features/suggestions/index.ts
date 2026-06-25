@@ -9,5 +9,6 @@ export {
   useSuggestionStats,
   useRefactoredWriting,
   useGenerateSuggestions,
+  useGenerateSuggestionsFromAnalysis,
   useApplySuggestion,
 } from "./hooks/useSuggestionsApi";

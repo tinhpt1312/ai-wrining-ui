@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
-import { Alert } from "@/components";
+import { Alert } from "@/components/alert";
 import { useAuth } from "../context/AuthContext";
 import { getErrorMessage, validationRules } from "@/utils/helpers";
 import type * as types from "@/types/api";

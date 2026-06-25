@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loading } from "@/components";
+import { Loading } from "@/components/loading";
 import { useAuth } from "../context/AuthContext";
 import { AuthForm } from "./AuthForm";
 import { AuthShell } from "./AuthShell";

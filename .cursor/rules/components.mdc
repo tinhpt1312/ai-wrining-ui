@@ -44,8 +44,14 @@ import { Button } from "@/components/button";
 import { Loading } from "@/components/loading";
 import { PageHeader } from "@/components/page-header";
 
-// ✅ Được phép — barrel khi import nhiều primitive
-import { Button, Loading, EmptyState } from "@/components";
+// ✅ Được phép — barrel chỉ khi không import đồng thời @/features/* (tránh circular)
+// Trang client + feature components: luôn import trực tiếp từ folder
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
+import { EmptyState } from "@/components/empty-state";
+
+// ⚠️ Tránh trong app/(protected)/** và features/** — dễ undefined export khi barrel + feature barrel cùng load
+// import { Button, Loading, EmptyState } from "@/components";
 
 // ❌ Cấm — folder ui monolith
 import { Button } from "@/components/ui/Button";

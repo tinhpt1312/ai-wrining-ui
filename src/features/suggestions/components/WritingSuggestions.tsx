@@ -8,7 +8,9 @@ import {
   useApplySuggestion,
   useRefactoredWriting,
 } from "../hooks/useSuggestionsApi";
-import { Alert, EmptyState, Loading } from "@/components";
+import { Alert } from "@/components/alert";
+import { EmptyState } from "@/components/empty-state";
+import { Loading } from "@/components/loading";
 import { Button } from "@/components/button";
 import { Badge, type BadgeVariant } from "@/components/badge";
 import { Select } from "@/components/select";

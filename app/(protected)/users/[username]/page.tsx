@@ -7,7 +7,9 @@ import {
   UserPublicProfileHeader,
 } from "@/features/explore";
 import { useUserProfile } from "@/features/profile";
-import { Loading, Error, EmptyState } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
+import { EmptyState } from "@/components/empty-state";
 import { Pagination } from "@/components/pagination";
 import { BookOpen } from "lucide-react";
 
@@ -53,10 +55,14 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
       <UserPublicProfileHeader profile={profile} />
 
       <section className="space-y-5">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-sm font-semibold text-fg">Bài viết công khai</h2>
+        <div className="flex items-center justify-between gap-3 px-1">
+          <h2 className="text-sm font-semibold text-fg uppercase tracking-wider">
+            Bài viết công khai
+          </h2>
           {total > 0 && (
-            <span className="text-sm text-muted">{total} bài</span>
+            <span className="text-sm text-muted font-mono tabular-nums">
+              {total} bài
+            </span>
           )}
         </div>
 

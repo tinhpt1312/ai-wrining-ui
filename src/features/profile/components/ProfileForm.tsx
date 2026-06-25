@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
-import { Alert } from "@/components";
+import { Alert } from "@/components/alert";
 import { toast } from "@/lib/toast";
 import { getErrorMessage } from "@/utils/helpers";
 import { useUpdateProfile } from "../hooks/useProfileApi";

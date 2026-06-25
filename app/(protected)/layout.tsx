@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth";
-import { Loading } from "@/components";
-import { AppShell } from "@/layouts";
+import { Loading } from "@/components/loading";
+import { AppShell } from "@/layouts/AppShell";
 
 export default function ProtectedLayout({
   children,

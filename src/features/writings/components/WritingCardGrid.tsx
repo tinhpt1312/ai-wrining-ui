@@ -11,7 +11,7 @@ export function WritingCardGrid({
   isDeleting?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5">
       {writings.map((writing) => (
         <WritingCard
           key={writing.id}

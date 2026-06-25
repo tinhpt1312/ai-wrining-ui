@@ -1,9 +1,11 @@
+"use client";
+
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = {
   solid:
-    "bg-primary text-primary-fg hover:bg-primary-hover shadow-sm",
+    "bg-primary text-primary-fg hover:bg-primary-hover shadow-sm btn-glow-solid",
   secondary:
     "border border-border bg-surface-2 text-fg hover:bg-border/60",
   outline:

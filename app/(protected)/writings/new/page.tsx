@@ -22,6 +22,7 @@ export default function NewWritingPage() {
   return (
     <div className="space-y-8">
       <PageHeader
+        variant="glass"
         title="Viết bài mới"
         description="Viết suy nghĩ, ý tưởng hoặc câu chuyện của bạn"
       />

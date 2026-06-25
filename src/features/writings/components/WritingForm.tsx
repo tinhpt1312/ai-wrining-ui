@@ -6,7 +6,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Textarea } from "@/components/textarea";
 import { Select } from "@/components/select";
-import { Alert } from "@/components";
+import { Alert } from "@/components/alert";
 import {
   writingTypeOptions,
   writingStatusOptions,
@@ -123,7 +123,7 @@ export function WritingForm({
         />
       )}
 
-      <div className="card-elevated p-5 sm:p-6 space-y-5">
+      <div className="panel-glass p-5 sm:p-6 space-y-5">
         <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
           <PenLine className="h-4 w-4 text-primary" />
           Thông tin bài viết
@@ -151,7 +151,7 @@ export function WritingForm({
         </div>
       </div>
 
-      <div className="card-elevated p-5 sm:p-6 space-y-4">
+      <div className="panel-glass p-5 sm:p-6 space-y-4">
         <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
           <Type className="h-4 w-4 text-primary" />
           Nội dung
@@ -170,7 +170,7 @@ export function WritingForm({
         />
       </div>
 
-      <div className="card-elevated p-5 sm:p-6 space-y-4">
+      <div className="panel-glass p-5 sm:p-6 space-y-4">
         <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
           {isPublic ? (
             <Globe className="h-4 w-4 text-success" />
@@ -210,7 +210,7 @@ export function WritingForm({
           type="submit"
           isLoading={isSaving}
           disabled={isSaving || isLoading}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto btn-glow-solid"
         >
           {isEditing ? "Cập nhật bài viết" : "Tạo bài viết"}
         </Button>

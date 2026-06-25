@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { FileText, User } from "lucide-react";
+import { Clock, FileText, User } from "lucide-react";
 import { Badge } from "@/components/badge";
+import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 import type { PublicShareWriting } from "@/api/share.service";
 import {
@@ -15,46 +16,58 @@ export function PublicWritingShareView({ writing }: { writing: PublicShareWritin
 
   return (
     <article className="space-y-6">
-      <section className="card-elevated p-5 sm:p-6 space-y-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
+      <section className="page-header-glass relative overflow-hidden p-5 sm:p-7 space-y-4">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+        />
+
+        <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/25 shadow-[0_0_20px_var(--glow-primary)]">
           <FileText className="h-5 w-5" />
         </div>
 
-        <div className="space-y-2">
+        <div className="relative space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <Badge>{getWritingTypeLabel(writing.type)}</Badge>
             <Badge variant="success">Công khai</Badge>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-fg tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-fg tracking-tight leading-tight">
             {writing.title}
           </h1>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs sm:text-sm text-muted">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs sm:text-sm text-muted font-mono tabular-nums">
             <span className="inline-flex items-center gap-1">
               <User className="h-3.5 w-3.5" />
               {authorName}
             </span>
             <span>{wordCount(writing.content)} chữ</span>
             <span>{estimateReadingTime(writing.content)}</span>
-            <span>{formatDateTime(writing.updatedAt)}</span>
+            <span className="inline-flex items-center gap-1">
+              <Clock className="h-3.5 w-3.5" />
+              {formatDateTime(writing.updatedAt)}
+            </span>
           </div>
         </div>
       </section>
 
-      <section className="card-elevated p-5 sm:p-6">
-        <h2 className="text-sm font-semibold text-fg mb-4">Nội dung</h2>
-        <div className="rounded-xl border border-border bg-surface-2/70 px-5 py-6 sm:px-7 sm:py-8">
-          <div className="text-base sm:text-lg text-fg leading-[1.85] whitespace-pre-wrap">
+      <section className="panel-glass p-5 sm:p-6">
+        <h2 className="text-sm font-semibold text-fg mb-4 uppercase tracking-wider">
+          Nội dung
+        </h2>
+        <div className="rounded-xl border border-border/60 bg-surface-2/50 px-5 py-6 sm:px-7 sm:py-8">
+          <div className="prose-content text-base sm:text-lg text-fg leading-[1.85] whitespace-pre-wrap">
             {writing.content}
           </div>
         </div>
       </section>
 
-      <p className="text-center text-sm text-muted">
-        Viết &amp; chấm văn bằng AI —{" "}
-        <Link href={ROUTES.LOGIN} className="text-primary hover:underline">
-          Tham gia ngay
+      <footer className="panel-glass p-5 text-center space-y-3">
+        <p className="text-sm text-muted">
+          Viết &amp; chấm văn bằng AI — tạo bài, nhận phản hồi và cải thiện từng câu.
+        </p>
+        <Link href={ROUTES.LOGIN}>
+          <Button className="btn-glow-solid">Tham gia ngay</Button>
         </Link>
-      </p>
+      </footer>
     </article>
   );
 }

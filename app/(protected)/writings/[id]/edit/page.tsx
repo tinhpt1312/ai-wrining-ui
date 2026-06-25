@@ -7,7 +7,8 @@ import {
   useUpdateWriting,
   WritingForm,
 } from "@/features/writings";
-import { Loading, Error } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
 import { PageHeader } from "@/components/page-header";
 import { toast } from "@/lib/toast";
 import { ROUTES } from "@/constants/routes.constants";
@@ -54,6 +55,7 @@ export default function EditWritingPage({ params }: EditWritingPageProps) {
   return (
     <div className="space-y-8">
       <PageHeader
+        variant="glass"
         title="Sửa bài viết"
         description={writing.title}
       />

@@ -7,12 +7,15 @@ import {
   useDeleteAnalytics,
   AnalysisFeedback,
   AnalysisDetailHeader,
+  AnalysisScoreCompare,
 } from "@/features/analysis";
 import { useWriting } from "@/features/writings";
-import { Loading, Error } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
 import { toast } from "@/lib/toast";
 import { ROUTES } from "@/constants/routes.constants";
 import { useConfirmDialog } from "@/components/confirm-dialog";
+import { getOverallAnalysisScore } from "@/features/analysis/utils/score.utils";
 
 interface AnalyticsViewPageProps {
   params: Promise<{
@@ -47,6 +50,13 @@ export default function AnalyticsViewPage({ params }: AnalyticsViewPageProps) {
     return null;
   }
 
+  const score = getOverallAnalysisScore(analysis.feedbackJson);
+  const meta = analysis.feedbackJson as {
+    previousScore?: number | null;
+    previousAnalysisId?: string | null;
+    revisionNumber?: number | null;
+  } | undefined;
+
   const handleDelete = async () => {
     const ok = await confirm({
       title: "Xóa kết quả chấm bài",
@@ -78,10 +88,23 @@ export default function AnalyticsViewPage({ params }: AnalyticsViewPageProps) {
         isDeleting={isDeleting}
       />
 
+      {score != null && meta?.previousScore != null && (
+        <AnalysisScoreCompare
+          currentScore={score}
+          previousScore={meta.previousScore}
+          previousAnalysisId={meta.previousAnalysisId}
+          revisionNumber={meta.revisionNumber}
+        />
+      )}
+
       {analysis.feedbackJson ? (
-        <AnalysisFeedback feedback={analysis.feedbackJson} />
+        <AnalysisFeedback
+          feedback={analysis.feedbackJson}
+          writingId={analysis.writingId}
+          analysisId={analysis.id}
+        />
       ) : (
-        <div className="card-elevated p-12 text-center">
+        <div className="panel-glass p-12 text-center">
           <p className="text-muted text-sm">
             Chưa có phản hồi cho lần chấm bài này.
           </p>

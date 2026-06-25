@@ -27,6 +27,12 @@ export const QUERY_KEYS = {
     usage: ["tokens", "usage"] as const,
     stats: ["tokens", "stats"] as const,
   },
+  revisions: {
+    byWriting: (writingId: string) =>
+      ["writings", writingId, "revisions"] as const,
+    timeline: (writingId: string, analysisId?: string) =>
+      ["writings", writingId, "revisions", "timeline", analysisId] as const,
+  },
   suggestions: {
     all: (params?: QueryWritingSuggestionsParams) =>
       ["writing-suggestions", params] as const,

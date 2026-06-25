@@ -1,3 +1,5 @@
+"use client";
+
 interface ErrorProps {
   title?: string;
   message: string;

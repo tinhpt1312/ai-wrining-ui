@@ -11,39 +11,68 @@ alwaysApply: false
 | Package | Mục đích |
 |---------|----------|
 | **Tailwind CSS v4** | Utility styling + semantic tokens |
-| **Radix UI** | Primitives accessible (dialog, dropdown, slot) |
-| **next-themes** | Chế độ sáng / tối / hệ thống |
+| **Radix UI** | Primitives accessible (dialog, dropdown, tabs, scroll-area, separator, tooltip) |
+| **next-themes** | Chế độ sáng / tối / hệ thống — **mặc định dark** |
 | **lucide-react** | Icon set thống nhất |
-| **@radix-ui/react-tabs** | Lọc loại bài (Khám phá) |
-| **@radix-ui/react-avatar** | Avatar tác giả (initials) |
-| **class-variance-authority** | Variant components |
+| **framer-motion** | Page fade, micro-interactions |
+| **recharts** | Biểu đồ dashboard (token usage) |
+| **vaul** | Mobile drawer (sidebar) |
+| **class-variance-authority** | Variant components (`GlassCard`, Button) |
 
 **Không** thêm UI framework nặng (MUI, Ant Design) — giữ stack nhẹ, tương thích shadcn-style.
 
 ## Theme (sáng / tối)
 
-- Provider: `src/layouts/ThemeProvider.tsx` bọc trong `Providers`.
-- Toggle: `ThemeToggle` — Header (app) + AuthFormPanel (login/register).
+- Provider: `src/layouts/ThemeProvider.tsx` bọc trong `Providers` — `defaultTheme="dark"`.
+- Toggle: `ThemeToggle` — TopBar (app) + AuthShell + SharePageShell.
 - CSS variables trong `app/globals.css`: `:root` (light) + `.dark` (dark).
 - **Không** dùng `@media (prefers-color-scheme)` làm nguồn chính; `next-themes` quản lý class `.dark` trên `<html>`.
 
-## Design tokens
+## Design tokens & glass system
 
 - Màu semantic: `bg-bg`, `bg-surface`, `text-fg`, `text-muted`, `bg-primary`, …
-- Utility CSS: `.app-bg` (gradient nền), `.card-elevated` (card có shadow).
-- Icon: **lucide-react** — không dùng emoji làm icon chính trong UI mới.
-- Thông báo ngắn (xóa thành công, lỗi API…): `import { toast } from "@/lib/toast"` — **không** dùng Alert inline cho feedback tạm.
+- Glow CSS vars: `--glow-primary` — dùng trong shadow utilities.
+- Utility CSS chính (`app/globals.css`):
+  - `.app-bg` — gradient nền toàn app
+  - `.card-elevated` — card có shadow (legacy + grid cards)
+  - `.panel-glass` — panel nội dung (form sections, feedback blocks)
+  - `.page-header-glass` — hero header trang detail
+  - `.input-glass` — input/textarea
+  - `.btn-glow-solid` — CTA primary có glow
+  - `.stat-value` — số liệu mono tabular
+  - `.stat-card-glow` — hover glow trên card grid
+- Icon: **lucide-react** — không dùng emoji làm icon chính.
+- Toast: `import { toast } from "@/lib/toast"` — không dùng Alert inline cho feedback tạm.
 - Nội dung văn bản dài: class `prose-content` (plugin `@tailwindcss/typography`).
-- Trong `app/globals.css`, khai báo plugin bằng đường dẫn tương đối: `@plugin "../node_modules/@tailwindcss/typography"` (Tailwind v4 resolve từ thư mục `app/`).
+
+## Layout profiles
+
+`src/lib/layout.ts` + `LayoutProvider` — 3 độ rộng:
+
+| Profile | Class | Dùng cho |
+|---------|-------|----------|
+| `default` | `max-w-7xl` | Dashboard, list pages |
+| `wide` | `max-w-[1440px]` | Detail, analysis, journey, edit |
+| `full` | full width | Revise workspace |
+
+Share pages: `max-w-3xl` trong `SharePageShell` (đọc thoải mái).
+
+## Shell & backgrounds
+
+- App: `AppShell` = Sidebar + TopBar + `GridBackground` + framer-motion fade.
+- Auth: `AuthShell` — grid mesh + glass form panel.
+- Share: `SharePageShell` — grid bg + sticky glass header + ThemeToggle.
+
+## Component guidelines
+
+- Card/panel mới: ưu tiên `.panel-glass` hoặc `.page-header-glass`; grid cards dùng `.stat-card-glow` + `.card-elevated`.
+- Import primitive: `@/components/{folder}` — xem `components.mdc`.
+- `src/components/ui/` — GridBackground, GlassCard, ScrollArea, Separator (Phase 0+).
+- Nav/action: kèm icon Lucide + label.
+- Stat/metric: `StatCard` với `icon` + `tone` (dashboard).
+- Route link: dùng `ROUTES` từ constants, không hard-code path.
+- Gợi ý sửa bài: tích hợp trong **Revise workspace** (`SuggestionDrawer`), không còn trang `/suggestions` riêng.
 
 ## Package manager
 
 - FE dùng **Yarn** — xem rule `package-manager.mdc`.
-
-## Component guidelines
-
-- Card/panel: ưu tiên class `card-elevated` hoặc `Panel` từ `@/components/panel`.
-- Import primitive: `@/components/{folder}` — xem `components.mdc`.
-- Nav/action: kèm icon Lucide + label.
-- Stat/metric: dùng `StatCard` với `icon` + `tone` (primary | success | warning | info).
-- Route link: dùng `ROUTES` từ constants, không hard-code path.

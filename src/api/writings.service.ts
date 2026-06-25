@@ -71,4 +71,55 @@ export const writingsService = {
     >(API_PATHS.USERS.writings(username), { params });
     return normalizeListResponse(response.data);
   },
+
+  async getRevisions(
+    writingId: string,
+  ): Promise<types.WritingRevisionsListResponse> {
+    const response = await http.get<
+      types.BackendListResponse<types.WritingRevision>
+    >(API_PATHS.WRITINGS.REVISIONS(writingId));
+    return normalizeListResponse(response.data);
+  },
+
+  async createRevision(
+    writingId: string,
+    payload: types.CreateWritingRevisionPayload,
+  ): Promise<types.WritingRevision> {
+    const response = await http.post<
+      types.BackendDataResponse<types.WritingRevision> | types.WritingRevision
+    >(API_PATHS.WRITINGS.REVISIONS(writingId), payload);
+    return "data" in response.data ? response.data.data : response.data;
+  },
+
+  async ensureBaselineRevision(
+    writingId: string,
+    payload: types.EnsureBaselineRevisionPayload,
+  ): Promise<types.WritingRevision> {
+    const response = await http.post<
+      types.BackendDataResponse<types.WritingRevision> | types.WritingRevision
+    >(API_PATHS.WRITINGS.REVISION_BASELINE(writingId), payload);
+    return "data" in response.data ? response.data.data : response.data;
+  },
+
+  async getRevisionTimeline(
+    writingId: string,
+    analysisId?: string,
+  ): Promise<types.RevisionTimelineResponse> {
+    const response = await http.get<
+      types.BackendListResponse<types.RevisionTimelineItem>
+    >(API_PATHS.WRITINGS.REVISION_TIMELINE(writingId), {
+      params: analysisId ? { analysisId } : undefined,
+    });
+    return normalizeListResponse(response.data);
+  },
+
+  async restoreRevision(
+    writingId: string,
+    revisionId: string,
+  ): Promise<types.Writing> {
+    const response = await http.post<
+      types.BackendDataResponse<types.Writing> | types.Writing
+    >(API_PATHS.WRITINGS.RESTORE_REVISION(writingId, revisionId));
+    return "data" in response.data ? response.data.data : response.data;
+  },
 };

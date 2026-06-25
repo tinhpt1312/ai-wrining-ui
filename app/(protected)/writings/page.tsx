@@ -10,7 +10,9 @@ import {
   WritingsFilterTabs,
   WritingCardGrid,
 } from "@/features/writings";
-import { Loading, Error, EmptyState } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
+import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/button";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/section";
@@ -95,11 +97,12 @@ export default function WritingsPage() {
       <ConfirmDialog />
       <div className="space-y-8">
       <PageHeader
+        variant="glass"
         title="Bài viết của tôi"
         description={`${totalWritings} bài viết trong thư viện`}
         actions={
           <Link href={ROUTES.WRITING_NEW}>
-            <Button className="gap-1.5">
+            <Button className="gap-1.5 btn-glow-solid">
               <Plus className="h-4 w-4" />
               Viết bài mới
             </Button>

@@ -82,6 +82,19 @@ export const suggestionsService = {
     return normalizeListResponse(response.data);
   },
 
+  async generateFromAnalysis(
+    writingId: string,
+    analysisId: string,
+  ): Promise<types.WritingSuggestionsListResponse> {
+    const response = await http.post<
+      types.BackendListResponse<types.WritingSuggestion>
+    >(API_PATHS.SUGGESTIONS.GENERATE_FROM_ANALYSIS, {
+      writingId,
+      analysisId,
+    });
+    return normalizeListResponse(response.data);
+  },
+
   async apply(
     suggestionId: string,
     writingId: string,

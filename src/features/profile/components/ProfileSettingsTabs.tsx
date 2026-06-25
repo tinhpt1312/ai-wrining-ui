@@ -27,7 +27,7 @@ export function ProfileSettingsTabs({
       </TabsList>
 
       <TabsContent value="account" className="mt-6">
-        <div className="card-elevated p-6 sm:p-8">
+        <div className="panel-glass p-6 sm:p-8">
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-fg">
               Thông tin tài khoản
@@ -42,8 +42,8 @@ export function ProfileSettingsTabs({
       </TabsContent>
 
       <TabsContent value="security" className="mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 card-elevated p-6 sm:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="lg:col-span-2 panel-glass p-6 sm:p-8">
             <div className="mb-6">
               <h2 className="text-lg font-semibold text-fg">Đổi mật khẩu</h2>
               <p className="text-sm text-muted mt-1">
@@ -53,7 +53,7 @@ export function ProfileSettingsTabs({
             <ChangePasswordForm />
           </div>
 
-          <aside className="card-elevated p-5 h-fit space-y-4">
+          <aside className="panel-glass p-5 h-fit space-y-4">
             <h3 className="text-sm font-semibold text-fg">Gợi ý bảo mật</h3>
             <ul className="space-y-3 text-sm text-muted">
               <li className="flex gap-2">

@@ -1,4 +1,5 @@
 export const ROUTES = {
+  HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
   DASHBOARD: "/dashboard",
@@ -6,7 +7,13 @@ export const ROUTES = {
   WRITING_NEW: "/writings/new",
   writing: (id: string) => `/writings/${id}`,
   writingEdit: (id: string) => `/writings/${id}/edit`,
-  writingSuggestions: (id: string) => `/writings/${id}/suggestions`,
+  /** @deprecated Redirects to revise — kept for backward-compatible links. */
+  writingSuggestions: (id: string) => `/writings/${id}/revise`,
+  writingRevise: (id: string, analysisId?: string) =>
+    analysisId
+      ? `/writings/${id}/revise?analysisId=${analysisId}`
+      : `/writings/${id}/revise`,
+  writingJourney: (id: string) => `/writings/${id}/journey`,
   EXPLORE: "/explore",
   PROFILE: "/profile",
   userProfile: (username: string) => `/users/${username}`,

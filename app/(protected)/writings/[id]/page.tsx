@@ -8,13 +8,16 @@ import {
   WritingDetailHeader,
   WritingContentPanel,
   WritingAiPanel,
+  useRevisionTimeline,
 } from "@/features/writings";
 import {
   useAnalysesByWriting,
   useCreateAiAnalytics,
   useDeleteAnalytics,
 } from "@/features/analysis";
-import { Loading, Error, EmptyState } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
+import { EmptyState } from "@/components/empty-state";
 import { PublicReadBanner } from "@/features/explore";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
@@ -37,6 +40,7 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
   const isOwner = !!user?.id && !!writing && writing.userId === user.id;
   const { data: analysesData, isLoading: analysesLoading } =
     useAnalysesByWriting(id, isOwner);
+  const { data: timelineData } = useRevisionTimeline(id);
 
   const handleGenerateAiAnalytics = async () => {
     if (!writing || !isOwner) return;
@@ -93,6 +97,10 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
   }
 
   const analyses = isOwner ? analysesData?.data || [] : [];
+  const latestAnalysisId = analyses[0]?.id;
+  const revisionCount = timelineData?.data?.length ?? 0;
+  const showJourney =
+    isOwner && (analyses.length > 0 || revisionCount > 0);
 
   return (
     <>
@@ -102,7 +110,13 @@ export default function WritingViewPage({ params }: WritingViewPageProps) {
         <PublicReadBanner author={writing.author} />
       )}
 
-      <WritingDetailHeader writing={writing} isOwner={isOwner} />
+      <WritingDetailHeader
+        writing={writing}
+        isOwner={isOwner}
+        latestAnalysisId={latestAnalysisId}
+        showJourney={showJourney}
+        revisionCount={revisionCount}
+      />
 
       <WritingContentPanel content={writing.content} />
 

@@ -18,6 +18,13 @@ export const API_PATHS = {
     ROOT: "/writings",
     PUBLIC: "/writings/public",
     BY_ID: (id: string) => `/writings/${id}`,
+    REVISIONS: (id: string) => `/writings/${id}/revisions`,
+    REVISION_TIMELINE: (id: string) => `/writings/${id}/revisions/timeline`,
+    REVISION_BASELINE: (id: string) => `/writings/${id}/revisions/baseline`,
+    REVISION_BY_ID: (writingId: string, revisionId: string) =>
+      `/writings/${writingId}/revisions/${revisionId}`,
+    RESTORE_REVISION: (writingId: string, revisionId: string) =>
+      `/writings/${writingId}/revisions/${revisionId}/restore`,
     STATS: "/writings/stats/overview",
   },
   ANALYTICS: {
@@ -43,6 +50,7 @@ export const API_PATHS = {
     REFACTORED: (writingId: string) =>
       `/writing-suggestions/writing/${writingId}/refactored`,
     GENERATE: "/writing-suggestions/generate",
+    GENERATE_FROM_ANALYSIS: "/writing-suggestions/generate-from-analysis",
     APPLY: (suggestionId: string) =>
       `/writing-suggestions/${suggestionId}/apply`,
   },

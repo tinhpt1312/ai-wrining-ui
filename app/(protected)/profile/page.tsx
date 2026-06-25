@@ -5,7 +5,8 @@ import {
   ProfilePageHeader,
   ProfileSettingsTabs,
 } from "@/features/profile";
-import { Loading, Error } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
 import { PageHeader } from "@/components/page-header";
 
 export default function ProfilePage() {
@@ -29,6 +30,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-8">
       <PageHeader
+        variant="glass"
         title="Hồ sơ cá nhân"
         description="Quản lý thông tin tài khoản và bảo mật"
       />

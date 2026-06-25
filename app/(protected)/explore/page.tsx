@@ -7,7 +7,9 @@ import {
   ExploreTypeTabs,
   PublicWritingGrid,
 } from "@/features/explore";
-import { Loading, Error, EmptyState } from "@/components";
+import { Loading } from "@/components/loading";
+import { Error } from "@/components/error-state";
+import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/section";
 import { Pagination } from "@/components/pagination";
@@ -57,6 +59,7 @@ export default function ExplorePage() {
   return (
     <div className="space-y-8">
       <PageHeader
+        variant="glass"
         title="Khám phá"
         description={`${total} bài viết công khai từ cộng đồng`}
       />
