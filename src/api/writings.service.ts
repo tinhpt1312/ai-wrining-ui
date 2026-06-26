@@ -21,6 +21,16 @@ export const writingsService = {
     return "data" in response.data ? response.data.data : response.data;
   },
 
+  async generatePrompts(
+    payload: types.GenerateWritingPromptsPayload,
+  ): Promise<types.GeneratedWritingPrompt[]> {
+    const response = await http.post<
+      | types.BackendDataResponse<types.GeneratedWritingPrompt[]>
+      | types.GeneratedWritingPrompt[]
+    >(API_PATHS.WRITINGS.PROMPTS_GENERATE, payload);
+    return "data" in response.data ? response.data.data : response.data;
+  },
+
   async getAll(
     params?: types.QueryWritingParams,
   ): Promise<types.WritingsListResponse> {

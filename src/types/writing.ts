@@ -44,6 +44,22 @@ export interface GenerateOutlinePayload {
   topic?: string;
 }
 
+export type PromptDifficulty = "dễ" | "trung bình" | "khó";
+
+export interface GeneratedWritingPrompt {
+  title: string;
+  topic: string;
+  hint: string;
+  difficulty: PromptDifficulty;
+}
+
+export interface GenerateWritingPromptsPayload {
+  type: WritingType;
+  difficulty?: PromptDifficulty;
+  count?: number;
+  excludeTitles?: string[];
+}
+
 export interface CreateWritingPayload {
   title: string;
   content: string;

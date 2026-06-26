@@ -104,7 +104,7 @@ export default function NewWritingPage() {
       <PageHeader
         variant="glass"
         title="Viết bài mới"
-        description="Chọn đề → lập dàn ý → viết bài theo khung có chủ đích"
+        description="Chọn đề (có sẵn, tự nhập hoặc AI) → lập dàn ý → viết bài"
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

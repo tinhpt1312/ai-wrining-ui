@@ -90,3 +90,13 @@ export function useGenerateOutline(): UseMutationResult<
     mutationFn: (payload) => writingsService.generateOutline(payload),
   });
 }
+
+export function useGenerateWritingPrompts(): UseMutationResult<
+  types.GeneratedWritingPrompt[],
+  Error,
+  types.GenerateWritingPromptsPayload
+> {
+  return useMutation({
+    mutationFn: (payload) => writingsService.generatePrompts(payload),
+  });
+}

@@ -29,6 +29,7 @@ export const API_PATHS = {
       `/writings/${writingId}/revisions/${revisionId}/restore`,
     STATS: "/writings/stats/overview",
     OUTLINE: "/writings/outline",
+    PROMPTS_GENERATE: "/writings/prompts/generate",
   },
   DOCUMENTS: {
     PARSE: "/documents/parse",
