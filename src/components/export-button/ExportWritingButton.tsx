@@ -7,6 +7,8 @@ import { Button } from "@/components/button";
 import { writingsService } from "@/api/writings.service";
 import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
+import { exportMessages } from "@/messages/export";
+import { msg } from "@/messages/format";
 
 export interface ExportWritingButtonProps {
   writingId: string;
@@ -31,11 +33,11 @@ export function ExportWritingButton({
       await writingsService.downloadExport(writingId, format);
       toast.success(
         format === "docx"
-          ? `Đã tải "${writingTitle}" (.docx)`
-          : `Đã tải "${writingTitle}" (.pdf)`,
+          ? msg(exportMessages.writing.toast.docx, { title: writingTitle })
+          : msg(exportMessages.writing.toast.pdf, { title: writingTitle }),
       );
     } catch {
-      toast.error("Không thể xuất bài viết. Vui lòng thử lại.");
+      toast.error(exportMessages.writing.toast.failed);
     } finally {
       setExportingFormat(null);
     }
@@ -53,7 +55,7 @@ export function ExportWritingButton({
           isLoading={!!exportingFormat}
         >
           <FileDown className="h-4 w-4" />
-          Xuất bài
+          {exportMessages.writing.button}
           <ChevronDown className="h-3.5 w-3.5 opacity-60" />
         </Button>
       </DropdownMenu.Trigger>
@@ -76,7 +78,7 @@ export function ExportWritingButton({
             onSelect={() => handleExport("docx")}
           >
             <FileText className="h-4 w-4 shrink-0" />
-            Xuất Word (.docx)
+            {exportMessages.writing.docx}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className={cn(
@@ -87,7 +89,7 @@ export function ExportWritingButton({
             onSelect={() => handleExport("pdf")}
           >
             <FileDown className="h-4 w-4 shrink-0" />
-            Xuất PDF
+            {exportMessages.writing.pdf}
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>

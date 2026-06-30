@@ -6,6 +6,8 @@ import { Input } from "@/components/input";
 import { Alert } from "@/components/alert";
 import { toast } from "@/lib/toast";
 import { getErrorMessage } from "@/utils/helpers";
+import { commonMessages } from "@/messages/common";
+import { profileMessages } from "@/messages/profile";
 import { useChangePassword } from "../hooks/useProfileApi";
 
 export function ChangePasswordForm() {
@@ -22,12 +24,12 @@ export function ChangePasswordForm() {
     setError(null);
 
     if (formData.newPassword !== formData.confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError(profileMessages.security.confirmMismatch);
       return;
     }
 
     if (formData.newPassword.length < 6) {
-      setError("Mật khẩu mới phải có ít nhất 6 ký tự");
+      setError(profileMessages.security.newPasswordMinLength);
       return;
     }
 
@@ -36,7 +38,7 @@ export function ChangePasswordForm() {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
       });
-      toast.success("Đổi mật khẩu thành công");
+      toast.success(profileMessages.security.successToast);
       setFormData({
         currentPassword: "",
         newPassword: "",
@@ -50,11 +52,16 @@ export function ChangePasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <Alert type="error" title="Lỗi" message={error} onClose={() => setError(null)} />
+        <Alert
+          type="error"
+          title={commonMessages.error.title}
+          message={error}
+          onClose={() => setError(null)}
+        />
       )}
 
       <Input
-        label="Mật khẩu hiện tại"
+        label={profileMessages.security.currentPasswordLabel}
         name="currentPassword"
         type="password"
         value={formData.currentPassword}
@@ -64,7 +71,7 @@ export function ChangePasswordForm() {
         required
       />
       <Input
-        label="Mật khẩu mới"
+        label={profileMessages.security.newPasswordLabel}
         name="newPassword"
         type="password"
         value={formData.newPassword}
@@ -74,7 +81,7 @@ export function ChangePasswordForm() {
         required
       />
       <Input
-        label="Xác nhận mật khẩu mới"
+        label={profileMessages.security.confirmPasswordLabel}
         name="confirmPassword"
         type="password"
         value={formData.confirmPassword}
@@ -86,7 +93,7 @@ export function ChangePasswordForm() {
 
       <div className="flex justify-end pt-2">
         <Button type="submit" isLoading={changePassword.isPending}>
-          Đổi mật khẩu
+          {profileMessages.security.submitButton}
         </Button>
       </div>
     </form>

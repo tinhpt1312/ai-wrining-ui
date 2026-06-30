@@ -5,6 +5,8 @@ import { formatDateTime } from "@/utils/helpers";
 import { getOverallAnalysisScore, scoreTextColor } from "@/features/analysis/utils/score.utils";
 import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { analysisMessages } from "@/messages/analysis";
+import { msg } from "@/messages/format";
 
 export function ScoreProgress({
   analyses,
@@ -36,9 +38,13 @@ export function ScoreProgress({
     <div className="card-elevated p-4 sm:p-5">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
-          <h3 className="text-sm font-semibold text-fg">Tiến bộ điểm số</h3>
+          <h3 className="text-sm font-semibold text-fg">
+            {analysisMessages.scoreProgress.title}
+          </h3>
           <p className="text-xs text-muted mt-0.5">
-            {sorted.length} lần chấm · so với lần trước
+            {msg(analysisMessages.scoreProgress.subtitle, {
+              count: sorted.length,
+            })}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -96,7 +102,9 @@ export function ScoreProgress({
                 />
               </div>
               <span className="text-[10px] text-subtle truncate w-full text-center">
-                L{index + 1}
+                {msg(analysisMessages.scoreProgress.attemptLabel, {
+                  number: index + 1,
+                })}
               </span>
             </div>
           );

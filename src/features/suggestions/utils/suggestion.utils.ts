@@ -1,29 +1,32 @@
 import type { BadgeVariant } from "@/components/badge";
+import { suggestionLabelMessages } from "@/messages/suggestion-labels";
 import * as types from "@/types/api";
 
+const { focus, severity: severityLabelsMap } = suggestionLabelMessages;
+
 export const focusAreaOptions = [
-  { value: "grammar", label: "Ngữ pháp" },
-  { value: "clarity", label: "Rõ ràng" },
-  { value: "style", label: "Văn phong" },
-  { value: "vocabulary", label: "Từ vựng" },
-  { value: "punctuation", label: "Dấu câu" },
-  { value: "tone", label: "Giọng điệu" },
+  { value: "grammar", label: focus.grammar },
+  { value: "clarity", label: focus.clarity },
+  { value: "style", label: focus.style },
+  { value: "vocabulary", label: focus.vocabulary },
+  { value: "punctuation", label: focus.punctuation },
+  { value: "tone", label: focus.tone },
 ];
 
 export const suggestionTypeLabels: Record<string, string> = {
-  grammar: "Ngữ pháp",
-  clarity: "Rõ ràng",
-  style: "Văn phong",
-  vocabulary: "Từ vựng",
-  punctuation: "Dấu câu",
-  tone: "Giọng điệu",
+  grammar: focus.grammar,
+  clarity: focus.clarity,
+  style: focus.style,
+  vocabulary: focus.vocabulary,
+  punctuation: focus.punctuation,
+  tone: focus.tone,
 };
 
 export const severityLabels: Record<string, string> = {
-  error: "Nghiêm trọng",
-  warning: "Cảnh báo",
-  suggestion: "Gợi ý",
-  info: "Thông tin",
+  error: severityLabelsMap.error,
+  warning: severityLabelsMap.warning,
+  suggestion: severityLabelsMap.suggestion,
+  info: severityLabelsMap.info,
 };
 
 export const severityVariant: Record<string, BadgeVariant> = {

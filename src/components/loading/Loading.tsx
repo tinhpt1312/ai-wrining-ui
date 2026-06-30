@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { commonMessages } from "@/messages/common";
 
 interface LoadingProps {
   text?: string;
@@ -9,7 +10,7 @@ interface LoadingProps {
 }
 
 export function Loading({
-  text = "Đang tải...",
+  text = commonMessages.loading,
   size = "md",
   fullScreen = false,
 }: LoadingProps) {

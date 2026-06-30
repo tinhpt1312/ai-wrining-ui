@@ -11,6 +11,7 @@ import { Loading } from "@/components/loading";
 import { Error } from "@/components/error-state";
 import { PageHeader } from "@/components/page-header";
 import { toast } from "@/lib/toast";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import type * as types from "@/types/api";
 
@@ -30,19 +31,19 @@ export default function EditWritingPage({ params }: EditWritingPageProps) {
     payload: types.CreateWritingPayload | types.UpdateWritingPayload,
   ) => {
     await updateWriting.mutateAsync({ id, payload });
-    toast.success("Đã cập nhật bài viết");
+    toast.success(writingsMessages.editPage.updateSuccess);
     router.push(ROUTES.writing(id));
   };
 
   if (isLoading) {
-    return <Loading fullScreen text="Đang tải bài viết..." />;
+    return <Loading fullScreen text={writingsMessages.editPage.loading} />;
   }
 
   if (error) {
     return (
       <Error
-        title="Không tải được bài viết"
-        message="Không thể lấy nội dung bài viết. Vui lòng thử lại."
+        title={writingsMessages.editPage.errorTitle}
+        message={writingsMessages.editPage.errorMessage}
         retry={() => router.back()}
       />
     );
@@ -56,7 +57,7 @@ export default function EditWritingPage({ params }: EditWritingPageProps) {
     <div className="space-y-8">
       <PageHeader
         variant="glass"
-        title="Sửa bài viết"
+        title={writingsMessages.editPage.title}
         description={writing.title}
       />
 

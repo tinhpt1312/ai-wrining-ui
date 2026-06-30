@@ -7,6 +7,7 @@ import { Lightbulb } from "lucide-react";
 import { AiFeedbackPanel } from "./AiFeedbackPanel";
 import type { AnalysisFeedback } from "@/types/api";
 import type { ReactNode } from "react";
+import { revisionMessages } from "@/messages/revision";
 
 interface RevisionWorkspacePanelsProps {
   feedback: AnalysisFeedback;
@@ -68,7 +69,7 @@ export function RevisionWorkspacePanels({
               <div className="p-4 border-b border-border/60 shrink-0 bg-primary/5">
                 <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 text-warning" />
-                  Gợi ý từ AI
+                  {revisionMessages.feedback.sidebarTitle}
                 </h2>
               </div>
               <div className="flex-1 overflow-y-auto p-4">
@@ -101,7 +102,7 @@ export function RevisionWorkspacePanels({
         <section className="panel-glass p-4">
           <h2 className="text-sm font-semibold text-fg mb-3 flex items-center gap-2">
             <Lightbulb className="h-4 w-4 text-warning" />
-            Gợi ý từ AI
+            {revisionMessages.feedback.sidebarTitle}
           </h2>
           <FeedbackSidebar
             feedback={feedback}

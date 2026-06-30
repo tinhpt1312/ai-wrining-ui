@@ -12,6 +12,8 @@ import { EmptyState } from "@/components/empty-state";
 import { Pagination } from "@/components/pagination";
 import { usePagination } from "@/hooks/usePagination";
 import { BookOpen } from "lucide-react";
+import { exploreMessages } from "@/messages/explore";
+import { msg } from "@/messages/format";
 
 interface UserProfileViewProps {
   username: string;
@@ -31,14 +33,14 @@ export function UserProfileView({ username }: UserProfileViewProps) {
     usePublicWritingsByUser(username, { limit, offset });
 
   if (profileLoading) {
-    return <Loading fullScreen text="Đang tải hồ sơ..." />;
+    return <Loading fullScreen text={exploreMessages.userProfile.loading} />;
   }
 
   if (profileError || !profile) {
     return (
       <Error
-        title="Không tìm thấy người dùng"
-        message="Tài khoản này không tồn tại hoặc đã bị vô hiệu hóa."
+        title={exploreMessages.userProfile.error.title}
+        message={exploreMessages.userProfile.error.message}
         retry={() => window.history.back()}
       />
     );
@@ -55,22 +57,22 @@ export function UserProfileView({ username }: UserProfileViewProps) {
       <section className="space-y-5">
         <div className="flex items-center justify-between gap-3 px-1">
           <h2 className="text-sm font-semibold text-fg uppercase tracking-wider">
-            Bài viết công khai
+            {exploreMessages.userProfile.publicWritingsTitle}
           </h2>
           {total > 0 && (
             <span className="text-sm text-muted font-mono tabular-nums">
-              {total} bài
+              {msg(exploreMessages.userProfile.writingsCount, { count: total })}
             </span>
           )}
         </div>
 
         {writingsLoading ? (
-          <Loading text="Đang tải bài viết..." />
+          <Loading text={exploreMessages.userProfile.writingsLoading} />
         ) : writings.length === 0 ? (
           <EmptyState
             icon={<BookOpen className="h-10 w-10 text-subtle" />}
-            title="Chưa có bài công khai"
-            description="Người dùng này chưa chia sẻ bài viết nào ở chế độ công khai."
+            title={exploreMessages.userProfile.emptyTitle}
+            description={exploreMessages.userProfile.emptyDescription}
           />
         ) : (
           <PublicWritingGrid writings={writings} />

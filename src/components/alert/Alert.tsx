@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { componentMessages } from "@/messages/components";
 
 interface AlertProps {
   type: "success" | "error" | "warning" | "info";
@@ -32,7 +33,7 @@ export function Alert({ type, title, message, onClose }: AlertProps) {
         <button
           onClick={onClose}
           className="text-current opacity-60 hover:opacity-100 transition-opacity shrink-0"
-          aria-label="Đóng"
+          aria-label={componentMessages.alert.closeAria}
         >
           ✕
         </button>

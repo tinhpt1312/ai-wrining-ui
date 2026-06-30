@@ -4,6 +4,8 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TokenUsage } from "@/types/api";
+import { dashboardMessages as m } from "@/messages/dashboard";
+import { msg } from "@/messages/format";
 
 function usageTone(percentage: number) {
   if (percentage > 80) return { stroke: "var(--error)", label: "text-error" };
@@ -23,6 +25,12 @@ export function TokenUsagePanel({
     { name: "used", value: tokenUsage.used },
     { name: "remaining", value: Math.max(tokenUsage.limit - tokenUsage.used, 0) },
   ];
+  const resetLabel = new Date(tokenUsage.resetAt).toLocaleDateString("vi-VN", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <section className="card-elevated p-5 sm:p-6 h-full flex flex-col">
@@ -32,16 +40,10 @@ export function TokenUsagePanel({
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-warning-soft text-warning ring-1 ring-warning/20">
               <Zap className="h-4 w-4" />
             </span>
-            <h2 className="text-sm font-semibold text-fg">Hạn mức token hôm nay</h2>
+            <h2 className="text-sm font-semibold text-fg">{m.token.title}</h2>
           </div>
           <p className="text-xs text-muted mt-2">
-            Làm mới{" "}
-            {new Date(tokenUsage.resetAt).toLocaleDateString("vi-VN", {
-              month: "short",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {msg(m.token.resetAt, { date: resetLabel })}
           </p>
         </div>
         <p className={cn("stat-value text-3xl font-bold", tone.label)}>
@@ -74,7 +76,7 @@ export function TokenUsagePanel({
               {tokenUsage.used.toLocaleString("vi-VN")}
             </span>
             <span className="text-[10px] text-subtle uppercase tracking-wide">
-              đã dùng
+              {m.token.used}
             </span>
           </div>
         </div>
@@ -91,12 +93,19 @@ export function TokenUsagePanel({
             />
           </div>
           <div className="flex justify-between text-xs text-muted font-mono tabular-nums">
-            <span>{tokenUsage.used.toLocaleString("vi-VN")} token</span>
-            <span>{tokenUsage.limit.toLocaleString("vi-VN")} token</span>
+            <span>
+              {msg(m.token.tokenCount, {
+                count: tokenUsage.used.toLocaleString("vi-VN"),
+              })}
+            </span>
+            <span>
+              {msg(m.token.tokenCount, {
+                count: tokenUsage.limit.toLocaleString("vi-VN"),
+              })}
+            </span>
           </div>
           <p className="text-xs text-muted leading-relaxed">
-            Token dùng cho chấm bài AI và gợi ý sửa. Dùng hết hạn mức thì chờ
-            đến thời điểm làm mới.
+            {m.token.description}
           </p>
         </div>
       </div>

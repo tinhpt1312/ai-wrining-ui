@@ -10,6 +10,8 @@ import {
   estimateReadingTime,
   getWritingTypeLabel,
 } from "@/utils/helpers";
+import { shareMessages as m } from "@/messages/share";
+import { msg } from "@/messages/format";
 
 export function PublicWritingShareView({ writing }: { writing: PublicShareWriting }) {
   const authorName = writing.author.fullName || writing.author.username;
@@ -29,7 +31,7 @@ export function PublicWritingShareView({ writing }: { writing: PublicShareWritin
         <div className="relative space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <Badge>{getWritingTypeLabel(writing.type)}</Badge>
-            <Badge variant="success">Công khai</Badge>
+            <Badge variant="success">{m.writing.publicBadge}</Badge>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-fg tracking-tight leading-tight">
             {writing.title}
@@ -39,7 +41,7 @@ export function PublicWritingShareView({ writing }: { writing: PublicShareWritin
               <User className="h-3.5 w-3.5" />
               {authorName}
             </span>
-            <span>{wordCount(writing.content)} chữ</span>
+            <span>{msg(m.writing.wordCount, { count: wordCount(writing.content) })}</span>
             <span>{estimateReadingTime(writing.content)}</span>
             <span className="inline-flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" />
@@ -51,7 +53,7 @@ export function PublicWritingShareView({ writing }: { writing: PublicShareWritin
 
       <section className="panel-glass p-5 sm:p-6">
         <h2 className="text-sm font-semibold text-fg mb-4 uppercase tracking-wider">
-          Nội dung
+          {m.writing.contentTitle}
         </h2>
         <div className="rounded-xl border border-border/60 bg-surface-2/50 px-5 py-6 sm:px-7 sm:py-8">
           <div className="prose-content text-base sm:text-lg text-fg leading-[1.85] whitespace-pre-wrap">
@@ -62,10 +64,10 @@ export function PublicWritingShareView({ writing }: { writing: PublicShareWritin
 
       <footer className="panel-glass p-5 text-center space-y-3">
         <p className="text-sm text-muted">
-          Viết &amp; chấm văn bằng AI — tạo bài, nhận phản hồi và cải thiện từng câu.
+          {m.footer.tagline}
         </p>
         <Link href={ROUTES.LOGIN}>
-          <Button className="btn-glow-solid">Tham gia ngay</Button>
+          <Button className="btn-glow-solid">{m.footer.join}</Button>
         </Link>
       </footer>
     </article>

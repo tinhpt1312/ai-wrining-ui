@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth";
 import { Loading } from "@/components/loading";
 import { AppShell } from "@/layouts/AppShell";
+import { commonMessages } from "@/messages/common";
 
 export default function ProtectedLayout({
   children,
@@ -26,7 +27,7 @@ export default function ProtectedLayout({
   }, [isAuthenticated, mounted, isInitializing, router]);
 
   if (!mounted || isInitializing) {
-    return <Loading fullScreen text="Đang tải..." />;
+    return <Loading fullScreen text={commonMessages.loading} />;
   }
 
   if (!isAuthenticated) {

@@ -6,6 +6,8 @@ import { Input } from "@/components/input";
 import { Alert } from "@/components/alert";
 import { toast } from "@/lib/toast";
 import { getErrorMessage } from "@/utils/helpers";
+import { commonMessages } from "@/messages/common";
+import { profileMessages } from "@/messages/profile";
 import { useUpdateProfile } from "../hooks/useProfileApi";
 import type { User } from "@/types/api";
 
@@ -35,7 +37,7 @@ export function ProfileForm({
         fullName: formData.fullName,
       });
       onUpdated?.(updated);
-      toast.success("Đã cập nhật hồ sơ");
+      toast.success(profileMessages.account.successToast);
     } catch (err) {
       setError(getErrorMessage(err));
     }
@@ -44,12 +46,17 @@ export function ProfileForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <Alert type="error" title="Lỗi" message={error} onClose={() => setError(null)} />
+        <Alert
+          type="error"
+          title={commonMessages.error.title}
+          message={error}
+          onClose={() => setError(null)}
+        />
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
-          label="Tên đăng nhập"
+          label={profileMessages.account.usernameLabel}
           name="username"
           value={formData.username}
           onChange={(e) =>
@@ -58,7 +65,7 @@ export function ProfileForm({
           required
         />
         <Input
-          label="Email"
+          label={profileMessages.account.emailLabel}
           name="email"
           type="email"
           value={formData.email}
@@ -68,19 +75,19 @@ export function ProfileForm({
         />
       </div>
       <Input
-        label="Họ và tên"
+        label={profileMessages.account.fullNameLabel}
         name="fullName"
         value={formData.fullName}
         onChange={(e) =>
           setFormData((prev) => ({ ...prev, fullName: e.target.value }))
         }
-        placeholder="Tên hiển thị trên trang công khai (tuỳ chọn)"
-        helperText="Hiển thị khi bạn chia sẻ bài viết ở chế độ Công khai."
+        placeholder={profileMessages.account.fullNamePlaceholder}
+        helperText={profileMessages.account.fullNameHelper}
       />
 
       <div className="flex justify-end pt-2">
         <Button type="submit" isLoading={updateProfile.isPending}>
-          Lưu thay đổi
+          {profileMessages.account.saveButton}
         </Button>
       </div>
     </form>

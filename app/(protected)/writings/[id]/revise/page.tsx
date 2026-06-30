@@ -4,6 +4,7 @@ import { use, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { RevisionWorkspace } from "@/features/revision";
 import { Loading } from "@/components/loading";
+import { commonMessages } from "@/messages/common";
 
 function RevisePageContent({ writingId }: { writingId: string }) {
   const searchParams = useSearchParams();
@@ -22,7 +23,7 @@ export default function WritingRevisePage({
   const { id: writingId } = use(params);
 
   return (
-    <Suspense fallback={<Loading fullScreen text="Đang tải..." />}>
+    <Suspense fallback={<Loading fullScreen text={commonMessages.loading} />}>
       <RevisePageContent writingId={writingId} />
     </Suspense>
   );

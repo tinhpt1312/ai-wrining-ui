@@ -3,6 +3,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { componentMessages } from "@/messages/components";
 
 function Dialog({
   ...props
@@ -39,7 +40,7 @@ function DialogContent({
         {children}
         <DialogPrimitive.Close
           className="absolute right-4 top-4 rounded-lg p-1.5 text-muted hover:text-fg hover:bg-surface-2/80 transition-colors"
-          aria-label="Đóng"
+          aria-label={componentMessages.dialog.closeAria}
         >
           <X className="h-4 w-4" />
         </DialogPrimitive.Close>

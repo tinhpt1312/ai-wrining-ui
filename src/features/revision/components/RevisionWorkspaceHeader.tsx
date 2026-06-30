@@ -7,6 +7,8 @@ import { scoreTextColor } from "@/features/analysis/utils/score.utils";
 import { RevisionStepper } from "./RevisionStepper";
 import { cn } from "@/lib/utils";
 import type { Analytics, Writing } from "@/types/api";
+import { revisionMessages } from "@/messages/revision";
+import { msg } from "@/messages/format";
 
 interface RevisionWorkspaceHeaderProps {
   writing: Writing;
@@ -38,15 +40,15 @@ export function RevisionWorkspaceHeader({
             className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg transition-colors shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
-            Về bài viết
+            {revisionMessages.header.backToWriting}
           </Link>
           <div className="hidden sm:block h-4 w-px bg-border shrink-0" />
           <div className="min-w-0">
             <h1 className="text-lg sm:text-xl font-bold text-fg tracking-tight truncate">
-              Chữa bài: {writing.title}
+              {msg(revisionMessages.header.title, { title: writing.title })}
             </h1>
             <p className="text-xs sm:text-sm text-muted truncate">
-              Cùng một bài viết · lưu = ghi mốc hành trình
+              {revisionMessages.header.subtitle}
               {analysis && (
                 <>
                   {" "}
@@ -79,12 +81,12 @@ export function RevisionWorkspaceHeader({
             isLoading={isRegrading}
           >
             <Sparkles className="h-4 w-4" />
-            Chấm lại
+            {revisionMessages.header.regrade}
           </Button>
           <Link href={ROUTES.writingJourney(writingId)}>
             <Button size="sm" variant="outline" className="gap-1.5">
               <History className="h-4 w-4" />
-              Hành trình
+              {revisionMessages.header.journey}
             </Button>
           </Link>
         </div>

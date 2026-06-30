@@ -2,11 +2,12 @@
 
 import { Check, Sparkles, PenLine, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { revisionMessages } from "@/messages/revision";
 
 const STEPS = [
-  { id: "graded", label: "Đã chấm", icon: Sparkles },
-  { id: "revising", label: "Đang chữa", icon: PenLine },
-  { id: "regrade", label: "Chấm lại", icon: RefreshCw },
+  { id: "graded", label: revisionMessages.stepper.graded, icon: Sparkles },
+  { id: "revising", label: revisionMessages.stepper.revising, icon: PenLine },
+  { id: "regrade", label: revisionMessages.stepper.regrade, icon: RefreshCw },
 ] as const;
 
 export type RevisionStep = (typeof STEPS)[number]["id"];
@@ -22,7 +23,7 @@ export function RevisionStepper({
 
   return (
     <nav
-      aria-label="Tiến trình chữa bài"
+      aria-label={revisionMessages.stepper.ariaLabel}
       className={cn("flex items-center gap-2 sm:gap-4", className)}
     >
       {STEPS.map((step, index) => {

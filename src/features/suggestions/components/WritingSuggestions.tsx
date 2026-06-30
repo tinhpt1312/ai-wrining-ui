@@ -25,6 +25,9 @@ import {
   normalizeValue,
   toLabel,
 } from "../utils/suggestion.utils";
+import { suggestionsMessages } from "@/messages/suggestions";
+import { commonMessages } from "@/messages/common";
+import { msg } from "@/messages/format";
 
 interface WritingSuggestionsProps {
   writingId: string;
@@ -151,7 +154,9 @@ export default function WritingSuggestions({
 
       setStatusFilter("open");
       setMutationSuccess(
-        count === 1 ? "Đã tạo 1 gợi ý." : `Đã tạo ${count} gợi ý.`,
+        count === 1
+          ? suggestionsMessages.toast.createdOne
+          : msg(suggestionsMessages.toast.createdMany, { count }),
       );
     } catch (error) {
       setMutationError(getErrorMessage(error));
@@ -176,8 +181,8 @@ export default function WritingSuggestions({
 
       setMutationSuccess(
         updateWriting
-          ? "Đã áp dụng gợi ý vào bài viết."
-          : "Đã đánh dấu gợi ý là đã áp dụng.",
+          ? suggestionsMessages.toast.appliedToWriting
+          : suggestionsMessages.toast.markedApplied,
       );
     } catch (error) {
       setMutationError(getErrorMessage(error));
@@ -193,11 +198,10 @@ export default function WritingSuggestions({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <h2 className="text-lg font-bold text-fg tracking-tight">
-              Gợi ý sửa bài AI
+              {suggestionsMessages.title}
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Xem các chỉnh sửa cụ thể, theo dõi thay đổi đã áp dụng và chạy lại
-              AI khi bạn cập nhật bản nháp.
+              {suggestionsMessages.description}
             </p>
           </div>
 
@@ -207,20 +211,26 @@ export default function WritingSuggestions({
               onClick={() => setShowRefactored((current) => !current)}
               disabled={!canPreviewRefactored}
             >
-              {showRefactored ? "Ẩn xem trước" : "Xem trước đã áp dụng"}
+              {showRefactored
+                ? suggestionsMessages.preview.hide
+                : suggestionsMessages.preview.show}
             </Button>
             <Button
               onClick={handleGenerateSuggestions}
               isLoading={generateSuggestions.isPending}
               disabled={generateSuggestions.isPending}
             >
-              {generateSuggestions.isPending ? "Đang phân tích..." : "Phân tích"}
+              {generateSuggestions.isPending
+                ? suggestionsMessages.analyze.loading
+                : suggestionsMessages.analyze.label}
             </Button>
           </div>
         </div>
 
         <div className="mt-5">
-          <p className="mb-2 text-sm font-medium text-fg">Lĩnh vực tập trung</p>
+          <p className="mb-2 text-sm font-medium text-fg">
+            {suggestionsMessages.focusAreas}
+          </p>
           <div className="flex flex-wrap gap-2">
             {focusAreaOptions.map((area) => {
               const active = focusAreas.includes(area.value);
@@ -246,19 +256,22 @@ export default function WritingSuggestions({
       </section>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <SuggestionStatCard label="Tổng" value={statsView.totalSuggestions} />
         <SuggestionStatCard
-          label="Chưa áp dụng"
+          label={suggestionsMessages.stats.total}
+          value={statsView.totalSuggestions}
+        />
+        <SuggestionStatCard
+          label={suggestionsMessages.stats.open}
           value={openCount}
           valueClass="text-warning"
         />
         <SuggestionStatCard
-          label="Đã áp dụng"
+          label={suggestionsMessages.stats.applied}
           value={appliedCount}
           valueClass="text-success"
         />
         <SuggestionStatCard
-          label="Độ tin cậy cao"
+          label={suggestionsMessages.stats.highConfidence}
           value={highConfidenceCount}
           valueClass="text-primary"
         />
@@ -267,21 +280,21 @@ export default function WritingSuggestions({
       <section className="bg-surface border border-border rounded-xl p-5">
         <div className="grid gap-4 md:grid-cols-4">
           <Select
-            label="Trạng thái"
+            label={suggestionsMessages.filters.status}
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
             options={[
-              { value: "all", label: "Tất cả" },
-              { value: "open", label: "Chưa áp dụng" },
-              { value: "applied", label: "Đã áp dụng" },
+              { value: "all", label: commonMessages.filter.all },
+              { value: "open", label: suggestionsMessages.status.open },
+              { value: "applied", label: suggestionsMessages.status.applied },
             ]}
           />
           <Select
-            label="Loại"
+            label={suggestionsMessages.filters.type}
             value={typeFilter}
             onChange={(event) => setTypeFilter(event.target.value)}
             options={[
-              { value: "all", label: "Tất cả loại" },
+              { value: "all", label: commonMessages.filter.allTypes },
               ...typeOptions.map((type) => ({
                 value: type,
                 label: toLabel(type),
@@ -289,11 +302,11 @@ export default function WritingSuggestions({
             ]}
           />
           <Select
-            label="Mức độ"
+            label={suggestionsMessages.filters.severity}
             value={severityFilter}
             onChange={(event) => setSeverityFilter(event.target.value)}
             options={[
-              { value: "all", label: "Tất cả mức độ" },
+              { value: "all", label: suggestionsMessages.filters.allSeverity },
               ...severityOptions.map((severity) => ({
                 value: severity,
                 label: toLabel(severity),
@@ -308,7 +321,7 @@ export default function WritingSuggestions({
               onClick={resetFilters}
               disabled={!hasActiveFilters}
             >
-              Xóa bộ lọc
+              {suggestionsMessages.filters.clear}
             </Button>
           </div>
         </div>
@@ -317,7 +330,7 @@ export default function WritingSuggestions({
       {mutationError && (
         <Alert
           type="error"
-          title="Thao tác gợi ý thất bại"
+          title={suggestionsMessages.alert.mutationFailed}
           message={mutationError}
           onClose={() => setMutationError(null)}
         />
@@ -326,7 +339,7 @@ export default function WritingSuggestions({
       {mutationSuccess && (
         <Alert
           type="success"
-          title="Đã cập nhật"
+          title={suggestionsMessages.alert.updated}
           message={mutationSuccess}
           onClose={() => setMutationSuccess(null)}
         />
@@ -335,7 +348,7 @@ export default function WritingSuggestions({
       {suggestionsError && (
         <Alert
           type="error"
-          title="Không tải được gợi ý"
+          title={suggestionsMessages.alert.loadFailed}
           message={getErrorMessage(suggestionsError)}
         />
       )}
@@ -343,7 +356,7 @@ export default function WritingSuggestions({
       {statsError && !stats && suggestions.length > 0 && (
         <Alert
           type="warning"
-          title="Không có thống kê"
+          title={suggestionsMessages.alert.noStats}
           message={getErrorMessage(statsError)}
         />
       )}
@@ -351,23 +364,29 @@ export default function WritingSuggestions({
       {showRefactored && canPreviewRefactored && (
         <section className="bg-surface border border-border rounded-xl p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-base font-semibold text-fg">Xem trước đã áp dụng</h3>
-            <span className="text-sm text-muted">{appliedCount} đã áp dụng</span>
+            <h3 className="text-base font-semibold text-fg">
+              {suggestionsMessages.preview.title}
+            </h3>
+            <span className="text-sm text-muted">
+              {msg(suggestionsMessages.preview.appliedCount, {
+                count: appliedCount,
+              })}
+            </span>
           </div>
 
           {isRefactoredLoading ? (
-            <Loading text="Đang tải xem trước..." />
+            <Loading text={suggestionsMessages.preview.loading} />
           ) : refactoredError ? (
             <Alert
               type="error"
-              title="Không tải được xem trước"
+              title={suggestionsMessages.preview.loadFailed}
               message={getErrorMessage(refactoredError)}
             />
           ) : refactoredWriting ? (
             <div className="grid gap-4 lg:grid-cols-2">
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">
-                  Bản gốc
+                  {suggestionsMessages.preview.original}
                 </p>
                 <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-border bg-surface-2 p-4 text-sm leading-6 text-muted">
                   {refactoredWriting.original}
@@ -375,7 +394,7 @@ export default function WritingSuggestions({
               </div>
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-success">
-                  Đã chỉnh sửa
+                  {suggestionsMessages.preview.refactored}
                 </p>
                 <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-success/20 bg-success-soft p-4 text-sm leading-6 text-fg">
                   {refactoredWriting.refactored}
@@ -388,18 +407,18 @@ export default function WritingSuggestions({
 
       {isSuggestionsLoading && suggestions.length === 0 ? (
         <section className="bg-surface border border-border rounded-xl p-8">
-          <Loading text="Đang tải gợi ý..." />
+          <Loading text={suggestionsMessages.loading} />
         </section>
       ) : suggestions.length === 0 ? (
         <section className="bg-surface border border-border rounded-xl">
           <EmptyState
             icon="💡"
-            title="Chưa có gợi ý"
-            description="Chạy phân tích AI để nhận các gợi ý cải thiện cụ thể cho bài viết này."
+            title={suggestionsMessages.empty.title}
+            description={suggestionsMessages.empty.description}
             action={{
               label: generateSuggestions.isPending
-                ? "Đang phân tích..."
-                : "Tạo gợi ý",
+                ? suggestionsMessages.analyze.loading
+                : suggestionsMessages.analyze.generate,
               onClick: handleGenerateSuggestions,
             }}
           />
@@ -408,9 +427,12 @@ export default function WritingSuggestions({
         <section className="bg-surface border border-border rounded-xl">
           <EmptyState
             icon="🔍"
-            title="Không có gợi ý phù hợp"
-            description="Hãy điều chỉnh bộ lọc để xem thêm gợi ý."
-            action={{ label: "Xóa bộ lọc", onClick: resetFilters }}
+            title={suggestionsMessages.noMatches.title}
+            description={suggestionsMessages.noMatches.description}
+            action={{
+              label: suggestionsMessages.filters.clear,
+              onClick: resetFilters,
+            }}
           />
         </section>
       ) : (

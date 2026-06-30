@@ -11,6 +11,8 @@ import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { ShareFacebookButton } from "@/components/share-button";
 import { ExportWritingButton } from "@/components/export-button";
+import { commonMessages } from "@/messages/common";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import {
   formatDateTime,
@@ -67,7 +69,7 @@ export function WritingDetailHeader({
           <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs sm:text-sm text-muted font-mono tabular-nums">
             <span className="inline-flex items-center gap-1.5">
               <FileText className="h-3.5 w-3.5" />
-              {wordCount(writing.content)} chữ
+              {wordCount(writing.content)} {commonMessages.words}
             </span>
             <span>{estimateReadingTime(writing.content)}</span>
             <span className="inline-flex items-center gap-1.5">
@@ -87,7 +89,7 @@ export function WritingDetailHeader({
             >
               <Button className="gap-1.5 w-full sm:w-auto btn-glow-solid">
                 <PenLine className="h-4 w-4" />
-                Chữa bài
+                {writingsMessages.detail.reviseButton}
               </Button>
             </Link>
           )}
@@ -104,7 +106,7 @@ export function WritingDetailHeader({
                 )}
               >
                 <History className="h-4 w-4" />
-                Hành trình
+                {writingsMessages.detail.journeyButton}
                 {revisionCount != null && revisionCount > 0 && (
                   <Badge variant="neutral" className="ml-0.5">
                     {revisionCount}
@@ -123,14 +125,14 @@ export function WritingDetailHeader({
                 className="gap-1.5 w-full sm:w-auto"
               >
                 <Settings2 className="h-4 w-4" />
-                Thông tin bài
+                {writingsMessages.detail.editInfoButton}
               </Button>
             </Link>
           )}
           <Link href={ROUTES.WRITINGS} className="flex-1 sm:flex-none">
             <Button variant="outline" className="gap-1.5 w-full sm:w-auto">
               <ArrowLeft className="h-4 w-4" />
-              Danh sách
+              {writingsMessages.detail.listButton}
             </Button>
           </Link>
         </div>
@@ -159,7 +161,7 @@ export function WritingContentPanel({ content }: { content: string }) {
     <div className="card-elevated overflow-hidden">
       <div className="border-b border-border/60 px-5 sm:px-7 py-4">
         <h2 className="text-sm font-semibold text-fg uppercase tracking-wider">
-          Nội dung bài viết
+          {writingsMessages.detail.contentHeading}
         </h2>
       </div>
       <div className="px-5 py-6 sm:px-10 sm:py-10 lg:px-14 lg:py-12">
@@ -183,9 +185,9 @@ export function WritingAiSectionHeader({
   return (
     <div className="card-elevated p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <h2 className="text-sm font-semibold text-fg">Chấm bài AI</h2>
+        <h2 className="text-sm font-semibold text-fg">{writingsMessages.detail.aiSectionTitle}</h2>
         <p className="text-sm text-muted mt-1">
-          Nhận điểm số, nhận xét chi tiết và bài viết mẫu tham khảo.
+          {writingsMessages.detail.aiSectionDescription}
         </p>
       </div>
       <Button
@@ -194,7 +196,7 @@ export function WritingAiSectionHeader({
         disabled={isLoading}
         className="shrink-0 w-full sm:w-auto gap-2 btn-glow-solid"
       >
-        {isLoading ? "Đang chấm..." : "Chấm bài bằng AI"}
+        {isLoading ? writingsMessages.detail.aiAnalyzing : writingsMessages.detail.aiAnalyzeButton}
       </Button>
     </div>
   );

@@ -8,8 +8,9 @@ import { Textarea } from "@/components/textarea";
 import { Select } from "@/components/select";
 import { Alert } from "@/components/alert";
 import { DocxUploadButton } from "@/features/writings/components/DocxUploadButton";
+import { commonMessages } from "@/messages/common";
+import { writingsMessages } from "@/messages/writings";
 import {
-  writingTypeOptions,
   writingStatusOptions,
   getWritableTypeOptions,
   validationRules,
@@ -140,7 +141,7 @@ export function WritingForm({
       {error && (
         <Alert
           type="error"
-          title="Lỗi"
+          title={commonMessages.error.title}
           message={error}
           onClose={() => setError(null)}
         />
@@ -149,14 +150,14 @@ export function WritingForm({
       <div className="panel-glass p-5 sm:p-6 space-y-5">
         <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
           <PenLine className="h-4 w-4 text-primary" />
-          Thông tin bài viết
+          {writingsMessages.form.infoSection}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
-            label="Tiêu đề"
+            label={writingsMessages.form.titleLabel}
             name="title"
-            placeholder="Nhập tiêu đề bài viết"
+            placeholder={writingsMessages.form.titlePlaceholder}
             value={formData.title}
             onChange={handleChange}
             error={errors.title}
@@ -164,7 +165,7 @@ export function WritingForm({
           />
 
           <Select
-            label="Loại bài"
+            label={writingsMessages.form.typeLabel}
             name="type"
             value={formData.type}
             onChange={handleChange}
@@ -178,7 +179,7 @@ export function WritingForm({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <h2 className="text-sm font-semibold text-fg flex items-center gap-2">
             <Type className="h-4 w-4 text-primary" />
-            Nội dung
+            {writingsMessages.form.contentSection}
           </h2>
           <DocxUploadButton
             onParsed={handleDocxParsed}
@@ -187,14 +188,13 @@ export function WritingForm({
           />
         </div>
         <p className="text-xs text-muted leading-relaxed">
-          Bạn có thể nhập trực tiếp hoặc tải lên file Word (.docx). Hệ thống
-          sẽ tự động đọc nội dung và điền vào ô bên dưới.
+          {writingsMessages.form.contentHelp}
         </p>
 
         <Textarea
-          label="Nội dung bài viết"
+          label={writingsMessages.form.contentLabel}
           name="content"
-          placeholder="Viết nội dung bài của bạn tại đây..."
+          placeholder={writingsMessages.form.contentPlaceholder}
           value={formData.content}
           onChange={handleChange}
           error={errors.content}
@@ -211,11 +211,11 @@ export function WritingForm({
           ) : (
             <Lock className="h-4 w-4 text-warning" />
           )}
-          Trạng thái chia sẻ
+          {writingsMessages.form.statusSection}
         </h2>
 
         <Select
-          label="Trạng thái"
+          label={writingsMessages.form.statusLabel}
           name="status"
           value={formData.status}
           onChange={handleChange}
@@ -223,8 +223,8 @@ export function WritingForm({
         />
         <p className="text-xs text-muted leading-relaxed">
           {isPublic
-            ? "Công khai — người dùng khác có thể xem trên trang Khám phá."
-            : "Bản nháp — chỉ bạn mới xem được bài viết này."}
+            ? writingsMessages.form.statusPublic
+            : writingsMessages.form.statusDraft}
         </p>
       </div>
 
@@ -237,7 +237,7 @@ export function WritingForm({
             disabled={isSaving}
             className="w-full sm:w-auto"
           >
-            Hủy
+            {commonMessages.cancel}
           </Button>
         )}
         <Button
@@ -246,7 +246,7 @@ export function WritingForm({
           disabled={isSaving || isLoading}
           className="w-full sm:w-auto btn-glow-solid"
         >
-          {isEditing ? "Cập nhật bài viết" : "Tạo bài viết"}
+          {isEditing ? writingsMessages.form.updateButton : writingsMessages.form.createButton}
         </Button>
       </div>
     </form>

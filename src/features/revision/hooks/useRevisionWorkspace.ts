@@ -20,6 +20,8 @@ import {
 } from "@/features/suggestions";
 import { useSelfEditUnlock } from "./useSelfEditUnlock";
 import { getOverallAnalysisScore } from "@/features/analysis/utils/score.utils";
+import { revisionMessages } from "@/messages/revision";
+import { msg } from "@/messages/format";
 import type { AnalysisFeedback, Writing, WritingSuggestion } from "@/types/api";
 
 interface UseRevisionWorkspaceOptions {
@@ -182,10 +184,12 @@ export function useRevisionWorkspace({
       setSavedContent(draftContent);
       setHasUnsavedChanges(false);
       toast.success(
-        `Đã cập nhật bài viết · mốc #${revision.revisionNumber} trên hành trình`,
+        msg(revisionMessages.toast.saveSuccess, {
+          number: revision.revisionNumber,
+        }),
       );
     } catch {
-      toast.error("Không thể lưu bài viết");
+      toast.error(revisionMessages.toast.saveFailed);
     }
   }, [
     writing,
@@ -219,10 +223,12 @@ export function useRevisionWorkspace({
         }
       }
       toast.success(
-        updateWritingContent ? "Đã áp dụng vào bài viết" : "Đã đánh dấu",
+        updateWritingContent
+          ? revisionMessages.toast.appliedToWriting
+          : revisionMessages.toast.marked,
       );
     } catch {
-      toast.error("Không thể áp dụng gợi ý");
+      toast.error(revisionMessages.toast.applyFailed);
     } finally {
       setApplyingId(null);
     }
@@ -231,7 +237,7 @@ export function useRevisionWorkspace({
   const handleRegrade = async () => {
     if (!writing) return;
     if (hasUnsavedChanges) {
-      toast.error("Hãy lưu bài viết trước khi chấm lại");
+      toast.error(revisionMessages.toast.saveBeforeRegrade);
       return;
     }
     try {
@@ -240,60 +246,60 @@ export function useRevisionWorkspace({
         writingType: writing.type,
         previousAnalysisId: analysisId,
       });
-      toast.success("Đã chấm lại bài viết");
+      toast.success(revisionMessages.toast.regradeSuccess);
       router.push(ROUTES.analysis(result.id));
     } catch {
-      toast.error("Không thể chấm lại. Vui lòng thử lại.");
+      toast.error(revisionMessages.toast.regradeFailed);
     }
   };
 
   const handleUseSample = () => {
     if (!selfEditUnlocked) {
-      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi dùng bài mẫu");
+      toast.error(revisionMessages.toast.selfEditBeforeSample);
       return;
     }
     if (!feedback.sampleWriting) return;
     setDraftContent(feedback.sampleWriting);
     setHasUnsavedChanges(feedback.sampleWriting !== savedContent);
-    toast.success("Đã tải bài mẫu vào trình soạn thảo");
+    toast.success(revisionMessages.toast.sampleLoaded);
   };
 
   const handleCopySample = async () => {
     if (!selfEditUnlocked) {
-      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi xem bài mẫu");
+      toast.error(revisionMessages.toast.selfEditBeforeViewSample);
       return;
     }
     if (!feedback.sampleWriting) return;
     await navigator.clipboard.writeText(feedback.sampleWriting);
-    toast.success("Đã sao chép bài mẫu");
+    toast.success(revisionMessages.toast.sampleCopied);
   };
 
   const handleGenerateFromAnalysis = async () => {
     if (!selfEditUnlocked) {
-      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi xem gợi ý");
+      toast.error(revisionMessages.toast.selfEditBeforeSuggestions);
       return;
     }
     if (!analysisId) return;
     try {
       await generateFromAnalysis.mutateAsync({ writingId, analysisId });
       setSuggestionsOpen(true);
-      toast.success("Đã tải gợi ý từ báo cáo chấm");
+      toast.success(revisionMessages.toast.suggestionsFromAnalysis);
     } catch {
-      toast.error("Không thể tải gợi ý");
+      toast.error(revisionMessages.toast.loadSuggestionsFailed);
     }
   };
 
   const handleGenerateSuggestions = async () => {
     if (!selfEditUnlocked) {
-      toast.error("Hãy tự sửa bài ít nhất 50 ký tự trước khi xem gợi ý");
+      toast.error(revisionMessages.toast.selfEditBeforeSuggestions);
       return;
     }
     try {
       await generateSuggestions.mutateAsync({ writingId });
       setSuggestionsOpen(true);
-      toast.success("Đã tạo gợi ý chi tiết");
+      toast.success(revisionMessages.toast.suggestionsGenerated);
     } catch {
-      toast.error("Không thể tạo gợi ý");
+      toast.error(revisionMessages.toast.generateSuggestionsFailed);
     }
   };
 

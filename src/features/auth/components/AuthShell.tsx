@@ -6,22 +6,25 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { GridBackground } from "@/components/grid-background";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes.constants";
+import { appMessages } from "@/messages/app";
+import { authMessages } from "@/messages/auth";
+import { msg } from "@/messages/format";
 
 const FEATURES = [
   {
     icon: FileEdit,
-    title: "Viết & quản lý bài",
-    description: "Soạn, lưu và chỉnh sửa bài luận, truyện ngắn, bài báo.",
+    title: authMessages.hero.feature1.title,
+    description: authMessages.hero.feature1.description,
   },
   {
     icon: Sparkles,
-    title: "Chấm bài bằng AI",
-    description: "Nhận phản hồi chi tiết và bài viết mẫu tham khảo.",
+    title: authMessages.hero.feature2.title,
+    description: authMessages.hero.feature2.description,
   },
   {
     icon: Lightbulb,
-    title: "Gợi ý sửa từng câu",
-    description: "AI gợi ý chỉnh ngữ pháp, văn phong và cấu trúc.",
+    title: authMessages.hero.feature3.title,
+    description: authMessages.hero.feature3.description,
   },
 ];
 
@@ -59,10 +62,9 @@ export function AuthHero({ className }: { className?: string }) {
         <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm ring-1 ring-white/25 shadow-[0_0_32px_rgba(255,255,255,0.15)]">
           <PenLine className="h-5 w-5" />
         </div>
-        <h1 className="mt-8 text-4xl font-bold tracking-tight">Viết & Chấm Văn</h1>
+        <h1 className="mt-8 text-4xl font-bold tracking-tight">{appMessages.name}</h1>
         <p className="mt-3 max-w-md text-base leading-relaxed text-indigo-100/90">
-          Nền tảng viết văn thông minh — luyện viết, nhận phản hồi AI và cải thiện từng bài một cách
-          có hệ thống.
+          {authMessages.hero.tagline}
         </p>
       </div>
 
@@ -89,7 +91,7 @@ export function AuthHero({ className }: { className?: string }) {
       </ul>
 
       <p className="relative text-sm text-indigo-200/70">
-        Miễn phí cho mục đích học tập và luyện viết cá nhân.
+        {authMessages.hero.footer}
       </p>
     </div>
   );
@@ -118,21 +120,21 @@ export function AuthFormPanel({ mode, children }: AuthFormPanelProps) {
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30 shadow-[0_0_20px_var(--glow-primary)]">
               <PenLine className="h-4 w-4" />
             </span>
-            Viết & Chấm Văn
+            {appMessages.name}
           </Link>
         </div>
 
         <div className="mb-8">
           <p className="text-sm font-medium text-primary">
-            {isLogin ? "Chào mừng trở lại" : "Bắt đầu hành trình viết"}
+            {isLogin ? authMessages.panel.welcomeBack : authMessages.panel.startJourney}
           </p>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-fg sm:text-3xl">
-            {isLogin ? "Đăng nhập tài khoản" : "Tạo tài khoản mới"}
+            {isLogin ? authMessages.panel.loginTitle : authMessages.panel.registerTitle}
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             {isLogin
-              ? "Nhập thông tin để tiếp tục viết và chấm bài của bạn."
-              : "Đăng ký miễn phí để lưu bài viết và nhận phản hồi AI."}
+              ? authMessages.panel.loginDescription
+              : authMessages.panel.registerDescription}
           </p>
         </div>
 
@@ -159,7 +161,7 @@ export function AuthShell({
         <AuthFormPanel mode={mode}>{children}</AuthFormPanel>
       </div>
       <footer className="relative z-10 border-t border-border/60 py-4 text-center text-xs text-subtle">
-        © {new Date().getFullYear()} Viết & Chấm Văn — Luyện viết & phản hồi AI
+        {msg(appMessages.footer, { year: new Date().getFullYear() })}
       </footer>
     </div>
   );

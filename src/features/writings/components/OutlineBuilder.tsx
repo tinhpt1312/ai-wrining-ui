@@ -5,6 +5,8 @@ import { ListTree, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { cn } from "@/lib/utils";
+import { msg } from "@/messages/format";
+import { writingsMessages } from "@/messages/writings";
 import type { WritingOutline } from "@/types/api";
 import type { WritingPrompt } from "../constants/writing-prompts";
 import {
@@ -44,7 +46,7 @@ export function OutlineBuilder({
     <div className={cn("space-y-6", className)}>
       <div className="rounded-xl border border-primary/20 bg-primary-soft/20 p-4 sm:p-5">
         <p className="text-xs font-medium uppercase tracking-wider text-primary">
-          Bước 2 — Dàn ý
+          {writingsMessages.outline.stepLabel}
         </p>
         <h2 className="mt-1 text-lg font-semibold text-fg">{prompt.title}</h2>
         <p className="mt-2 text-sm text-muted leading-relaxed">
@@ -59,11 +61,10 @@ export function OutlineBuilder({
           </span>
           <div className="space-y-2 max-w-md">
             <h3 className="text-base font-semibold text-fg">
-              Tạo dàn ý trước khi viết
+              {writingsMessages.outline.emptyTitle}
             </h3>
             <p className="text-sm text-muted leading-relaxed">
-              AI gợi ý khung mở bài, thân bài và kết luận — bạn có thể chỉnh
-              sửa trước khi bắt đầu viết.
+              {writingsMessages.outline.emptyDescription}
             </p>
           </div>
           <Button
@@ -73,19 +74,19 @@ export function OutlineBuilder({
             isLoading={isGenerating}
           >
             <Sparkles className="h-4 w-4" />
-            Tạo dàn ý bằng AI
+            {writingsMessages.outline.generateButton}
           </Button>
         </div>
       ) : (
         <div className="space-y-5">
           <div className="space-y-2">
             <label className="text-sm font-medium text-fg">
-              Tiêu đề bài viết
+              {writingsMessages.outline.titleLabel}
             </label>
             <Input
               value={title}
               onChange={(e) => handleTitleChange(e.target.value)}
-              placeholder="Tiêu đề bài viết"
+              placeholder={writingsMessages.outline.titlePlaceholder}
             />
           </div>
 
@@ -125,7 +126,9 @@ export function OutlineBuilder({
                             ),
                           )
                         }
-                        placeholder={`Ý chính ${index + 1}`}
+                        placeholder={msg(writingsMessages.outline.keyPointPlaceholder, {
+                          index: index + 1,
+                        })}
                       />
                     </li>
                   ))}
@@ -146,10 +149,10 @@ export function OutlineBuilder({
               ) : (
                 <Sparkles className="h-4 w-4" />
               )}
-              Tạo lại dàn ý
+              {writingsMessages.outline.regenerateButton}
             </Button>
             <Button className="gap-2 btn-glow-solid" onClick={onContinue}>
-              Viết bài theo dàn ý
+              {writingsMessages.outline.continueButton}
             </Button>
           </div>
         </div>

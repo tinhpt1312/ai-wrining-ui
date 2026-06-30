@@ -14,6 +14,8 @@ import { QuickActionsPanel } from "./QuickActionsPanel";
 import { ProgressPanel } from "./ProgressPanel";
 import { RecentWritingsPanel } from "./RecentWritingsPanel";
 import { ROUTES } from "@/constants/routes.constants";
+import { dashboardMessages as m } from "@/messages/dashboard";
+import { msg } from "@/messages/format";
 
 export function DashboardView() {
   const { data: writingStats, isLoading: writingStatsLoading } =
@@ -39,20 +41,20 @@ export function DashboardView() {
   const recentWritings = writings?.data || [];
 
   if (isLoading) {
-    return <Loading text="Đang tải tổng quan..." />;
+    return <Loading text={m.loading.overview} />;
   }
 
   return (
     <div className="space-y-6">
       <PageHeader
         variant="glass"
-        title="Tổng quan"
-        description="Chào mừng bạn quay lại — theo dõi tiến độ viết và chấm bài."
+        title={m.header.title}
+        description={m.header.description}
         actions={
           <Link href={ROUTES.WRITING_NEW}>
             <Button className="gap-2 btn-glow-solid">
               <PenLine className="h-4 w-4" />
-              Viết bài mới
+              {m.header.newWriting}
             </Button>
           </Link>
         }
@@ -60,31 +62,34 @@ export function DashboardView() {
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
-          label="Tổng bài viết"
+          label={m.stats.totalWritings}
           value={writingStats?.totalWritings || 0}
           icon={FileText}
           tone="primary"
         />
         <StatCard
-          label="Tổng số chữ"
+          label={m.stats.totalWords}
           value={(writingStats?.totalWords || 0).toLocaleString("vi-VN")}
           icon={AlignLeft}
           tone="info"
         />
         <StatCard
-          label="Lần chấm bài"
+          label={m.stats.totalAnalyses}
           value={analysisStats?.totalAnalyses || 0}
           icon={Sparkles}
           tone="success"
         />
         <StatCard
-          label="Token đã dùng"
-          value={`${tokenPercentage}%`}
+          label={m.stats.tokenUsed}
+          value={msg(m.stats.tokenPercent, { percent: tokenPercentage })}
           icon={Zap}
           tone="warning"
           hint={
             tokenUsage
-              ? `${tokenUsage.used.toLocaleString("vi-VN")} / ${tokenUsage.limit.toLocaleString("vi-VN")}`
+              ? msg(m.stats.tokenUsage, {
+                  used: tokenUsage.used.toLocaleString("vi-VN"),
+                  limit: tokenUsage.limit.toLocaleString("vi-VN"),
+                })
               : undefined
           }
         />

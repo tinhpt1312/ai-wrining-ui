@@ -1,0 +1,31 @@
+export const navMessages = {
+  dashboard: "Tổng quan",
+  writings: "Bài viết",
+  explore: "Khám phá",
+  analysis: "Chấm bài",
+  profile: "Hồ sơ",
+  users: "Người dùng",
+  new: "Viết mới",
+  edit: "Chỉnh sửa",
+  revise: "Chữa bài",
+  journey: "Hành trình",
+  writeNew: "Viết bài mới",
+  profileTitle: "Hồ sơ cá nhân",
+  logout: "Đăng xuất",
+  openMenuAria: "Mở menu",
+  breadcrumbAria: "Breadcrumb",
+  drawerTitle: "Menu điều hướng",
+} as const;
+
+export const routeLabels: Record<string, string> = {
+  dashboard: navMessages.dashboard,
+  writings: navMessages.writings,
+  explore: navMessages.explore,
+  analysis: navMessages.analysis,
+  profile: navMessages.profile,
+  users: navMessages.users,
+  new: navMessages.new,
+  edit: navMessages.edit,
+  revise: navMessages.revise,
+  journey: navMessages.journey,
+};

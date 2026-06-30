@@ -1,12 +1,18 @@
 "use client";
 
+import { commonMessages } from "@/messages/common";
+
 interface ErrorProps {
   title?: string;
   message: string;
   retry?: () => void;
 }
 
-export function Error({ title = "Đã xảy ra lỗi", message, retry }: ErrorProps) {
+export function Error({
+  title = commonMessages.error.defaultTitle,
+  message,
+  retry,
+}: ErrorProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 p-8 bg-error-soft border border-error/20 rounded-xl text-center">
       <div className="flex flex-col gap-1.5">
@@ -18,7 +24,7 @@ export function Error({ title = "Đã xảy ra lỗi", message, retry }: ErrorPr
           onClick={retry}
           className="px-4 h-9 bg-error text-white rounded-lg hover:opacity-90 transition-opacity font-medium text-sm"
         >
-          Thử lại
+          {commonMessages.error.retry}
         </button>
       )}
     </div>

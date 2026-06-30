@@ -16,6 +16,9 @@ import { PageHeader } from "@/components/page-header";
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { toast } from "@/lib/toast";
 import { ROUTES } from "@/constants/routes.constants";
+import { analysisMessages } from "@/messages/analysis";
+import { commonMessages } from "@/messages/common";
+import { msg } from "@/messages/format";
 
 export function AnalysisListView() {
   const [limit] = useState(10);
@@ -37,30 +40,29 @@ export function AnalysisListView() {
 
   const handleDelete = async (id: string) => {
     const ok = await confirm({
-      title: "Xóa kết quả chấm bài",
-      description:
-        "Bạn có chắc muốn xóa kết quả chấm bài này? Hành động này không thể hoàn tác.",
-      confirmLabel: "Xóa",
-      cancelLabel: "Hủy",
+      title: analysisMessages.delete.title,
+      description: analysisMessages.delete.description,
+      confirmLabel: analysisMessages.delete.confirm,
+      cancelLabel: commonMessages.cancel,
       variant: "destructive",
     });
     if (!ok) return;
 
     deleteAnalytics(id, {
-      onSuccess: () => toast.success("Đã xóa kết quả chấm bài"),
-      onError: () => toast.error("Không thể xóa kết quả chấm bài"),
+      onSuccess: () => toast.success(analysisMessages.delete.success),
+      onError: () => toast.error(analysisMessages.delete.failed),
     });
   };
 
   if (isLoading) {
-    return <Loading text="Đang tải kết quả chấm bài..." />;
+    return <Loading text={analysisMessages.loading} />;
   }
 
   if (isError) {
     return (
       <Error
-        title="Lỗi"
-        message={error?.message || "Không thể tải danh sách chấm bài"}
+        title={commonMessages.error.title}
+        message={error?.message || analysisMessages.error.loadList}
       />
     );
   }
@@ -74,11 +76,15 @@ export function AnalysisListView() {
       <div className="space-y-6">
         <PageHeader
           variant="glass"
-          title="Kết quả chấm bài"
-          description={`${analyses?.total || 0} lần chấm đã lưu — theo dõi tiến bộ qua từng báo cáo.`}
+          title={analysisMessages.list.title}
+          description={msg(analysisMessages.list.description, {
+            count: analyses?.total || 0,
+          })}
           actions={
             <Link href={ROUTES.WRITINGS}>
-              <Button variant="secondary">Đến bài viết</Button>
+              <Button variant="secondary">
+                {analysisMessages.list.goToWritings}
+              </Button>
             </Link>
           }
         />
@@ -92,10 +98,10 @@ export function AnalysisListView() {
         ) : (
           <EmptyState
             icon={<Sparkles className="h-10 w-10" />}
-            title="Chưa có kết quả chấm bài"
-            description="Hãy chấm một bài viết để xem phản hồi AI tại đây."
+            title={analysisMessages.empty.noResults}
+            description={analysisMessages.empty.noResultsDescription}
             action={{
-              label: "Đến danh sách bài viết",
+              label: analysisMessages.empty.goToWritings,
               onClick: () => (window.location.href = ROUTES.WRITINGS),
             }}
           />
@@ -108,10 +114,13 @@ export function AnalysisListView() {
               onClick={() => setOffset(Math.max(0, offset - limit))}
               disabled={offset === 0}
             >
-              Trước
+              {commonMessages.pagination.prev}
             </Button>
             <span className="text-muted text-sm font-mono tabular-nums">
-              Trang {currentPage} / {totalPages}
+              {msg(commonMessages.pagination.page, {
+                current: currentPage,
+                total: totalPages,
+              })}
             </span>
             <Button
               variant="outline"
@@ -120,7 +129,7 @@ export function AnalysisListView() {
               }
               disabled={currentPage === totalPages}
             >
-              Sau
+              {commonMessages.pagination.next}
             </Button>
           </div>
         )}

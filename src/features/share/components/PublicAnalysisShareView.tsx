@@ -15,6 +15,8 @@ import {
   scoreRingColor,
   scoreTextColor,
 } from "@/features/analysis/utils/score.utils";
+import { shareMessages as m } from "@/messages/share";
+import { msg } from "@/messages/format";
 
 export function PublicAnalysisShareView({
   analysis,
@@ -55,7 +57,7 @@ export function PublicAnalysisShareView({
                 >
                   {score}
                 </span>
-                <span className="text-[10px] text-subtle">/10</span>
+                <span className="text-[10px] text-subtle">{m.analysis.scoreSuffix}</span>
               </>
             ) : (
               <Sparkles className="h-6 w-6 text-primary" />
@@ -64,7 +66,7 @@ export function PublicAnalysisShareView({
 
           <div className="flex-1 min-w-0 space-y-2">
             <p className="text-xs font-medium text-muted uppercase tracking-wider">
-              Kết quả chấm bài AI
+              {m.analysis.eyebrow}
             </p>
             <h1 className="text-xl sm:text-2xl font-bold text-fg tracking-tight leading-tight">
               {writing.title}
@@ -75,7 +77,11 @@ export function PublicAnalysisShareView({
                 <User className="h-3.5 w-3.5" />
                 {authorName}
               </span>
-              <span>Chấm lúc {formatDateTime(analysis.createdAt)}</span>
+              <span>
+                {msg(m.analysis.gradedAt, {
+                  datetime: formatDateTime(analysis.createdAt),
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -83,7 +89,7 @@ export function PublicAnalysisShareView({
         {summary && (
           <div className="relative rounded-xl border border-border/60 bg-surface-2/50 p-4 sm:p-5">
             <h2 className="text-sm font-semibold text-fg mb-2">
-              Nhận xét tổng quan
+              {m.analysis.summaryTitle}
             </h2>
             <p className="text-sm sm:text-base text-fg leading-relaxed whitespace-pre-wrap">
               {summary}
@@ -94,17 +100,17 @@ export function PublicAnalysisShareView({
         <Link href={ROUTES.shareWriting(writing.id)}>
           <Button variant="secondary" size="sm" className="gap-1.5">
             <FileText className="h-4 w-4" />
-            Đọc toàn bộ bài viết
+            {m.analysis.readFullWriting}
           </Button>
         </Link>
       </section>
 
       <footer className="panel-glass p-5 text-center space-y-3">
         <p className="text-sm text-muted">
-          Viết &amp; chấm văn bằng AI — tạo bài, nhận phản hồi và cải thiện từng câu.
+          {m.footer.tagline}
         </p>
         <Link href={ROUTES.LOGIN}>
-          <Button className="btn-glow-solid">Tham gia ngay</Button>
+          <Button className="btn-glow-solid">{m.footer.join}</Button>
         </Link>
       </footer>
     </article>

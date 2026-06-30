@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/layouts/Providers";
+import { appMessages } from "@/messages/app";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Viết & Chấm Văn",
-  description: "Viết văn và nhận phản hồi chấm bài bằng AI",
+  title: appMessages.meta.title,
+  description: appMessages.meta.description,
 };
 
 export default function RootLayout({

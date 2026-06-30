@@ -7,6 +7,8 @@ import { Button } from "@/components/button";
 import { Select } from "@/components/select";
 import { cn } from "@/lib/utils";
 import { toast } from "@/lib/toast";
+import { writingMessages } from "@/messages/writing";
+import { writingsMessages } from "@/messages/writings";
 import { WritingType } from "@/types/api";
 import type { GeneratedWritingPrompt, PromptDifficulty } from "@/types/api";
 import { writingTypeOptions } from "@/utils/helpers";
@@ -18,10 +20,10 @@ import { useGenerateWritingPrompts } from "../hooks/useWritingsApi";
 import { buildAiWritingPrompt } from "../utils/prompt.utils";
 
 const DIFFICULTY_OPTIONS: Array<{ value: string; label: string }> = [
-  { value: "", label: "Đa dạng độ khó" },
-  { value: "dễ", label: "Dễ" },
-  { value: "trung bình", label: "Trung bình" },
-  { value: "khó", label: "Khó" },
+  { value: "", label: writingMessages.prompt.difficulty.all },
+  { value: "dễ", label: writingMessages.prompt.difficulty.easy },
+  { value: "trung bình", label: writingMessages.prompt.difficulty.medium },
+  { value: "khó", label: writingMessages.prompt.difficulty.hard },
 ];
 
 interface AiPromptGeneratorProps {
@@ -52,9 +54,9 @@ export function AiPromptGenerator({ onSelect }: AiPromptGeneratorProps) {
       });
       setGenerated(result);
       setSelectedIndex(null);
-      toast.success("Đã sinh đề mới — chọn một đề để lập dàn ý");
+      toast.success(writingsMessages.aiPrompt.toastSuccess);
     } catch {
-      toast.error("Không thể sinh đề bài. Vui lòng thử lại.");
+      toast.error(writingsMessages.aiPrompt.toastError);
     }
   };
 
@@ -71,24 +73,23 @@ export function AiPromptGenerator({ onSelect }: AiPromptGeneratorProps) {
             <Wand2 className="h-5 w-5" />
           </span>
           <div>
-            <h3 className="text-sm font-semibold text-fg">Đề bài AI mới</h3>
+            <h3 className="text-sm font-semibold text-fg">{writingsMessages.aiPrompt.title}</h3>
             <p className="text-sm text-muted mt-1 leading-relaxed">
-              Mỗi lần sinh sẽ có bộ đề khác nhau — phù hợp luyện tập đa dạng
-              chủ đề.
+              {writingsMessages.aiPrompt.description}
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Select
-            label="Loại bài"
+            label={writingsMessages.aiPrompt.typeLabel}
             name="aiPromptType"
             value={type}
             onChange={(event) => setType(event.target.value as WritingType)}
             options={writingTypeOptions}
           />
           <Select
-            label="Độ khó"
+            label={writingsMessages.aiPrompt.difficultyLabel}
             name="aiPromptDifficulty"
             value={difficulty}
             onChange={(event) => setDifficulty(event.target.value)}
@@ -106,12 +107,12 @@ export function AiPromptGenerator({ onSelect }: AiPromptGeneratorProps) {
           {generated.length > 0 ? (
             <>
               <RefreshCw className="h-4 w-4" />
-              Sinh bộ đề mới
+              {writingsMessages.aiPrompt.generateNew}
             </>
           ) : (
             <>
               <Sparkles className="h-4 w-4" />
-              Sinh đề bằng AI
+              {writingsMessages.aiPrompt.generateFirst}
             </>
           )}
         </Button>
@@ -139,7 +140,7 @@ export function AiPromptGenerator({ onSelect }: AiPromptGeneratorProps) {
                   <Badge variant="neutral">
                     {PROMPT_DIFFICULTY_LABELS[prompt.difficulty]}
                   </Badge>
-                  <Badge variant="neutral">AI</Badge>
+                  <Badge variant="neutral">{writingsMessages.aiPrompt.badgeAi}</Badge>
                 </div>
                 <h4 className="text-sm font-semibold text-fg leading-snug">
                   {prompt.title}
@@ -149,7 +150,7 @@ export function AiPromptGenerator({ onSelect }: AiPromptGeneratorProps) {
                 </p>
                 <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-primary">
                   <Sparkles className="h-3.5 w-3.5" />
-                  Dùng đề này
+                  {writingsMessages.promptPicker.usePrompt}
                 </div>
               </button>
             );

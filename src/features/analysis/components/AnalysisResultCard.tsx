@@ -12,6 +12,7 @@ import {
   scoreRingColor,
   scoreTextColor,
 } from "../utils/score.utils";
+import { analysisMessages } from "@/messages/analysis";
 
 export function AnalysisResultCard({
   analysis,
@@ -27,7 +28,7 @@ export function AnalysisResultCard({
   const score = getOverallAnalysisScore(analysis.feedbackJson);
   const summary =
     getAnalysisSummary(analysis.feedbackJson) ||
-    "Đã có phản hồi AI cho bài viết này.";
+    analysisMessages.card.defaultSummary;
 
   return (
     <article
@@ -66,7 +67,7 @@ export function AnalysisResultCard({
           <div className="min-w-0 flex-1">
             <Link href={ROUTES.analysis(analysis.id)}>
               <h3 className="text-base font-semibold text-fg line-clamp-2 group-hover:text-primary transition-colors">
-                Báo cáo chấm bài
+                {analysisMessages.card.reportTitle}
               </h3>
             </Link>
             <p className="text-xs text-subtle mt-1 font-mono tabular-nums">
@@ -77,7 +78,7 @@ export function AnalysisResultCard({
               className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2"
             >
               <FileText className="h-3.5 w-3.5" />
-              Bài viết gốc
+              {analysisMessages.card.originalWriting}
             </Link>
           </div>
         </div>
@@ -93,12 +94,12 @@ export function AnalysisResultCard({
           >
             <Button size="sm" variant="secondary" className="gap-1.5 w-full sm:w-auto">
               <PenLine className="h-3.5 w-3.5" />
-              Chữa bài
+              {analysisMessages.card.revise}
             </Button>
           </Link>
           <Link href={ROUTES.analysis(analysis.id)} className="flex-1 sm:flex-none">
             <Button size="sm" className="gap-1.5 w-full sm:w-auto">
-              Chi tiết
+              {analysisMessages.card.detail}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -109,7 +110,7 @@ export function AnalysisResultCard({
               className="text-error hover:text-error hover:bg-error-soft"
               onClick={() => onDelete(analysis.id)}
               disabled={isDeleting}
-              aria-label="Xóa"
+              aria-label={analysisMessages.delete.ariaLabel}
             >
               <Trash2 className="h-4 w-4" />
             </Button>

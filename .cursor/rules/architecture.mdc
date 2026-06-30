@@ -97,6 +97,7 @@ import { useWritings } from "@/features/writings";
 | `query-keys.constants.ts` | `QUERY_KEYS` (factory functions) |
 | `cache.constants.ts` | `CACHE_TIME` |
 | `auth.constants.ts` | `AUTH_STORAGE_KEYS`, roles |
+| `src/messages/` | Toàn bộ UI copy (label, toast, aria…) — xem `messages.mdc` |
 
 ## Page route (Next.js App Router)
 

@@ -1,11 +1,12 @@
+import { writingMessages } from "@/messages/writing";
 import { WritingStatus, WritingType } from "@/types/api";
 import { ACTIVE_WRITING_TYPES, isActiveWritingType } from "../constants/active-writing-types";
 
 const WRITING_TYPE_LABELS: Record<string, string> = {
-  [WritingType.SOCIAL_ESSAY]: "Nghị luận xã hội",
-  [WritingType.CATHOLIC_ESSAY]: "Nghị luận công giáo",
-  [WritingType.SHORT_STORY]: "Truyện ngắn",
-  [WritingType.ARTICLE]: "Bài báo",
+  [WritingType.SOCIAL_ESSAY]: writingMessages.type.socialEssay,
+  [WritingType.CATHOLIC_ESSAY]: writingMessages.type.catholicEssay,
+  [WritingType.SHORT_STORY]: writingMessages.type.shortStory,
+  [WritingType.ARTICLE]: writingMessages.type.article,
 };
 
 /** Lựa chọn thể loại khi tạo bài / lọc / đề gợi ý */
@@ -15,8 +16,8 @@ export const writingTypeOptions = ACTIVE_WRITING_TYPES.map((value) => ({
 }));
 
 export const writingStatusOptions = [
-  { value: WritingStatus.DRAFT, label: "Bản Nháp" },
-  { value: WritingStatus.PUBLIC, label: "Công Khai" },
+  { value: WritingStatus.DRAFT, label: writingMessages.status.draft },
+  { value: WritingStatus.PUBLIC, label: writingMessages.status.public },
 ];
 
 export function getWritingTypeLabel(type: string): string {
@@ -35,7 +36,7 @@ export function getWritableTypeOptions(currentType?: string): Array<{
   if (currentType && !isActiveWritingType(currentType)) {
     options.push({
       value: currentType,
-      label: `${getWritingTypeLabel(currentType)} (không còn hỗ trợ tạo mới)`,
+      label: `${getWritingTypeLabel(currentType)} ${writingMessages.type.deprecatedSuffix}`,
     });
   }
 

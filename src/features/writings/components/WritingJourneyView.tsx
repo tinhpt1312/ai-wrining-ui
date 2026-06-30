@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowLeft, History, PenLine } from "lucide-react";
 import { Button } from "@/components/button";
 import { Loading } from "@/components/loading";
+import { msg } from "@/messages/format";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
 import { useWriting } from "@/features/writings";
@@ -53,16 +55,16 @@ export function WritingJourneyView({ writingId }: WritingJourneyViewProps) {
         revisionId: revision.id,
       });
       setSelectedRevisionId(revision.id);
-      toast.success("Đã khôi phục phiên bản vào bài viết hiện tại");
+      toast.success(writingsMessages.journey.restoreSuccess);
     } catch {
-      toast.error("Không thể khôi phục phiên bản");
+      toast.error(writingsMessages.journey.restoreError);
     } finally {
       setRestoringRevisionId(null);
     }
   };
 
   if (isWritingLoading) {
-    return <Loading fullScreen text="Đang tải hành trình..." />;
+    return <Loading fullScreen text={writingsMessages.journey.loading} />;
   }
 
   if (!writing) return null;
@@ -79,15 +81,14 @@ export function WritingJourneyView({ writingId }: WritingJourneyViewProps) {
               className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
-              Về bài viết
+              {writingsMessages.journey.backToWriting}
             </Link>
             <h1 className="text-xl sm:text-2xl font-bold text-fg tracking-tight flex items-center gap-2">
               <History className="h-6 w-6 text-primary shrink-0" />
-              Hành trình: {writing.title}
+              {msg(writingsMessages.journey.title, { title: writing.title })}
             </h1>
             <p className="text-sm text-muted">
-              Theo dõi tiến bộ điểm số và các lần chỉnh sửa từ bài gốc — cùng
-              một bài viết.
+              {writingsMessages.journey.description}
             </p>
           </div>
 
@@ -95,7 +96,7 @@ export function WritingJourneyView({ writingId }: WritingJourneyViewProps) {
             <Link href={ROUTES.writingRevise(writingId, latestAnalysisId)}>
               <Button className="gap-1.5 w-full sm:w-auto">
                 <PenLine className="h-4 w-4" />
-                Chữa bài
+                {writingsMessages.journey.reviseButton}
               </Button>
             </Link>
           )}
@@ -103,7 +104,7 @@ export function WritingJourneyView({ writingId }: WritingJourneyViewProps) {
       </section>
 
       {isLoading ? (
-        <Loading text="Đang tải dữ liệu hành trình..." />
+        <Loading text={writingsMessages.journey.dataLoading} />
       ) : (
         <>
           {sortedAnalyses.length >= 2 && (
@@ -114,10 +115,12 @@ export function WritingJourneyView({ writingId }: WritingJourneyViewProps) {
             <section className="space-y-4">
               <div>
                 <h2 className="text-sm font-semibold text-fg">
-                  Lịch sử chấm bài
+                  {writingsMessages.journey.analysisHistoryTitle}
                 </h2>
                 <p className="text-xs text-muted mt-0.5">
-                  {sortedAnalyses.length} lần chấm theo thời gian
+                  {msg(writingsMessages.journey.analysisHistoryCount, {
+                    count: sortedAnalyses.length,
+                  })}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

@@ -20,6 +20,9 @@ import { Pagination } from "@/components/pagination";
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { usePagination } from "@/hooks/usePagination";
 import { toast } from "@/lib/toast";
+import { msg } from "@/messages/format";
+import { commonMessages } from "@/messages/common";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import * as types from "@/types/api";
 
@@ -48,20 +51,19 @@ export function WritingsListView() {
 
   const handleDeleteClick = async (id: string) => {
     const ok = await confirm({
-      title: "Xóa bài viết",
-      description:
-        "Bạn có chắc muốn xóa bài viết này? Hành động này không thể hoàn tác.",
-      confirmLabel: "Xóa bài viết",
-      cancelLabel: "Hủy",
+      title: writingsMessages.list.deleteConfirmTitle,
+      description: writingsMessages.list.deleteConfirmDescription,
+      confirmLabel: writingsMessages.list.deleteConfirmLabel,
+      cancelLabel: commonMessages.cancel,
       variant: "destructive",
     });
     if (!ok) return;
 
     try {
       await deleteWriting.mutateAsync(id);
-      toast.success("Đã xóa bài viết");
+      toast.success(writingsMessages.list.deleteSuccess);
     } catch {
-      toast.error("Không thể xóa bài viết");
+      toast.error(writingsMessages.list.deleteError);
     }
   };
 
@@ -75,14 +77,14 @@ export function WritingsListView() {
   };
 
   if (isLoading) {
-    return <Loading fullScreen text="Đang tải danh sách bài viết..." />;
+    return <Loading fullScreen text={writingsMessages.list.loading} />;
   }
 
   if (error) {
     return (
       <Error
-        title="Không tải được danh sách"
-        message="Không thể lấy danh sách bài viết. Vui lòng thử lại."
+        title={writingsMessages.list.errorTitle}
+        message={writingsMessages.list.errorMessage}
         retry={() => window.location.reload()}
       />
     );
@@ -98,19 +100,21 @@ export function WritingsListView() {
       <div className="space-y-8">
         <PageHeader
           variant="glass"
-          title="Bài viết của tôi"
-          description={`${totalWritings} bài viết trong thư viện`}
+          title={writingsMessages.list.title}
+          description={msg(writingsMessages.list.description, {
+            count: totalWritings,
+          })}
           actions={
             <Link href={ROUTES.WRITING_NEW}>
               <Button className="gap-1.5 btn-glow-solid">
                 <Plus className="h-4 w-4" />
-                Viết bài mới
+                {writingsMessages.list.newButton}
               </Button>
             </Link>
           }
         />
 
-        <Section title="Bộ lọc">
+        <Section title={writingsMessages.list.filterSection}>
           <WritingsFilterTabs
             typeValue={typeFilter}
             statusValue={statusFilter}
@@ -122,14 +126,14 @@ export function WritingsListView() {
         {writings.length === 0 ? (
           <EmptyState
             icon={<FileText className="h-10 w-10" />}
-            title="Chưa có bài viết"
-            description="Bắt đầu bằng đề gợi ý để luyện viết có chủ đích, hoặc tạo bài tự do."
+            title={writingsMessages.list.emptyTitle}
+            description={writingsMessages.list.emptyDescription}
             action={{
-              label: "Chọn đề gợi ý",
+              label: writingsMessages.list.emptyPromptAction,
               onClick: () => router.push(`${ROUTES.WRITING_NEW}?tab=prompts`),
             }}
             secondaryAction={{
-              label: "Viết tự do",
+              label: writingsMessages.list.emptyFreeAction,
               onClick: () => router.push(ROUTES.WRITING_NEW),
             }}
           />

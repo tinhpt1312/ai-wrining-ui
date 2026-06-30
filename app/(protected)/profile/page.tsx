@@ -8,20 +8,22 @@ import {
 import { Loading } from "@/components/loading";
 import { Error } from "@/components/error-state";
 import { PageHeader } from "@/components/page-header";
+import { navMessages } from "@/messages/nav";
+import { profileMessages } from "@/messages/profile";
 
 export default function ProfilePage() {
   const { data: user, isLoading, error } = useUser();
   const { setUser } = useAuth();
 
   if (isLoading) {
-    return <Loading fullScreen text="Đang tải hồ sơ..." />;
+    return <Loading fullScreen text={profileMessages.loading} />;
   }
 
   if (error || !user) {
     return (
       <Error
-        title="Không tải được hồ sơ"
-        message="Không thể lấy thông tin tài khoản."
+        title={profileMessages.error.title}
+        message={profileMessages.error.message}
         retry={() => window.location.reload()}
       />
     );
@@ -31,8 +33,8 @@ export default function ProfilePage() {
     <div className="space-y-8">
       <PageHeader
         variant="glass"
-        title="Hồ sơ cá nhân"
-        description="Quản lý thông tin tài khoản và bảo mật"
+        title={navMessages.profileTitle}
+        description={profileMessages.page.description}
       />
       <ProfilePageHeader user={user} />
       <ProfileSettingsTabs user={user} onUpdated={setUser} />

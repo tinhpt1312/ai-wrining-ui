@@ -6,6 +6,8 @@ import { Button } from "@/components/button";
 import { Badge } from "@/components/badge";
 import { countWords } from "../utils/revision.utils";
 import { cn } from "@/lib/utils";
+import { revisionMessages } from "@/messages/revision";
+import { msg } from "@/messages/format";
 
 interface RevisionEditorProps {
   value: string;
@@ -57,11 +59,13 @@ export function RevisionEditor({
     <div className={cn("flex h-full flex-col overflow-hidden", className)}>
       <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
         <div className="flex items-center gap-2 min-w-0">
-          <h2 className="text-sm font-semibold text-fg">Trình soạn thảo</h2>
+          <h2 className="text-sm font-semibold text-fg">
+            {revisionMessages.editor.title}
+          </h2>
           {hasUnsavedChanges ? (
-            <Badge variant="warning">Chưa lưu</Badge>
+            <Badge variant="warning">{revisionMessages.editor.unsaved}</Badge>
           ) : (
-            <Badge variant="success">Đã đồng bộ</Badge>
+            <Badge variant="success">{revisionMessages.editor.synced}</Badge>
           )}
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
@@ -73,7 +77,7 @@ export function RevisionEditor({
               onClick={onToggleDiff}
             >
               <GitCompare className="h-4 w-4" />
-              So sánh
+              {revisionMessages.editor.compare}
             </Button>
           )}
           {onToggleSuggestions && (
@@ -84,7 +88,9 @@ export function RevisionEditor({
               onClick={onToggleSuggestions}
             >
               <PanelRightOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">Gợi ý</span>
+              <span className="hidden sm:inline">
+                {revisionMessages.editor.suggestions}
+              </span>
               {pendingSuggestionCount > 0 && (
                 <Badge variant="warning" className="ml-0.5">
                   {pendingSuggestionCount}
@@ -100,8 +106,10 @@ export function RevisionEditor({
             isLoading={isSaving}
           >
             <Save className="h-4 w-4" />
-            <span className="hidden sm:inline">Lưu bài viết</span>
-            <span className="sm:hidden">Lưu</span>
+            <span className="hidden sm:inline">
+              {revisionMessages.editor.save}
+            </span>
+            <span className="sm:hidden">{revisionMessages.editor.saveShort}</span>
           </Button>
         </div>
       </div>
@@ -113,17 +121,20 @@ export function RevisionEditor({
           "flex-1 w-full resize-none border-0 bg-transparent p-4 text-sm leading-relaxed text-fg focus:outline-none focus:ring-0",
           minHeight,
         )}
-        placeholder="Chỉnh sửa cùng bài viết — mỗi lần lưu ghi thêm mốc trên hành trình..."
+        placeholder={revisionMessages.editor.placeholder}
         spellCheck={false}
       />
 
       <div className="shrink-0 flex items-center justify-between gap-2 border-t border-border bg-surface-2/60 px-4 py-2.5">
         <p className="text-xs text-muted">
-          {wordCount} từ · {charCount} ký tự
+          {msg(revisionMessages.editor.wordCount, {
+            words: wordCount,
+            chars: charCount,
+          })}
           <span className="hidden sm:inline text-subtle"> · Ctrl+S</span>
         </p>
         <p className="text-xs text-subtle hidden md:inline">
-          Lưu cập nhật bài hiện tại, không tạo bài mới
+          {revisionMessages.editor.saveHint}
         </p>
       </div>
     </div>

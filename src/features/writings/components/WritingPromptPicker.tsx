@@ -6,6 +6,7 @@ import { Badge } from "@/components/badge";
 import { Select } from "@/components/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
 import { cn } from "@/lib/utils";
+import { writingsMessages } from "@/messages/writings";
 import { WritingType } from "@/types/api";
 import { writingTypeOptions } from "@/utils/helpers";
 import {
@@ -37,9 +38,9 @@ export function WritingPromptPicker({
     <div className="space-y-4">
       <Tabs value={sourceTab} onValueChange={setSourceTab} className="w-full">
         <TabsList className="grid grid-cols-3 min-w-0">
-          <TabsTrigger value="curated">Đề có sẵn</TabsTrigger>
-          <TabsTrigger value="custom">Nhập đề</TabsTrigger>
-          <TabsTrigger value="ai">Đề AI mới</TabsTrigger>
+          <TabsTrigger value="curated">{writingsMessages.promptPicker.tabCurated}</TabsTrigger>
+          <TabsTrigger value="custom">{writingsMessages.promptPicker.tabCustom}</TabsTrigger>
+          <TabsTrigger value="ai">{writingsMessages.promptPicker.tabAi}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="curated" className="mt-4 space-y-4">
@@ -49,21 +50,20 @@ export function WritingPromptPicker({
                 <BookOpen className="h-5 w-5" />
               </span>
               <div>
-                <h3 className="text-sm font-semibold text-fg">Chọn đề gợi ý</h3>
+                <h3 className="text-sm font-semibold text-fg">{writingsMessages.promptPicker.curatedTitle}</h3>
                 <p className="text-sm text-muted mt-1 leading-relaxed">
-                  Bắt đầu từ một đề có sẵn để luyện viết có chủ đích. Bạn vẫn
-                  có thể chỉnh sửa nội dung sau khi chọn.
+                  {writingsMessages.promptPicker.curatedDescription}
                 </p>
               </div>
             </div>
 
             <Select
-              label="Lọc theo loại bài"
+              label={writingsMessages.promptPicker.filterTypeLabel}
               name="promptType"
               value={typeFilter}
               onChange={(event) => setTypeFilter(event.target.value)}
               options={[
-                { value: "", label: "Tất cả loại bài" },
+                { value: "", label: writingsMessages.promptPicker.allTypes },
                 ...writingTypeOptions,
               ]}
             />
@@ -102,7 +102,7 @@ export function WritingPromptPicker({
                   </p>
                   <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-primary">
                     <Sparkles className="h-3.5 w-3.5" />
-                    Dùng đề này
+                    {writingsMessages.promptPicker.usePrompt}
                   </div>
                 </button>
               );

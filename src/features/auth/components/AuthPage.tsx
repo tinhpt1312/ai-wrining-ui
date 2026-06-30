@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/loading";
+import { authMessages } from "@/messages/auth";
+import { commonMessages } from "@/messages/common";
 import { useAuth } from "../context/AuthContext";
 import { AuthForm } from "./AuthForm";
 import { AuthShell } from "./AuthShell";
@@ -28,7 +30,7 @@ export function AuthPage({ mode }: AuthPageProps) {
   }, [isAuthenticated, mounted, router]);
 
   if (!mounted || isInitializing) {
-    return <Loading fullScreen text="Đang tải..." />;
+    return <Loading fullScreen text={commonMessages.loading} />;
   }
 
   const isLogin = mode === "login";
@@ -41,12 +43,12 @@ export function AuthPage({ mode }: AuthPageProps) {
       />
 
       <p className="mt-6 text-center text-sm text-muted">
-        {isLogin ? "Chưa có tài khoản?" : "Đã có tài khoản?"}{" "}
+        {isLogin ? authMessages.switch.noAccount : authMessages.switch.hasAccount}{" "}
         <Link
           href={isLogin ? "/register" : "/login"}
           className="font-semibold text-primary hover:underline"
         >
-          {isLogin ? "Đăng ký ngay" : "Đăng nhập"}
+          {isLogin ? authMessages.switch.register : authMessages.switch.login}
         </Link>
       </p>
     </AuthShell>

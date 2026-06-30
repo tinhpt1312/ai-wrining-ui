@@ -5,6 +5,8 @@ import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 import { formatDateTime } from "@/utils/helpers";
+import { profileMessages } from "@/messages/profile";
+import { msg } from "@/messages/format";
 import type { User } from "@/types/api";
 import {
   getAuthorDisplayName,
@@ -38,7 +40,7 @@ export function ProfilePageHeader({ user }: { user: User }) {
               {displayName}
             </h2>
             {user.role === "admin" && (
-              <Badge variant="success">Admin</Badge>
+              <Badge variant="success">{profileMessages.header.adminBadge}</Badge>
             )}
           </div>
           <p className="text-sm text-muted">@{user.username}</p>
@@ -50,7 +52,7 @@ export function ProfilePageHeader({ user }: { user: User }) {
         <Link href={ROUTES.userProfile(user.username)} className="shrink-0">
           <Button variant="secondary" size="sm" className="gap-2">
             <ExternalLink className="h-4 w-4" />
-            Trang công khai
+            {profileMessages.header.publicPageButton}
           </Button>
         </Link>
       </div>
@@ -63,12 +65,14 @@ export function ProfilePageHeader({ user }: { user: User }) {
         {user.createdAt && (
           <div className="inline-flex items-center gap-2 rounded-lg bg-surface-2/80 border border-border/60 px-3 py-1.5 text-sm text-muted">
             <CalendarDays className="h-3.5 w-3.5" />
-            Tham gia {formatDateTime(user.createdAt)}
+            {msg(profileMessages.header.joinedAt, {
+              date: formatDateTime(user.createdAt),
+            })}
           </div>
         )}
         <div className="inline-flex items-center gap-2 rounded-lg bg-primary/10 border border-primary/20 px-3 py-1.5 text-sm text-primary">
           <Shield className="h-3.5 w-3.5" />
-          Bảo mật tài khoản
+          {profileMessages.header.securityBadge}
         </div>
       </div>
     </section>

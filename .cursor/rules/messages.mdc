@@ -1,0 +1,49 @@
+---
+description: UI copy — không hardcode text, dùng module @/messages
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+# UI Messages (ai-writing-ui)
+
+## Quy tắc
+
+- **Cấm** hardcode chuỗi hiển thị cho người dùng trong component, page, layout, hook (label, title, placeholder, toast, aria-label, empty state, confirm dialog…).
+- **Bắt buộc** đặt copy trong `src/messages/` và import từ `@/messages` hoặc `@/messages/{module}`.
+- Chuỗi có biến (`{count}`, `{title}`) dùng `msg()` từ `@/messages/format`.
+
+## Cấu trúc
+
+```
+src/messages/
+  format.ts          # msg(template, vars)
+  common.ts          # loading, cancel, pagination…
+  auth.ts, landing.ts, writings.ts, …
+  index.ts           # barrel + messages namespace
+```
+
+## Ngoại lệ (được phép hardcode)
+
+- **Nội dung domain / dữ liệu**: `writing-prompts.ts`, nội dung bài viết người dùng, phản hồi AI từ API.
+- **Kỹ thuật**: className, route path, query keys, API field names.
+- **Test / story** (nếu có).
+
+## Ví dụ
+
+```typescript
+// ❌ BAD
+<Button>Đăng nhập</Button>
+setError("Mật khẩu không khớp");
+
+// ✅ GOOD
+import { authMessages } from "@/messages/auth";
+import { msg } from "@/messages/format";
+
+<Button>{authMessages.form.submitLogin}</Button>
+toast.success(msg(writingsMessages.toast.created, { title }));
+```
+
+## Thêm copy mới
+
+1. Thêm key vào file messages đúng module (vd. `writings.ts`).
+2. Import trong component — không thêm chuỗi trực tiếp vào JSX.

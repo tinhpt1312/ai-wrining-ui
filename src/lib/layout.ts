@@ -1,3 +1,5 @@
+import { navMessages, routeLabels } from "@/messages/nav";
+
 export type LayoutWidth = "default" | "wide" | "full";
 
 export const LAYOUT_WIDTH_CLASSES: Record<LayoutWidth, string> = {
@@ -30,22 +32,9 @@ export interface BreadcrumbItem {
   href?: string;
 }
 
-const ROUTE_LABELS: Record<string, string> = {
-  dashboard: "Tổng quan",
-  writings: "Bài viết",
-  explore: "Khám phá",
-  analysis: "Chấm bài",
-  profile: "Hồ sơ",
-  users: "Người dùng",
-  new: "Viết mới",
-  edit: "Chỉnh sửa",
-  revise: "Chữa bài",
-  journey: "Hành trình",
-};
-
 export function resolveBreadcrumbs(pathname: string): BreadcrumbItem[] {
   const segments = pathname.split("/").filter(Boolean);
-  if (segments.length === 0) return [{ label: "Tổng quan" }];
+  if (segments.length === 0) return [{ label: navMessages.dashboard }];
 
   const items: BreadcrumbItem[] = [];
   let path = "";
@@ -54,7 +43,7 @@ export function resolveBreadcrumbs(pathname: string): BreadcrumbItem[] {
     const segment = segments[i];
     path += `/${segment}`;
 
-    const label = ROUTE_LABELS[segment];
+    const label = routeLabels[segment];
     if (!label) continue;
 
     const isLast = i === segments.length - 1;
@@ -64,5 +53,7 @@ export function resolveBreadcrumbs(pathname: string): BreadcrumbItem[] {
     });
   }
 
-  return items.length > 0 ? items : [{ label: "Tổng quan", href: "/dashboard" }];
+  return items.length > 0
+    ? items
+    : [{ label: navMessages.dashboard, href: "/dashboard" }];
 }

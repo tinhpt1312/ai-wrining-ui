@@ -18,6 +18,8 @@ import { Loading } from "@/components/loading";
 import { Error } from "@/components/error-state";
 import { EmptyState } from "@/components/empty-state";
 import { PublicReadBanner } from "@/features/explore";
+import { commonMessages } from "@/messages/common";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import { toast } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/confirm-dialog";
@@ -50,30 +52,29 @@ export function WritingDetailView({ id }: WritingDetailViewProps) {
 
   const handleDeleteAnalysis = async (analysisId: string) => {
     const ok = await confirm({
-      title: "Xóa kết quả chấm bài",
-      description:
-        "Bạn có chắc muốn xóa kết quả chấm bài này? Hành động này không thể hoàn tác.",
-      confirmLabel: "Xóa",
-      cancelLabel: "Hủy",
+      title: writingsMessages.detail.deleteAnalysisTitle,
+      description: writingsMessages.detail.deleteAnalysisDescription,
+      confirmLabel: writingsMessages.detail.deleteAnalysisConfirm,
+      cancelLabel: commonMessages.cancel,
       variant: "destructive",
     });
     if (!ok) return;
 
     deleteAnalytics.mutate(analysisId, {
-      onSuccess: () => toast.success("Đã xóa kết quả chấm bài"),
-      onError: () => toast.error("Không thể xóa kết quả chấm bài"),
+      onSuccess: () => toast.success(writingsMessages.detail.deleteAnalysisSuccess),
+      onError: () => toast.error(writingsMessages.detail.deleteAnalysisError),
     });
   };
 
   if (isLoading) {
-    return <Loading fullScreen text="Đang tải bài viết..." />;
+    return <Loading fullScreen text={writingsMessages.detail.loading} />;
   }
 
   if (error) {
     return (
       <Error
-        title="Không tải được bài viết"
-        message="Không thể lấy nội dung bài viết. Bài có thể là bản nháp hoặc không tồn tại."
+        title={writingsMessages.detail.errorTitle}
+        message={writingsMessages.detail.errorMessage}
         retry={() => router.back()}
       />
     );
@@ -82,10 +83,10 @@ export function WritingDetailView({ id }: WritingDetailViewProps) {
   if (!writing) {
     return (
       <EmptyState
-        title="Không tìm thấy bài viết"
-        description="Bài viết bạn tìm không tồn tại."
+        title={writingsMessages.detail.notFoundTitle}
+        description={writingsMessages.detail.notFoundDescription}
         action={{
-          label: "Về danh sách bài viết",
+          label: writingsMessages.detail.backToList,
           onClick: () => router.push(ROUTES.WRITINGS),
         }}
       />

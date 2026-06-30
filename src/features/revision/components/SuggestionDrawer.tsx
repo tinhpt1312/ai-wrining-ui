@@ -7,6 +7,8 @@ import { Loading } from "@/components/loading";
 import { SelfEditGate } from "./SelfEditGate";
 import type { WritingSuggestion } from "@/types/api";
 import { cn } from "@/lib/utils";
+import { revisionMessages } from "@/messages/revision";
+import { msg } from "@/messages/format";
 
 interface SuggestionDrawerProps {
   open: boolean;
@@ -52,7 +54,7 @@ export function SuggestionDrawer({
       {open && (
         <button
           type="button"
-          aria-label="Đóng gợi ý chi tiết"
+          aria-label={revisionMessages.drawer.closeAria}
           className="absolute inset-0 z-20 bg-fg/20 lg:hidden"
           onClick={onClose}
         />
@@ -67,21 +69,25 @@ export function SuggestionDrawer({
       >
         <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
           <div>
-            <h3 className="text-sm font-semibold text-fg">Gợi ý chi tiết</h3>
+            <h3 className="text-sm font-semibold text-fg">
+              {revisionMessages.drawer.title}
+            </h3>
             <p className="text-xs text-muted">
-              Đánh dấu hoặc áp dụng từng gợi ý
+              {revisionMessages.drawer.subtitle}
             </p>
           </div>
           <div className="flex items-center gap-2">
             {pendingCount > 0 && (
-              <Badge variant="warning">{pendingCount} chưa xử lý</Badge>
+              <Badge variant="warning">
+                {msg(revisionMessages.drawer.pending, { count: pendingCount })}
+              </Badge>
             )}
             <Button
               size="sm"
               variant="ghost"
               className="h-8 w-8 p-0"
               onClick={onClose}
-              aria-label="Ẩn gợi ý"
+              aria-label={revisionMessages.drawer.hideAria}
             >
               <PanelRightClose className="h-4 w-4" />
             </Button>
@@ -96,18 +102,18 @@ export function SuggestionDrawer({
               current={selfEditCurrent}
               writingId={writingId}
               analysisId={analysisId}
-              title="Tự sửa trước khi xem gợi ý"
-              description="Chỉnh sửa ít nhất 50 ký tự trong trình soạn thảo bên trái để mở gợi ý chi tiết."
+              title={revisionMessages.selfEdit.beforeSuggestions}
+              description={revisionMessages.selfEdit.beforeSuggestionsDescription}
               className="min-h-[280px]"
             >
               <div className="h-32" />
             </SelfEditGate>
           ) : isLoading ? (
-            <Loading text="Đang tải gợi ý..." />
+            <Loading text={revisionMessages.drawer.loading} />
           ) : suggestions.length === 0 ? (
             <div className="space-y-3 py-6 text-center">
               <p className="text-sm text-muted">
-                Chưa có gợi ý chi tiết. Tạo từ báo cáo chấm hoặc AI.
+                {revisionMessages.drawer.empty}
               </p>
               {hasAnalysisContext && onGenerateFromAnalysis && (
                 <Button
@@ -116,7 +122,7 @@ export function SuggestionDrawer({
                   disabled={isGenerating}
                   isLoading={isGenerating}
                 >
-                  Tải từ báo cáo chấm
+                  {revisionMessages.drawer.loadFromAnalysis}
                 </Button>
               )}
               {onGenerateAi && (
@@ -129,7 +135,7 @@ export function SuggestionDrawer({
                   className="gap-1.5"
                 >
                   <Wand2 className="h-4 w-4" />
-                  Gợi ý AI chi tiết
+                  {revisionMessages.drawer.generateAi}
                 </Button>
               )}
             </div>
@@ -162,7 +168,7 @@ export function SuggestionDrawer({
                       disabled={isApplying}
                       isLoading={applyingId === suggestion.id}
                     >
-                      Đánh dấu
+                      {revisionMessages.drawer.mark}
                     </Button>
                     {suggestion.position && (
                       <Button
@@ -172,7 +178,7 @@ export function SuggestionDrawer({
                         disabled={isApplying}
                         isLoading={applyingId === suggestion.id}
                       >
-                        Áp dụng
+                        {revisionMessages.drawer.apply}
                       </Button>
                     )}
                   </div>

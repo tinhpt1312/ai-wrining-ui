@@ -1,4 +1,9 @@
-export { getErrorMessage, isApiError } from "./error";
+export {
+  getApiErrorBody,
+  getErrorCode,
+  getErrorMessage,
+  isApiError,
+} from "./error";
 export {
   formatDate,
   formatDateTime,

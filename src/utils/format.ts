@@ -1,3 +1,6 @@
+import { commonMessages } from "@/messages/common";
+import { msg } from "@/messages/format";
+
 export function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("vi-VN", {
     year: "numeric",
@@ -28,5 +31,5 @@ export function wordCount(text: string): number {
 export function estimateReadingTime(text: string): string {
   const words = wordCount(text);
   const readingTimeMinutes = Math.ceil(words / 200);
-  return `${readingTimeMinutes} phút đọc`;
+  return msg(commonMessages.readingTime, { minutes: readingTimeMinutes });
 }

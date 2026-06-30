@@ -5,6 +5,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { PasswordInput } from "@/components/password-input";
 import { Alert } from "@/components/alert";
+import { authMessages } from "@/messages/auth";
 import { useAuth } from "../context/AuthContext";
 import { mapAuthApiError } from "../utils/auth-errors";
 import { validationRules } from "@/utils/helpers";
@@ -51,7 +52,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
     }
 
     if (mode === "register" && formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
+      newErrors.confirmPassword = authMessages.form.passwordMismatch;
     }
 
     setErrors(newErrors);
@@ -121,16 +122,16 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       {error && (
         <Alert
           type="error"
-          title="Lỗi xác thực"
+          title={authMessages.error.title}
           message={error}
           onClose={() => setError(null)}
         />
       )}
 
       <Input
-        label="Tên đăng nhập"
+        label={authMessages.form.usernameLabel}
         name="username"
-        placeholder="Nhập tên đăng nhập"
+        placeholder={authMessages.form.usernamePlaceholder}
         value={formData.username}
         onChange={handleChange}
         error={errors.username}
@@ -139,12 +140,12 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
 
       {isRegister && (
         <Input
-          label="Email"
+          label={authMessages.form.emailLabel}
           name="email"
           type="text"
           inputMode="email"
           autoComplete="email"
-          placeholder="Nhập email"
+          placeholder={authMessages.form.emailPlaceholder}
           value={formData.email}
           onChange={handleChange}
           error={errors.email}
@@ -153,9 +154,9 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
       )}
 
       <PasswordInput
-        label="Mật khẩu"
+        label={authMessages.form.passwordLabel}
         name="password"
-        placeholder="Nhập mật khẩu"
+        placeholder={authMessages.form.passwordPlaceholder}
         value={formData.password}
         onChange={handleChange}
         error={errors.password}
@@ -164,9 +165,9 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
 
       {isRegister && (
         <PasswordInput
-          label="Xác nhận mật khẩu"
+          label={authMessages.form.confirmPasswordLabel}
           name="confirmPassword"
-          placeholder="Nhập lại mật khẩu"
+          placeholder={authMessages.form.confirmPasswordPlaceholder}
           value={formData.confirmPassword}
           onChange={handleChange}
           error={errors.confirmPassword}
@@ -180,7 +181,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
         isLoading={isLoading}
         disabled={isLoading}
       >
-        {isRegister ? "Tạo tài khoản" : "Đăng nhập"}
+        {isRegister ? authMessages.form.submitRegister : authMessages.form.submitLogin}
       </Button>
     </form>
   );

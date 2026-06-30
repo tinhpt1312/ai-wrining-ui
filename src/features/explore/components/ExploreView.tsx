@@ -15,6 +15,9 @@ import { Section } from "@/components/section";
 import { Pagination } from "@/components/pagination";
 import { usePagination } from "@/hooks/usePagination";
 import { Globe } from "lucide-react";
+import { exploreMessages } from "@/messages/explore";
+import { navMessages } from "@/messages/nav";
+import { msg } from "@/messages/format";
 import * as types from "@/types/api";
 
 export function ExploreView() {
@@ -43,14 +46,14 @@ export function ExploreView() {
   };
 
   if (isLoading) {
-    return <Loading fullScreen text="Đang tải bài viết công khai..." />;
+    return <Loading fullScreen text={exploreMessages.loading} />;
   }
 
   if (error) {
     return (
       <Error
-        title="Không tải được danh sách"
-        message="Không thể lấy bài viết công khai. Vui lòng thử lại."
+        title={exploreMessages.error.title}
+        message={exploreMessages.error.message}
         retry={() => window.location.reload()}
       />
     );
@@ -60,8 +63,8 @@ export function ExploreView() {
     <div className="space-y-8">
       <PageHeader
         variant="glass"
-        title="Khám phá"
-        description={`${total} bài viết công khai từ cộng đồng`}
+        title={navMessages.explore}
+        description={msg(exploreMessages.page.description, { total })}
       />
 
       <ExploreSearchBar
@@ -71,9 +74,11 @@ export function ExploreView() {
       />
 
       <Section
-        title="Lọc theo loại bài"
+        title={exploreMessages.filter.sectionTitle}
         description={
-          appliedSearch ? `Kết quả cho "${appliedSearch}"` : undefined
+          appliedSearch
+            ? msg(exploreMessages.filter.resultsFor, { query: appliedSearch })
+            : undefined
         }
       >
         <ExploreTypeTabs
@@ -88,11 +93,11 @@ export function ExploreView() {
       {writings.length === 0 ? (
         <EmptyState
           icon={<Globe className="h-10 w-10" />}
-          title="Chưa có bài viết phù hợp"
+          title={exploreMessages.empty.title}
           description={
             appliedSearch || typeFilter
-              ? "Thử đổi từ khóa hoặc chọn loại bài khác."
-              : "Hãy chia sẻ bài viết của bạn ở chế độ Công khai để cộng đồng tham khảo."
+              ? exploreMessages.empty.filteredDescription
+              : exploreMessages.empty.defaultDescription
           }
         />
       ) : (

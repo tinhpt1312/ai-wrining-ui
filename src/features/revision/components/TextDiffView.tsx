@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { diffWords } from "diff";
 import { cn } from "@/lib/utils";
+import { revisionMessages } from "@/messages/revision";
 
 export function TextDiffView({
   original,
@@ -20,7 +21,9 @@ export function TextDiffView({
 
   if (!original && !revised) {
     return (
-      <p className="text-sm text-muted italic">Chưa có nội dung để so sánh.</p>
+      <p className="text-sm text-muted italic">
+        {revisionMessages.diff.noContent}
+      </p>
     );
   }
 

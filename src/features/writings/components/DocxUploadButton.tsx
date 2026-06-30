@@ -5,6 +5,8 @@ import { Upload } from "lucide-react";
 import { Button } from "@/components/button";
 import { documentsService } from "@/api/documents.service";
 import { toast } from "@/lib/toast";
+import { msg } from "@/messages/format";
+import { writingsMessages } from "@/messages/writings";
 import { getErrorMessage } from "@/utils/helpers";
 
 export interface DocxUploadButtonProps {
@@ -30,7 +32,9 @@ export function DocxUploadButton({
     try {
       const parsed = await documentsService.parseDocx(file);
       onParsed(parsed);
-      toast.success(`Đã nhập nội dung từ "${parsed.fileName}"`);
+      toast.success(
+        msg(writingsMessages.docx.importSuccess, { fileName: parsed.fileName }),
+      );
     } catch (err) {
       const message = getErrorMessage(err);
       onError?.(message);
@@ -61,7 +65,7 @@ export function DocxUploadButton({
         disabled={disabled || isUploading}
       >
         <Upload className="h-4 w-4" />
-        Tải lên file Word (.docx)
+        {writingsMessages.docx.uploadButton}
       </Button>
     </>
   );

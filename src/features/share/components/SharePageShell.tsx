@@ -5,6 +5,7 @@ import { PenLine } from "lucide-react";
 import { GridBackground } from "@/components/grid-background";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ROUTES } from "@/constants/routes.constants";
+import { shareMessages as m } from "@/messages/share";
 
 export function SharePageShell({ children }: { children: React.ReactNode }) {
   return (
@@ -20,7 +21,7 @@ export function SharePageShell({ children }: { children: React.ReactNode }) {
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary ring-1 ring-primary/25 shadow-[0_0_12px_var(--glow-primary)]">
               <PenLine className="h-4 w-4" />
             </span>
-            Viết &amp; Chấm Văn
+            {m.brand}
           </Link>
           <ThemeToggle />
         </div>

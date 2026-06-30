@@ -3,6 +3,8 @@ import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { ROUTES } from "@/constants/routes.constants";
 import type { Writing } from "@/types/api";
 import { wordCount } from "@/utils/helpers";
+import { dashboardMessages as m } from "@/messages/dashboard";
+import { msg } from "@/messages/format";
 
 export function RecentWritingsPanel({
   writings,
@@ -12,12 +14,12 @@ export function RecentWritingsPanel({
   return (
     <section className="card-elevated p-5 sm:p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-fg">Bài viết gần đây</h2>
+        <h2 className="text-sm font-semibold text-fg">{m.recentWritings.title}</h2>
         <Link
           href={ROUTES.WRITINGS}
           className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
         >
-          Xem tất cả
+          {m.recentWritings.viewAll}
           <ArrowUpRight className="h-3.5 w-3.5" />
         </Link>
       </div>
@@ -34,7 +36,9 @@ export function RecentWritingsPanel({
                   {writing.title}
                 </p>
                 <p className="text-xs text-subtle font-mono tabular-nums mt-auto">
-                  {wordCount(writing.content)} chữ
+                  {msg(m.recentWritings.wordCount, {
+                    count: wordCount(writing.content),
+                  })}
                 </p>
                 <ChevronRight className="h-3.5 w-3.5 text-primary opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
@@ -43,7 +47,7 @@ export function RecentWritingsPanel({
         </ul>
       ) : (
         <p className="text-muted text-sm py-6 text-center">
-          Chưa có bài viết nào
+          {m.recentWritings.empty}
         </p>
       )}
     </section>

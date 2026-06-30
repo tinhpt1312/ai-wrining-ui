@@ -4,6 +4,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { componentMessages } from "@/messages/components";
 import type { InputProps } from "@/components/input";
 
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
@@ -42,7 +43,11 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
               "text-muted hover:text-fg hover:bg-surface-2 transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
             )}
-            aria-label={visible ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+            aria-label={
+              visible
+                ? componentMessages.passwordInput.hideAria
+                : componentMessages.passwordInput.showAria
+            }
           >
             {visible ? (
               <EyeOff className="h-4 w-4" />

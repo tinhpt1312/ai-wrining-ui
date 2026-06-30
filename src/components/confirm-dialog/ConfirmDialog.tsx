@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/dialog";
+import { commonMessages } from "@/messages/common";
 
 export type ConfirmDialogOptions = {
   title: string;
@@ -31,8 +32,8 @@ export function ConfirmDialogView({
   onOpenChange,
   title,
   description,
-  confirmLabel = "Xác nhận",
-  cancelLabel = "Hủy",
+  confirmLabel = commonMessages.confirm,
+  cancelLabel = commonMessages.cancel,
   variant = "default",
   onConfirm,
   onCancel,

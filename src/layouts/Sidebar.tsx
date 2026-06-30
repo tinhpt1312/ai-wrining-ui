@@ -11,6 +11,8 @@ import { Separator } from "@/components/separator";
 import { ScrollArea } from "@/components/scroll-area";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/constants/routes.constants";
+import { appMessages } from "@/messages/app";
+import { navMessages } from "@/messages/nav";
 import { MAIN_NAV_ITEMS, isNavActive } from "./nav.config";
 
 function NavLink({
@@ -81,10 +83,10 @@ export function SidebarNav({
           </span>
           <div className="min-w-0">
             <p className="text-sm font-bold text-fg truncate group-hover:text-primary transition-colors">
-              Viết & Chấm Văn
+              {appMessages.name}
             </p>
             <p className="text-[10px] uppercase tracking-wider text-subtle font-medium">
-              AI Writing
+              {appMessages.tagline}
             </p>
           </div>
         </Link>
@@ -109,7 +111,7 @@ export function SidebarNav({
         <Link href={ROUTES.WRITING_NEW} onClick={onNavigate} className="block">
           <Button className="w-full gap-2 shadow-[0_0_24px_var(--glow-primary)]">
             <PenLine className="h-4 w-4" />
-            Viết bài mới
+            {navMessages.writeNew}
           </Button>
         </Link>
       </ScrollArea>
@@ -122,7 +124,7 @@ export function SidebarNav({
               href={ROUTES.PROFILE}
               onClick={onNavigate}
               className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-primary max-w-32 truncate transition-colors"
-              title="Hồ sơ cá nhân"
+              title={navMessages.profileTitle}
             >
               <UserCircle className="h-4 w-4 shrink-0" />
               {user.username}
@@ -136,7 +138,7 @@ export function SidebarNav({
           className="w-full justify-start gap-2 text-muted"
         >
           <LogOut className="h-4 w-4" />
-          Đăng xuất
+          {navMessages.logout}
         </Button>
       </div>
     </div>

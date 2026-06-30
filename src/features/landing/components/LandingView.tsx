@@ -9,12 +9,13 @@ import { LandingFeatures } from "./LandingFeatures";
 import { LandingSteps } from "./LandingSteps";
 import { LandingCta } from "./LandingCta";
 import { LandingFooter } from "./LandingFooter";
+import { landingMessages as m } from "@/messages/landing";
 
 export function LandingView() {
   const { isAuthenticated, isInitializing } = useAuth();
 
   if (isInitializing) {
-    return <Loading fullScreen text="Đang tải..." />;
+    return <Loading fullScreen text={m.loading} />;
   }
 
   return (

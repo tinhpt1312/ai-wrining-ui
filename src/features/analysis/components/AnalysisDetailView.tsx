@@ -15,6 +15,8 @@ import { toast } from "@/lib/toast";
 import { ROUTES } from "@/constants/routes.constants";
 import { useConfirmDialog } from "@/components/confirm-dialog";
 import { getOverallAnalysisScore } from "@/features/analysis/utils/score.utils";
+import { analysisMessages } from "@/messages/analysis";
+import { commonMessages } from "@/messages/common";
 
 interface AnalysisDetailViewProps {
   id: string;
@@ -29,14 +31,14 @@ export function AnalysisDetailView({ id }: AnalysisDetailViewProps) {
   const { confirm, ConfirmDialog } = useConfirmDialog();
 
   if (isLoading) {
-    return <Loading fullScreen text="Đang tải kết quả chấm bài..." />;
+    return <Loading fullScreen text={analysisMessages.loading} />;
   }
 
   if (error) {
     return (
       <Error
-        title="Không tải được kết quả"
-        message="Không thể lấy dữ liệu chấm bài. Vui lòng thử lại."
+        title={analysisMessages.error.loadDetailTitle}
+        message={analysisMessages.error.loadDetailMessage}
         retry={() => router.back()}
       />
     );
@@ -55,21 +57,20 @@ export function AnalysisDetailView({ id }: AnalysisDetailViewProps) {
 
   const handleDelete = async () => {
     const ok = await confirm({
-      title: "Xóa kết quả chấm bài",
-      description:
-        "Bạn có chắc muốn xóa kết quả chấm bài này? Hành động này không thể hoàn tác.",
-      confirmLabel: "Xóa",
-      cancelLabel: "Hủy",
+      title: analysisMessages.delete.title,
+      description: analysisMessages.delete.description,
+      confirmLabel: analysisMessages.delete.confirm,
+      cancelLabel: commonMessages.cancel,
       variant: "destructive",
     });
     if (!ok) return;
 
     deleteAnalytics(id, {
       onSuccess: () => {
-        toast.success("Đã xóa kết quả chấm bài");
+        toast.success(analysisMessages.delete.success);
         router.push(ROUTES.ANALYSIS);
       },
-      onError: () => toast.error("Không thể xóa kết quả chấm bài"),
+      onError: () => toast.error(analysisMessages.delete.failed),
     });
   };
 
@@ -103,7 +104,7 @@ export function AnalysisDetailView({ id }: AnalysisDetailViewProps) {
         ) : (
           <div className="panel-glass p-12 text-center">
             <p className="text-muted text-sm">
-              Chưa có phản hồi cho lần chấm bài này.
+              {analysisMessages.empty.noFeedback}
             </p>
           </div>
         )}

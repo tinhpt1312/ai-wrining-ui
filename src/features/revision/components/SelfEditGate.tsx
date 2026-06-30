@@ -9,6 +9,8 @@ import {
   MIN_SELF_EDIT_CHARS,
   getSelfEditProgress,
 } from "@/features/revision/utils/self-edit.utils";
+import { revisionMessages } from "@/messages/revision";
+import { msg } from "@/messages/format";
 
 interface SelfEditGateProps {
   unlocked: boolean;
@@ -28,8 +30,10 @@ export function SelfEditGate({
   current,
   writingId,
   analysisId,
-  title = "Hãy tự sửa bài trước",
-  description = `Tự chỉnh sửa ít nhất ${MIN_SELF_EDIT_CHARS} ký tự trong không gian chữa bài trước khi xem gợi ý chi tiết hoặc bài mẫu — giúp bạn chủ động học hơn.`,
+  title = revisionMessages.selfEdit.defaultTitle,
+  description = msg(revisionMessages.selfEdit.defaultDescription, {
+    minChars: MIN_SELF_EDIT_CHARS,
+  }),
   className,
   children,
 }: SelfEditGateProps) {
@@ -62,7 +66,10 @@ export function SelfEditGate({
                 />
               </div>
               <p className="text-xs text-muted">
-                Tiến độ tự sửa: {progress}% ({MIN_SELF_EDIT_CHARS} ký tự)
+                {msg(revisionMessages.selfEdit.progress, {
+                  progress,
+                  minChars: MIN_SELF_EDIT_CHARS,
+                })}
               </p>
             </div>
           )}
@@ -70,13 +77,13 @@ export function SelfEditGate({
             <Link href={ROUTES.writingRevise(writingId, analysisId)}>
               <Button className="gap-1.5 w-full btn-glow-solid">
                 <PenLine className="h-4 w-4" />
-                Vào chữa bài
+                {revisionMessages.selfEdit.enterRevision}
               </Button>
             </Link>
           )}
           <p className="text-xs text-subtle flex items-center justify-center gap-1.5">
             <Sparkles className="h-3.5 w-3.5" />
-            Gợi ý và bài mẫu sẽ mở sau khi bạn tự luyện tập
+            {revisionMessages.selfEdit.unlockHint}
           </p>
         </div>
       </div>

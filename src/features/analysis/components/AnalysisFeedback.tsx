@@ -15,12 +15,14 @@ import { isCriterion } from "../utils/score.utils";
 import { CriterionCard } from "./feedback/CriterionCard";
 import { FeedbackListCard } from "./feedback/FeedbackListCard";
 import { SampleComparisonView } from "./SampleComparisonView";
+import { analysisMessages } from "@/messages/analysis";
+import { revisionMessages } from "@/messages/revision";
 
 const CRITERIA: { key: keyof AnalysisFeedback; label: string }[] = [
-  { key: "structure", label: "Bố cục & Tổ chức" },
-  { key: "clarity", label: "Rõ ràng & Diễn đạt" },
-  { key: "tone", label: "Giọng điệu & Phong cách" },
-  { key: "coherence", label: "Sự liên kết" },
+  { key: "structure", label: analysisMessages.feedback.criteria.structure },
+  { key: "clarity", label: analysisMessages.feedback.criteria.clarity },
+  { key: "tone", label: analysisMessages.feedback.criteria.tone },
+  { key: "coherence", label: analysisMessages.feedback.criteria.coherence },
 ];
 
 export default function AnalysisFeedbackView({
@@ -60,10 +62,11 @@ export default function AnalysisFeedbackView({
   if (!hasStructuredData) {
     return (
       <div className="panel-glass p-8 text-center">
-        <p className="text-fg font-medium">Không hiển thị được báo cáo</p>
+        <p className="text-fg font-medium">
+          {analysisMessages.feedback.reportUnavailable}
+        </p>
         <p className="text-sm text-muted mt-2 max-w-md mx-auto leading-relaxed">
-          Dữ liệu phản hồi không đúng định dạng. Hãy mở bài viết và chấm lại
-          bằng AI để nhận báo cáo mới.
+          {analysisMessages.feedback.reportUnavailableDescription}
         </p>
       </div>
     );
@@ -85,16 +88,24 @@ export default function AnalysisFeedbackView({
     <Tabs defaultValue={defaultTab} className="w-full">
       <TabsList>
         {hasOverview && (
-          <TabsTrigger value="overview">Tổng quan</TabsTrigger>
+          <TabsTrigger value="overview">
+            {analysisMessages.feedback.tabs.overview}
+          </TabsTrigger>
         )}
         {criteria.length > 0 && (
-          <TabsTrigger value="criteria">Tiêu chí</TabsTrigger>
+          <TabsTrigger value="criteria">
+            {analysisMessages.feedback.tabs.criteria}
+          </TabsTrigger>
         )}
         {data.sampleWriting && (
-          <TabsTrigger value="sample">Bài mẫu</TabsTrigger>
+          <TabsTrigger value="sample">
+            {analysisMessages.feedback.tabs.sample}
+          </TabsTrigger>
         )}
         {data.sampleWriting && writingContent && (
-          <TabsTrigger value="compare">So sánh</TabsTrigger>
+          <TabsTrigger value="compare">
+            {analysisMessages.feedback.tabs.compare}
+          </TabsTrigger>
         )}
       </TabsList>
 
@@ -103,7 +114,7 @@ export default function AnalysisFeedbackView({
           {data.overallFeedback && (
             <div className="panel-glass p-6">
               <h2 className="text-sm font-semibold text-fg mb-2">
-                Nhận xét chung
+                {analysisMessages.feedback.overallFeedback}
               </h2>
               <p className="text-sm text-muted leading-relaxed prose-content">
                 {data.overallFeedback}
@@ -113,13 +124,13 @@ export default function AnalysisFeedbackView({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FeedbackListCard
-              title="Điểm mạnh"
+              title={analysisMessages.feedback.strengths}
               items={data.strengths || []}
               marker="✓"
               markerClass="text-success"
             />
             <FeedbackListCard
-              title="Cần cải thiện"
+              title={analysisMessages.feedback.areasForImprovement}
               items={data.areasForImprovement || []}
               marker="!"
               markerClass="text-warning"
@@ -127,7 +138,7 @@ export default function AnalysisFeedbackView({
           </div>
 
           <FeedbackListCard
-            title="Việc nên làm tiếp theo"
+            title={analysisMessages.feedback.actionItems}
             items={data.actionItems || []}
             marker="→"
             markerClass="text-primary"
@@ -138,7 +149,7 @@ export default function AnalysisFeedbackView({
               <Link href={ROUTES.writingRevise(writingId, analysisId)}>
                 <Button className="gap-1.5 btn-glow-solid">
                   <PenLine className="h-4 w-4" />
-                  Bắt đầu chữa bài
+                  {analysisMessages.feedback.startRevision}
                 </Button>
               </Link>
             </div>
@@ -168,18 +179,17 @@ export default function AnalysisFeedbackView({
             current=""
             writingId={writingId}
             analysisId={analysisId}
-            title="Tự sửa trước khi xem bài mẫu"
-            description="Vào không gian chữa bài và tự chỉnh sửa ít nhất 50 ký tự trước khi xem bài mẫu — giúp bạn chủ động học hơn."
+            title={analysisMessages.feedback.sample.gateTitle}
+            description={analysisMessages.feedback.sample.gateDescription}
           >
           <div className="panel-glass border-primary/20 p-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
               <div>
                 <h2 className="text-base font-bold text-fg tracking-tight mb-1">
-                  Bài viết mẫu
+                  {analysisMessages.feedback.sample.title}
                 </h2>
                 <p className="text-sm text-muted">
-                  Phiên bản tham khảo áp dụng các gợi ý cải thiện — giúp bạn
-                  hình dung bài viết hoàn chỉnh hơn.
+                  {analysisMessages.feedback.sample.description}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 shrink-0">
@@ -189,17 +199,17 @@ export default function AnalysisFeedbackView({
                   className="gap-1.5"
                   onClick={async () => {
                     await navigator.clipboard.writeText(data.sampleWriting!);
-                    toast.success("Đã sao chép bài mẫu");
+                    toast.success(revisionMessages.toast.sampleCopied);
                   }}
                 >
                   <Copy className="h-4 w-4" />
-                  Sao chép
+                  {analysisMessages.feedback.sample.copy}
                 </Button>
                 {writingId && (
                   <Link href={ROUTES.writingRevise(writingId, analysisId)}>
                     <Button size="sm" className="gap-1.5 btn-glow-solid">
                       <PenLine className="h-4 w-4" />
-                      Chữa bài với bài mẫu
+                      {analysisMessages.feedback.sample.reviseWithSample}
                     </Button>
                   </Link>
                 )}
@@ -223,8 +233,8 @@ export default function AnalysisFeedbackView({
             current=""
             writingId={writingId}
             analysisId={analysisId}
-            title="Tự sửa trước khi so sánh với bài mẫu"
-            description="Vào không gian chữa bài và tự chỉnh sửa ít nhất 50 ký tự trước khi xem so sánh chi tiết."
+            title={analysisMessages.feedback.compare.gateTitle}
+            description={analysisMessages.feedback.compare.gateDescription}
           >
             <SampleComparisonView
               userContent={writingContent}

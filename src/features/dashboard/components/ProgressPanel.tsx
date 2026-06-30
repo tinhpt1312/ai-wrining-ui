@@ -17,20 +17,15 @@ import { Loading } from "@/components/loading";
 import { useProgress } from "@/features/analysis";
 import { ROUTES } from "@/constants/routes.constants";
 import { formatDate } from "@/utils/helpers";
+import { dashboardMessages as m } from "@/messages/dashboard";
+import { msg } from "@/messages/format";
 import { StatCard } from "./StatCard";
-
-const CRITERIA_LABELS: Record<string, string> = {
-  structure: "Bố cục",
-  clarity: "Diễn đạt",
-  tone: "Giọng điệu",
-  coherence: "Liên kết",
-};
 
 export function ProgressPanel() {
   const { data, isLoading } = useProgress();
 
   if (isLoading) {
-    return <Loading text="Đang tải tiến độ học viết..." />;
+    return <Loading text={m.loading.progress} />;
   }
 
   if (!data) return null;
@@ -47,45 +42,47 @@ export function ProgressPanel() {
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-primary">
-            Tiến bộ học viết
+            {m.progress.eyebrow}
           </p>
           <h2 className="text-lg font-bold text-fg mt-1">
-            Theo dõi điểm số và thói quen luyện tập
+            {m.progress.title}
           </h2>
         </div>
         <Link href={ROUTES.WRITING_NEW + "?tab=prompts"}>
           <Button variant="outline" size="sm" className="gap-1.5">
-            Luyện với đề gợi ý
+            {m.progress.practicePrompts}
           </Button>
         </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
-          label="Chuỗi ngày viết"
+          label={m.progress.streak}
           value={data.writingStreak}
           icon={Flame}
           tone="warning"
-          hint={data.writingStreak > 0 ? "Ngày liên tiếp có hoạt động" : "Hãy viết hôm nay"}
+          hint={
+            data.writingStreak > 0 ? m.progress.streakActive : m.progress.streakEmpty
+          }
         />
         <StatCard
-          label="Lần chấm có điểm"
+          label={m.progress.graded}
           value={data.totalGraded}
           icon={Target}
           tone="primary"
         />
         <StatCard
-          label="Xu hướng điểm"
+          label={m.progress.trend}
           value={
             data.scoreDelta != null
               ? `${data.scoreDelta > 0 ? "+" : ""}${data.scoreDelta}`
-              : "—"
+              : m.progress.noData
           }
           icon={TrendingUp}
           tone={data.scoreDelta != null && data.scoreDelta >= 0 ? "success" : "info"}
           hint={
             data.averageRecentScore != null
-              ? `TB gần đây: ${data.averageRecentScore}/10`
+              ? msg(m.progress.recentAverage, { score: data.averageRecentScore })
               : undefined
           }
         />
@@ -93,7 +90,7 @@ export function ProgressPanel() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="card-elevated p-5 sm:p-6 lg:col-span-2">
-          <h3 className="text-sm font-semibold text-fg mb-4">Biểu đồ điểm qua các lần chấm</h3>
+          <h3 className="text-sm font-semibold text-fg mb-4">{m.progress.chartTitle}</h3>
           {hasChart ? (
             <div className="h-56 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -115,17 +112,17 @@ export function ProgressPanel() {
           ) : (
             <div className="h-56 flex items-center justify-center text-center px-6">
               <p className="text-sm text-muted leading-relaxed">
-                Chấm ít nhất 2 bài để xem biểu đồ tiến bộ. Hãy tạo bài mới và chấm bằng AI.
+                {m.progress.chartEmpty}
               </p>
             </div>
           )}
         </div>
 
         <div className="card-elevated p-5 sm:p-6 space-y-4">
-          <h3 className="text-sm font-semibold text-fg">Tiêu chí cần luyện thêm</h3>
+          <h3 className="text-sm font-semibold text-fg">{m.progress.criteriaTitle}</h3>
           {data.weakestCriterion ? (
             <div className="rounded-xl border border-warning/30 bg-warning/5 p-4 space-y-2">
-              <Badge variant="warning">Ưu tiên luyện tập</Badge>
+              <Badge variant="warning">{m.progress.priorityBadge}</Badge>
               <p className="text-sm font-medium text-fg">
                 {data.weakestCriterion.label}
               </p>
@@ -136,7 +133,7 @@ export function ProgressPanel() {
             </div>
           ) : (
             <p className="text-sm text-muted">
-              Chưa đủ dữ liệu chấm bài. Hãy chấm bài để nhận phân tích tiêu chí.
+              {m.progress.criteriaEmpty}
             </p>
           )}
 
@@ -146,9 +143,13 @@ export function ProgressPanel() {
                 key={key}
                 className="flex items-center justify-between text-sm gap-3"
               >
-                <span className="text-muted">{CRITERIA_LABELS[key] ?? key}</span>
+                <span className="text-muted">
+                  {m.progress.criteria[key as keyof typeof m.progress.criteria] ?? key}
+                </span>
                 <span className="font-medium text-fg tabular-nums">
-                  {score != null ? `${score}/10` : "—"}
+                  {score != null
+                    ? msg(m.progress.scoreOutOf, { score })
+                    : m.progress.noData}
                 </span>
               </div>
             ))}

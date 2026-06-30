@@ -8,6 +8,7 @@ import { RevisionWorkspaceHeader } from "./RevisionWorkspaceHeader";
 import { RevisionDiffPanel } from "./RevisionDiffPanel";
 import { RevisionWorkspacePanels } from "./RevisionWorkspacePanels";
 import { useRevisionWorkspace } from "../hooks/useRevisionWorkspace";
+import { revisionMessages } from "@/messages/revision";
 
 interface RevisionWorkspaceProps {
   writingId: string;
@@ -64,7 +65,7 @@ export function RevisionWorkspace({
   );
 
   if (workspace.isWritingLoading) {
-    return <Loading fullScreen text="Đang tải không gian chữa bài..." />;
+    return <Loading fullScreen text={revisionMessages.loading} />;
   }
 
   if (!workspace.writing) return null;
@@ -106,8 +107,8 @@ export function RevisionWorkspace({
         {workspace.hasUnsavedChanges && (
           <Alert
             type="warning"
-            title="Có thay đổi chưa lưu"
-            message='Nhấn "Lưu bài viết" (Ctrl+S) để cập nhật cùng bài viết và ghi mốc mới.'
+            title={revisionMessages.unsaved.title}
+            message={revisionMessages.unsaved.message}
           />
         )}
       </div>

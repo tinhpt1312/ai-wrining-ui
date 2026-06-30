@@ -19,6 +19,8 @@ import {
   scoreRingColor,
   scoreTextColor,
 } from "../utils/score.utils";
+import { analysisMessages } from "@/messages/analysis";
+import { msg } from "@/messages/format";
 
 export function AnalysisDetailHeader({
   analysis,
@@ -72,13 +74,15 @@ export function AnalysisDetailHeader({
 
         <div className="flex-1 min-w-0 space-y-2">
           <p className="text-xs font-medium text-primary uppercase tracking-wider">
-            Báo cáo chấm bài AI
+            {analysisMessages.header.reportLabel}
           </p>
           <h1 className="text-2xl sm:text-3xl font-bold text-fg tracking-tight leading-tight">
-            {writing?.title || "Bài viết đã chấm"}
+            {writing?.title || analysisMessages.header.defaultTitle}
           </h1>
           <p className="text-sm text-muted font-mono tabular-nums">
-            Chấm lúc {formatDateTime(analysis.createdAt)}
+            {msg(analysisMessages.header.gradedAt, {
+              datetime: formatDateTime(analysis.createdAt),
+            })}
           </p>
         </div>
       </div>
@@ -92,7 +96,7 @@ export function AnalysisDetailHeader({
             >
               <Button size="sm" className="gap-1.5 w-full sm:w-auto btn-glow-solid">
                 <PenLine className="h-4 w-4" />
-                Chữa bài
+                {analysisMessages.header.revise}
               </Button>
             </Link>
             <Link
@@ -105,7 +109,7 @@ export function AnalysisDetailHeader({
                 className="gap-1.5 w-full sm:w-auto"
               >
                 <FileText className="h-4 w-4" />
-                Bài viết
+                {analysisMessages.header.writing}
               </Button>
             </Link>
           </>
@@ -113,7 +117,7 @@ export function AnalysisDetailHeader({
         <Link href={ROUTES.ANALYSIS} className="flex-1 sm:flex-none">
           <Button variant="outline" size="sm" className="gap-1.5 w-full sm:w-auto">
             <ArrowLeft className="h-4 w-4" />
-            Danh sách
+            {analysisMessages.header.list}
           </Button>
         </Link>
         <ShareFacebookButton
@@ -135,7 +139,9 @@ export function AnalysisDetailHeader({
           disabled={isDeleting}
         >
           <Trash2 className="h-4 w-4" />
-          {isDeleting ? "Đang xóa..." : "Xóa"}
+          {isDeleting
+            ? analysisMessages.delete.deleting
+            : analysisMessages.delete.confirm}
         </Button>
       </div>
     </section>

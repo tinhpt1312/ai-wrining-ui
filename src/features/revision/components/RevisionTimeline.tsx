@@ -17,26 +17,24 @@ import {
   Minus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { revisionMessages } from "@/messages/revision";
+import { msg } from "@/messages/format";
+
+const SOURCE_LABELS: Record<string, string> = {
+  ...revisionMessages.timeline.source,
+};
 
 export interface RevisionTimelineItem extends WritingRevision {
   wordCount: number;
   wordCountDelta: number;
 }
 
-const SOURCE_LABELS: Record<string, string> = {
-  grading_baseline: "Trước khi chữa",
-  manual: "Sửa tay",
-  suggestions: "Từ gợi ý",
-  sample: "Từ bài mẫu",
-  revision_workspace: "Đã lưu khi chữa",
-};
-
 function DeltaBadge({ delta }: { delta: number }) {
   if (delta === 0) {
     return (
       <span className="inline-flex items-center gap-1 text-xs text-muted">
         <Minus className="h-3 w-3" />
-        0 từ
+        {revisionMessages.timeline.wordDeltaZero}
       </span>
     );
   }
@@ -54,8 +52,9 @@ function DeltaBadge({ delta }: { delta: number }) {
       ) : (
         <TrendingDown className="h-3 w-3" />
       )}
-      {isUp ? "+" : ""}
-      {delta} từ
+      {msg(revisionMessages.timeline.wordDelta, {
+        delta: `${isUp ? "+" : ""}${delta}`,
+      })}
     </span>
   );
 }
@@ -95,7 +94,7 @@ export function RevisionTimeline({
   if (isLoading) {
     return (
       <div className="card-elevated p-8 text-center text-sm text-muted">
-        Đang tải hành trình chữa bài...
+        {revisionMessages.timeline.loading}
       </div>
     );
   }
@@ -104,10 +103,11 @@ export function RevisionTimeline({
     return (
       <div className="card-elevated p-8 text-center">
         <History className="mx-auto mb-3 h-8 w-8 text-muted" />
-        <h3 className="text-sm font-semibold text-fg">Chưa có hành trình</h3>
+        <h3 className="text-sm font-semibold text-fg">
+          {revisionMessages.timeline.emptyTitle}
+        </h3>
         <p className="mt-1 text-sm text-muted max-w-md mx-auto">
-          Mỗi lần bạn nhấn &quot;Lưu phiên bản&quot; trong trình soạn thảo, một
-          mốc mới sẽ xuất hiện ở đây để theo dõi sự thay đổi văn phong.
+          {revisionMessages.timeline.emptyDescription}
         </p>
       </div>
     );
@@ -119,10 +119,10 @@ export function RevisionTimeline({
         <div>
           <h3 className="text-sm font-semibold text-fg flex items-center gap-2">
             <History className="h-4 w-4" />
-            Hành trình chữa bài
+            {revisionMessages.timeline.title}
           </h3>
           <p className="text-xs text-muted mt-0.5">
-            {sorted.length} mốc · theo dõi tiến hóa văn phong theo thời gian
+            {msg(revisionMessages.timeline.subtitle, { count: sorted.length })}
           </p>
         </div>
         <Button
@@ -132,7 +132,9 @@ export function RevisionTimeline({
           onClick={() => setCompareMode((v) => !v)}
         >
           <GitCompare className="h-4 w-4" />
-          {compareMode ? "Ẩn so sánh" : "So sánh thay đổi"}
+          {compareMode
+            ? revisionMessages.timeline.hideCompare
+            : revisionMessages.timeline.showCompare}
         </Button>
       </div>
 
@@ -180,7 +182,9 @@ export function RevisionTimeline({
                           {SOURCE_LABELS[revision.source] || revision.source}
                         </p>
                         <Badge variant="neutral">
-                          {revision.wordCount} từ
+                          {msg(revisionMessages.timeline.wordCount, {
+                            count: revision.wordCount,
+                          })}
                         </Badge>
                         {index > 0 && (
                           <DeltaBadge delta={revision.wordCountDelta} />
@@ -206,7 +210,9 @@ export function RevisionTimeline({
                         ) : (
                           <ChevronDown className="h-3.5 w-3.5" />
                         )}
-                        {isExpanded ? "Thu gọn" : "Xem nội dung"}
+                        {isExpanded
+                          ? revisionMessages.timeline.collapse
+                          : revisionMessages.timeline.expand}
                       </Button>
                       {onRestore && revision.source !== "grading_baseline" && (
                         <Button
@@ -218,7 +224,7 @@ export function RevisionTimeline({
                           isLoading={restoringRevisionId === revision.id}
                         >
                           <RotateCcw className="h-3.5 w-3.5" />
-                          Khôi phục
+                          {revisionMessages.timeline.restore}
                         </Button>
                       )}
                     </div>
@@ -240,7 +246,9 @@ export function RevisionTimeline({
                       {compareMode && previous && (
                         <div className="rounded-lg border border-primary/20 bg-primary-soft/20 p-4">
                           <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">
-                            Thay đổi so với mốc #{previous.revisionNumber}
+                            {msg(revisionMessages.timeline.changeFromMilestone, {
+                              number: previous.revisionNumber,
+                            })}
                           </p>
                           <TextDiffView
                             original={previous.content}

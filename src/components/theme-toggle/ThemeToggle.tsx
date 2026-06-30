@@ -6,11 +6,18 @@ import { Monitor, Moon, Sun } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { cn } from "@/lib/utils";
 import { THEME_OPTIONS, type ThemeOption } from "@/constants/theme-ui.constants";
+import { componentMessages } from "@/messages/components";
 
 const themeIcons: Record<ThemeOption, typeof Sun> = {
   light: Sun,
   dark: Moon,
   system: Monitor,
+};
+
+const themeLabels: Record<ThemeOption, string> = {
+  light: componentMessages.theme.light,
+  dark: componentMessages.theme.dark,
+  system: componentMessages.theme.system,
 };
 
 export function ThemeToggle({ className }: { className?: string }) {
@@ -39,7 +46,7 @@ export function ThemeToggle({ className }: { className?: string }) {
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
             className,
           )}
-          aria-label="Chọn giao diện sáng hoặc tối"
+          aria-label={componentMessages.theme.toggleAria}
         >
           <PreviewIcon className="h-4 w-4" />
         </button>
@@ -69,7 +76,7 @@ export function ThemeToggle({ className }: { className?: string }) {
                 onSelect={() => setTheme(option.value)}
               >
                 <Icon className="h-4 w-4 shrink-0" />
-                {option.label}
+                {themeLabels[option.value]}
               </DropdownMenu.Item>
             );
           })}

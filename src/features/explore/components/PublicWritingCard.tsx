@@ -11,6 +11,8 @@ import {
   estimateReadingTime,
 } from "@/utils/helpers";
 import { cn } from "@/lib/utils";
+import { commonMessages } from "@/messages/common";
+import { exploreMessages } from "@/messages/explore";
 import type { Writing } from "@/types/api";
 import { AuthorChip } from "./AuthorChip";
 
@@ -45,7 +47,7 @@ export function PublicWritingCard({ writing }: { writing: Writing }) {
         <div className="flex items-center gap-3 text-xs text-subtle font-mono tabular-nums">
           <span className="inline-flex items-center gap-1">
             <FileText className="h-3.5 w-3.5" />
-            {wordCount(writing.content)} chữ
+            {wordCount(writing.content)} {commonMessages.words}
           </span>
           <span className="text-border-strong">·</span>
           <span>{estimateReadingTime(writing.content)}</span>
@@ -55,7 +57,7 @@ export function PublicWritingCard({ writing }: { writing: Writing }) {
           <AuthorChip author={writing.author} size="sm" />
           <Link href={ROUTES.writing(writing.id)}>
             <Button size="sm" variant="secondary" className="gap-1.5 shrink-0">
-              Đọc bài
+              {exploreMessages.card.readButton}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Button>
           </Link>

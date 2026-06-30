@@ -1,3 +1,5 @@
+import { commonMessages } from "@/messages/common";
+
 export function getAuthorInitials(name: string): string {
   const trimmed = name.trim();
   if (!trimmed) return "?";
@@ -13,6 +15,6 @@ export function getAuthorInitials(name: string): string {
 export function getAuthorDisplayName(
   author?: { username: string; fullName?: string | null },
 ): string {
-  if (!author) return "Ẩn danh";
+  if (!author) return commonMessages.anonymous;
   return author.fullName?.trim() || author.username;
 }

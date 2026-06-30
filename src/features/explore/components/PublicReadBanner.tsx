@@ -1,4 +1,5 @@
 import { Eye } from "lucide-react";
+import { exploreMessages } from "@/messages/explore";
 import { AuthorChip } from "./AuthorChip";
 
 export function PublicReadBanner({
@@ -15,9 +16,11 @@ export function PublicReadBanner({
           <Eye className="h-4 w-4" />
         </span>
         <div className="min-w-0">
-          <p className="text-sm font-medium text-fg">Bài viết công khai</p>
+          <p className="text-sm font-medium text-fg">
+            {exploreMessages.publicBanner.title}
+          </p>
           <p className="text-xs text-muted mt-0.5">
-            Bạn đang đọc bài được chia sẻ bởi thành viên khác.
+            {exploreMessages.publicBanner.description}
           </p>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Textarea } from "@/components/textarea";
+import { writingsMessages } from "@/messages/writings";
 import { WritingType } from "@/types/api";
 import { writingTypeOptions } from "@/utils/helpers";
 import type { WritingPrompt } from "../constants/writing-prompts";
@@ -27,7 +28,7 @@ export function CustomPromptForm({ onSubmit }: CustomPromptFormProps) {
 
     const trimmedTitle = title.trim();
     if (trimmedTitle.length < 3) {
-      setError("Tiêu đề đề bài cần ít nhất 3 ký tự.");
+      setError(writingsMessages.customPrompt.titleMinLength);
       return;
     }
 
@@ -50,16 +51,15 @@ export function CustomPromptForm({ onSubmit }: CustomPromptFormProps) {
             <PenLine className="h-5 w-5" />
           </span>
           <div>
-            <h3 className="text-sm font-semibold text-fg">Nhập đề của bạn</h3>
+            <h3 className="text-sm font-semibold text-fg">{writingsMessages.customPrompt.title}</h3>
             <p className="text-sm text-muted mt-1 leading-relaxed">
-              Dán đề từ giáo viên, đề thi hoặc tự đặt chủ đề — AI sẽ gợi ý dàn
-              ý phù hợp.
+              {writingsMessages.customPrompt.description}
             </p>
           </div>
         </div>
 
         <Select
-          label="Loại bài"
+          label={writingsMessages.form.typeLabel}
           name="customPromptType"
           value={type}
           onChange={(event) => setType(event.target.value as WritingType)}
@@ -68,30 +68,30 @@ export function CustomPromptForm({ onSubmit }: CustomPromptFormProps) {
         />
 
         <Input
-          label="Tiêu đề / đề bài"
+          label={writingsMessages.customPrompt.titleLabel}
           value={title}
           onChange={(event) => setTitle(event.target.value)}
-          placeholder="VD: Vai trò của gia đình trong xã hội hiện đại"
+          placeholder={writingsMessages.customPrompt.titlePlaceholder}
           required
           maxLength={255}
           error={error}
         />
 
         <Textarea
-          label="Mô tả thêm (tùy chọn)"
+          label={writingsMessages.customPrompt.topicLabel}
           value={topic}
           onChange={(event) => setTopic(event.target.value)}
-          placeholder="Yêu cầu chi tiết, góc tiếp cận, hoặc ngữ cảnh đề bài..."
+          placeholder={writingsMessages.customPrompt.topicPlaceholder}
           maxLength={2000}
           charCount={topic.length}
           size="md"
         />
 
         <Textarea
-          label="Gợi ý triển khai (tùy chọn)"
+          label={writingsMessages.customPrompt.hintLabel}
           value={hint}
           onChange={(event) => setHint(event.target.value)}
-          placeholder="VD: Phân tích hai mặt, có dẫn chứng cụ thể..."
+          placeholder={writingsMessages.customPrompt.hintPlaceholder}
           maxLength={500}
           charCount={hint.length}
           size="sm"
@@ -100,7 +100,7 @@ export function CustomPromptForm({ onSubmit }: CustomPromptFormProps) {
 
       <div className="flex justify-end">
         <Button type="submit" className="gap-2 btn-glow-solid">
-          Tiếp tục lập dàn ý
+          {writingsMessages.customPrompt.submit}
         </Button>
       </div>
     </form>

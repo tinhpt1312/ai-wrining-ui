@@ -4,6 +4,7 @@ import { Copy, Lightbulb } from "lucide-react";
 import { Button } from "@/components/button";
 import { SelfEditGate } from "@/features/revision/components/SelfEditGate";
 import type { AnalysisFeedback } from "@/types/api";
+import { revisionMessages } from "@/messages/revision";
 
 export function AiFeedbackPanel({
   feedback,
@@ -29,7 +30,7 @@ export function AiFeedbackPanel({
   if (!hasAnalysis) {
     return (
       <p className="text-sm text-muted">
-        Mở từ báo cáo chấm bài để xem gợi ý theo tiêu chí.
+        {revisionMessages.feedback.noAnalysis}
       </p>
     );
   }
@@ -39,7 +40,7 @@ export function AiFeedbackPanel({
       {feedback.actionItems && feedback.actionItems.length > 0 && (
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-wide text-subtle mb-2">
-            Việc nên làm
+            {revisionMessages.feedback.actionItems}
           </h3>
           <ul className="space-y-2">
             {feedback.actionItems.map((item, i) => (
@@ -56,7 +57,7 @@ export function AiFeedbackPanel({
         feedback.areasForImprovement.length > 0 && (
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wide text-subtle mb-2">
-              Cần cải thiện
+              {revisionMessages.feedback.areasForImprovement}
             </h3>
             <ul className="space-y-2">
               {feedback.areasForImprovement.map((item, i) => (
@@ -76,12 +77,12 @@ export function AiFeedbackPanel({
           current={selfEditCurrent}
           writingId={writingId}
           analysisId={analysisId}
-          title="Tự sửa trước khi xem bài mẫu"
+          title={revisionMessages.selfEdit.beforeSample}
         >
           <div className="rounded-lg border border-primary/20 bg-primary-soft/30 p-3 space-y-2">
           <h3 className="text-xs font-semibold text-primary flex items-center gap-1.5">
             <Lightbulb className="h-3.5 w-3.5" />
-            Bài mẫu tham khảo
+            {revisionMessages.feedback.sampleReference}
           </h3>
           <p className="text-xs text-muted line-clamp-4">
             {feedback.sampleWriting.slice(0, 200)}…
@@ -93,7 +94,7 @@ export function AiFeedbackPanel({
               className="gap-1 text-xs"
               onClick={onUseSample}
             >
-              Dùng làm bản nháp
+              {revisionMessages.feedback.useAsDraft}
             </Button>
             <Button
               size="sm"

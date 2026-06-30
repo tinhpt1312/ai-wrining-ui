@@ -7,6 +7,7 @@ import { Button } from "@/components/button";
 import { analyticsService } from "@/api/analytics.service";
 import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
+import { exportMessages } from "@/messages/export";
 
 export interface ExportReportButtonProps {
   analysisId: string;
@@ -29,11 +30,11 @@ export function ExportReportButton({
       await analyticsService.downloadExport(analysisId, format);
       toast.success(
         format === "docx"
-          ? "Đã tải báo cáo Word (.docx)"
-          : "Đã tải báo cáo PDF",
+          ? exportMessages.report.toast.docx
+          : exportMessages.report.toast.pdf,
       );
     } catch {
-      toast.error("Không thể xuất báo cáo. Vui lòng thử lại.");
+      toast.error(exportMessages.report.toast.failed);
     } finally {
       setExportingFormat(null);
     }
@@ -51,7 +52,7 @@ export function ExportReportButton({
           isLoading={!!exportingFormat}
         >
           <FileDown className="h-4 w-4" />
-          Xuất báo cáo
+          {exportMessages.report.button}
           <ChevronDown className="h-3.5 w-3.5 opacity-60" />
         </Button>
       </DropdownMenu.Trigger>
@@ -74,7 +75,7 @@ export function ExportReportButton({
             onSelect={() => handleExport("docx")}
           >
             <FileText className="h-4 w-4 shrink-0" />
-            Xuất Word (.docx)
+            {exportMessages.writing.docx}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className={cn(
@@ -85,7 +86,7 @@ export function ExportReportButton({
             onSelect={() => handleExport("pdf")}
           >
             <FileDown className="h-4 w-4 shrink-0" />
-            Xuất PDF
+            {exportMessages.writing.pdf}
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>

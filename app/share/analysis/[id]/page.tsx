@@ -9,6 +9,8 @@ import {
 } from "@/features/analysis/utils/score.utils";
 import { getAnalysisSummary } from "@/utils/helpers";
 import { truncateText } from "@/utils/share.utils";
+import { appMessages } from "@/messages/app";
+import { msg } from "@/messages/format";
 
 interface ShareAnalysisPageProps {
   params: Promise<{ id: string }>;
@@ -29,18 +31,21 @@ export async function generateMetadata({
     const url = `${APP_CONFIG.BASE_URL}${ROUTES.shareAnalysis(id)}`;
     const title =
       score != null
-        ? `${analysis.writing.title} — Điểm ${score}/10`
+        ? msg(appMessages.share.analysis.scoredTitle, {
+            title: analysis.writing.title,
+            score,
+          })
         : analysis.writing.title;
 
     return {
-      title: `${title} | Viết & Chấm Văn`,
+      title: msg(appMessages.pageTitle, { title }),
       description,
       openGraph: {
         title,
         description,
         url,
         type: "article",
-        siteName: "Viết & Chấm Văn",
+        siteName: appMessages.name,
         locale: "vi_VN",
       },
       twitter: {
@@ -51,9 +56,8 @@ export async function generateMetadata({
     };
   } catch {
     return {
-      title: "Kết quả chấm bài không khả dụng",
-      description:
-        "Kết quả chấm bài này không tồn tại hoặc bài viết chưa được đặt công khai.",
+      title: appMessages.share.analysis.unavailableTitle,
+      description: appMessages.share.analysis.unavailableDescription,
       robots: { index: false, follow: false },
     };
   }

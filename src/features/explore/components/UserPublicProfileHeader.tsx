@@ -4,6 +4,9 @@ import { Avatar, AvatarFallback } from "@/components/avatar";
 import { Button } from "@/components/button";
 import { ROUTES } from "@/constants/routes.constants";
 import { formatDateTime } from "@/utils/helpers";
+import { exploreMessages } from "@/messages/explore";
+import { navMessages } from "@/messages/nav";
+import { msg } from "@/messages/format";
 import type { PublicUserProfile } from "@/types/api";
 import {
   getAuthorDisplayName,
@@ -45,7 +48,7 @@ export function UserPublicProfileHeader({
         <Link href={ROUTES.EXPLORE} className="shrink-0">
           <Button variant="outline" size="sm" className="gap-1.5">
             <ArrowLeft className="h-4 w-4" />
-            Khám phá
+            {navMessages.explore}
           </Button>
         </Link>
       </div>
@@ -56,11 +59,15 @@ export function UserPublicProfileHeader({
           <span className="stat-value font-bold text-fg">
             {profile.publicWritingsCount}
           </span>
-          <span className="text-muted">bài công khai</span>
+          <span className="text-muted">
+            {exploreMessages.userProfile.publicWritingsLabel}
+          </span>
         </div>
         <div className="inline-flex items-center gap-2 rounded-lg bg-surface-2/80 border border-border/60 px-3 py-1.5 text-sm text-muted">
           <CalendarDays className="h-3.5 w-3.5" />
-          Tham gia {formatDateTime(profile.createdAt)}
+          {msg(exploreMessages.userProfile.joinedAt, {
+            date: formatDateTime(profile.createdAt),
+          })}
         </div>
       </div>
     </section>

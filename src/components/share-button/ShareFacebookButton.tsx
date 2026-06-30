@@ -4,6 +4,7 @@ import { Share2 } from "lucide-react";
 import { Button } from "@/components/button";
 import { toast } from "@/lib/toast";
 import { buildFacebookShareUrl } from "@/utils/share.utils";
+import { exportMessages } from "@/messages/export";
 
 export interface ShareFacebookButtonProps {
   shareUrl: string;
@@ -16,15 +17,13 @@ export interface ShareFacebookButtonProps {
 export function ShareFacebookButton({
   shareUrl,
   isPublic = true,
-  label = "Chia sẻ Facebook",
+  label = exportMessages.facebook.label,
   size = "md",
   className,
 }: ShareFacebookButtonProps) {
   const handleShare = () => {
     if (!isPublic) {
-      toast.error(
-        "Vui lòng đặt bài ở trạng thái Công khai trước khi chia sẻ lên Facebook.",
-      );
+      toast.error(exportMessages.facebook.privateError);
       return;
     }
 

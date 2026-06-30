@@ -8,6 +8,7 @@ import { Drawer } from "vaul";
 import { Button } from "@/components/button";
 import { cn } from "@/lib/utils";
 import { resolveBreadcrumbs } from "@/lib/layout";
+import { navMessages } from "@/messages/nav";
 import { SidebarNav } from "./Sidebar";
 
 export function TopBar() {
@@ -23,13 +24,13 @@ export function TopBar() {
           size="sm"
           className="lg:hidden shrink-0"
           onClick={() => setMobileOpen(true)}
-          aria-label="Mở menu"
+          aria-label={navMessages.openMenuAria}
         >
           <Menu className="h-5 w-5" />
         </Button>
 
         <nav
-          aria-label="Breadcrumb"
+          aria-label={navMessages.breadcrumbAria}
           className="flex min-w-0 flex-1 items-center gap-1.5 text-sm"
         >
           {breadcrumbs.map((item, index) => {
@@ -74,7 +75,7 @@ export function TopBar() {
           <Drawer.Overlay className="fixed inset-0 z-40 bg-bg/80 backdrop-blur-sm" />
           <Drawer.Content className="fixed inset-y-0 left-0 z-50 flex w-[min(280px,88vw)] outline-none">
             <div className="glass-sidebar flex h-full w-full flex-col border-r border-border/60">
-              <Drawer.Title className="sr-only">Menu điều hướng</Drawer.Title>
+              <Drawer.Title className="sr-only">{navMessages.drawerTitle}</Drawer.Title>
               <SidebarNav onNavigate={() => setMobileOpen(false)} />
             </div>
           </Drawer.Content>

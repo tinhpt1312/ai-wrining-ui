@@ -5,6 +5,8 @@ import { TrendingDown, TrendingUp, Minus, ArrowRight } from "lucide-react";
 import { ROUTES } from "@/constants/routes.constants";
 import { scoreTextColor } from "@/features/analysis/utils/score.utils";
 import { cn } from "@/lib/utils";
+import { analysisMessages } from "@/messages/analysis";
+import { msg } from "@/messages/format";
 
 export function AnalysisScoreCompare({
   currentScore,
@@ -26,13 +28,16 @@ export function AnalysisScoreCompare({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <p className="text-xs font-medium text-subtle uppercase tracking-wider">
-            So sánh lần chấm
-            {revisionNumber != null ? ` #${revisionNumber}` : ""}
+            {revisionNumber != null
+              ? msg(analysisMessages.scoreCompare.titleWithRevision, {
+                  number: revisionNumber,
+                })
+              : analysisMessages.scoreCompare.title}
           </p>
           <div className="flex items-center gap-4 mt-3">
             <div className="text-center px-3 py-2 rounded-xl bg-surface-2/60 border border-border/60">
               <p className="text-[10px] uppercase tracking-wide text-subtle">
-                Trước
+                {analysisMessages.scoreCompare.before}
               </p>
               <p
                 className={cn(
@@ -46,7 +51,7 @@ export function AnalysisScoreCompare({
             <ArrowRight className="h-5 w-5 text-primary shrink-0" />
             <div className="text-center px-3 py-2 rounded-xl bg-primary/10 border border-primary/25 shadow-[0_0_16px_var(--glow-primary)]">
               <p className="text-[10px] uppercase tracking-wide text-primary/80">
-                Hiện tại
+                {analysisMessages.scoreCompare.current}
               </p>
               <p
                 className={cn(
@@ -86,7 +91,7 @@ export function AnalysisScoreCompare({
             href={ROUTES.analysis(previousAnalysisId)}
             className="text-sm font-medium text-primary hover:underline shrink-0"
           >
-            Xem lần chấm trước →
+            {analysisMessages.scoreCompare.viewPrevious}
           </Link>
         )}
       </div>

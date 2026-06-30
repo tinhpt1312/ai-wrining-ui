@@ -5,6 +5,8 @@ import { diffWords } from "diff";
 import { GitCompare, Lightbulb } from "lucide-react";
 import type { AnalysisFeedback } from "@/types/api";
 import { TextDiffView } from "@/features/revision";
+import { analysisMessages } from "@/messages/analysis";
+import { msg } from "@/messages/format";
 import { cn } from "@/lib/utils";
 
 function splitParagraphs(text: string): string[] {
@@ -30,21 +32,21 @@ function getSectionAnnotation(
   if (index === 0) {
     return (
       pickSuggestion(feedback?.structure) ||
-      "Đoạn mở bài mẫu thường nêu luận điểm hoặc vấn đề rõ ràng hơn."
+      analysisMessages.sampleComparison.annotation.opening
     );
   }
 
   if (index === total - 1) {
     return (
       pickSuggestion(feedback?.coherence) ||
-      "Kết bài mẫu tổng kết ý chính và có câu chốt mạch lạc."
+      analysisMessages.sampleComparison.annotation.closing
     );
   }
 
   return (
     pickSuggestion(feedback?.clarity) ||
     pickSuggestion(feedback?.tone) ||
-    "Bài mẫu diễn đạt cụ thể hơn và có liên kết giữa các ý."
+    analysisMessages.sampleComparison.annotation.default
   );
 }
 
@@ -66,7 +68,7 @@ function ParagraphDiffSummary({
   if (!original && sample) {
     return (
       <p className="text-xs text-muted">
-        Bạn chưa có đoạn tương ứng — bài mẫu có thêm nội dung ở phần này.
+        {analysisMessages.sampleComparison.diff.missingParagraph}
       </p>
     );
   }
@@ -74,14 +76,17 @@ function ParagraphDiffSummary({
   if (added === 0 && removed === 0) {
     return (
       <p className="text-xs text-success">
-        Đoạn này khá gần với bài mẫu về cấu trúc câu.
+        {analysisMessages.sampleComparison.diff.similar}
       </p>
     );
   }
 
   return (
     <p className="text-xs text-muted">
-      Khác biệt chính: thêm {added} cụm từ, bớt {removed} cụm từ so với bài mẫu.
+      {msg(analysisMessages.sampleComparison.diff.changed, {
+        added,
+        removed,
+      })}
     </p>
   );
 }
@@ -112,7 +117,7 @@ export function SampleComparisonView({
   if (!sampleWriting.trim()) {
     return (
       <p className="text-sm text-muted text-center py-8">
-        Chưa có bài mẫu để so sánh.
+        {analysisMessages.sampleComparison.noSample}
       </p>
     );
   }
@@ -124,11 +129,10 @@ export function SampleComparisonView({
           <GitCompare className="h-5 w-5 text-primary shrink-0 mt-0.5" />
           <div>
             <h3 className="text-sm font-semibold text-fg">
-              So sánh từng đoạn với bài mẫu
+              {analysisMessages.sampleComparison.title}
             </h3>
             <p className="text-sm text-muted mt-1 leading-relaxed">
-              Xem bài của bạn và bài mẫu song song — chú thích gợi ý cách cải
-              thiện từng phần.
+              {analysisMessages.sampleComparison.description}
             </p>
           </div>
         </div>
@@ -155,24 +159,34 @@ export function SampleComparisonView({
             >
               <div className="px-4 py-3 border-b border-border bg-surface-2/50">
                 <p className="text-xs font-semibold uppercase tracking-wide text-subtle">
-                  Đoạn {index + 1}
+                  {msg(analysisMessages.sampleComparison.paragraph, {
+                    number: index + 1,
+                  })}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-border">
                 <div className="p-4 space-y-2">
-                  <p className="text-xs font-medium text-muted">Bài của bạn</p>
+                  <p className="text-xs font-medium text-muted">
+                    {analysisMessages.sampleComparison.yourWriting}
+                  </p>
                   <p className="text-sm text-fg leading-relaxed whitespace-pre-wrap">
                     {userParagraph || (
-                      <span className="text-muted italic">(Chưa có)</span>
+                      <span className="text-muted italic">
+                        {analysisMessages.sampleComparison.notAvailable}
+                      </span>
                     )}
                   </p>
                 </div>
                 <div className="p-4 space-y-2 bg-primary-soft/20">
-                  <p className="text-xs font-medium text-primary">Bài mẫu</p>
+                  <p className="text-xs font-medium text-primary">
+                    {analysisMessages.sampleComparison.sampleWriting}
+                  </p>
                   <p className="text-sm text-fg leading-relaxed whitespace-pre-wrap">
                     {sampleParagraph || (
-                      <span className="text-muted italic">(Không có)</span>
+                      <span className="text-muted italic">
+                        {analysisMessages.sampleComparison.none}
+                      </span>
                     )}
                   </p>
                 </div>

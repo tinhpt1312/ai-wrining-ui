@@ -1,0 +1,121 @@
+export const revisionMessages = {
+  loading: "Đang tải không gian chữa bài...",
+  unsaved: {
+    title: "Có thay đổi chưa lưu",
+    message:
+      'Nhấn "Lưu bài viết" (Ctrl+S) để cập nhật cùng bài viết và ghi mốc mới.',
+  },
+  header: {
+    backToWriting: "Về bài viết",
+    title: "Chữa bài: {title}",
+    subtitle: "Cùng một bài viết · lưu = ghi mốc hành trình",
+    regrade: "Chấm lại",
+    journey: "Hành trình",
+  },
+  stepper: {
+    ariaLabel: "Tiến trình chữa bài",
+    graded: "Đã chấm",
+    revising: "Đang chữa",
+    regrade: "Chấm lại",
+  },
+  editor: {
+    title: "Trình soạn thảo",
+    unsaved: "Chưa lưu",
+    synced: "Đã đồng bộ",
+    compare: "So sánh",
+    suggestions: "Gợi ý",
+    save: "Lưu bài viết",
+    saveShort: "Lưu",
+    placeholder:
+      "Chỉnh sửa cùng bài viết — mỗi lần lưu ghi thêm mốc trên hành trình...",
+    wordCount: "{words} từ · {chars} ký tự",
+    saveHint: "Lưu cập nhật bài hiện tại, không tạo bài mới",
+  },
+  diff: {
+    noContent: "Chưa có nội dung để so sánh.",
+    panelTitle: "So với bản trước khi chữa",
+    before: "Trước khi chữa",
+    current: "Bản đang sửa",
+  },
+  selfEdit: {
+    defaultTitle: "Hãy tự sửa bài trước",
+    defaultDescription:
+      "Tự chỉnh sửa ít nhất {minChars} ký tự trong không gian chữa bài trước khi xem gợi ý chi tiết hoặc bài mẫu — giúp bạn chủ động học hơn.",
+    progress: "Tiến độ tự sửa: {progress}% ({minChars} ký tự)",
+    enterRevision: "Vào chữa bài",
+    unlockHint: "Gợi ý và bài mẫu sẽ mở sau khi bạn tự luyện tập",
+    beforeSample: "Tự sửa trước khi xem bài mẫu",
+    beforeSuggestions: "Tự sửa trước khi xem gợi ý",
+    beforeSuggestionsDescription:
+      "Chỉnh sửa ít nhất 50 ký tự trong trình soạn thảo bên trái để mở gợi ý chi tiết.",
+  },
+  feedback: {
+    noAnalysis:
+      "Mở từ báo cáo chấm bài để xem gợi ý theo tiêu chí.",
+    actionItems: "Việc nên làm",
+    areasForImprovement: "Cần cải thiện",
+    sampleReference: "Bài mẫu tham khảo",
+    useAsDraft: "Dùng làm bản nháp",
+    sidebarTitle: "Gợi ý từ AI",
+  },
+  drawer: {
+    closeAria: "Đóng gợi ý chi tiết",
+    title: "Gợi ý chi tiết",
+    subtitle: "Đánh dấu hoặc áp dụng từng gợi ý",
+    pending: "{count} chưa xử lý",
+    hideAria: "Ẩn gợi ý",
+    loading: "Đang tải gợi ý...",
+    empty: "Chưa có gợi ý chi tiết. Tạo từ báo cáo chấm hoặc AI.",
+    loadFromAnalysis: "Tải từ báo cáo chấm",
+    generateAi: "Gợi ý AI chi tiết",
+    mark: "Đánh dấu",
+    apply: "Áp dụng",
+  },
+  timeline: {
+    loading: "Đang tải hành trình chữa bài...",
+    emptyTitle: "Chưa có hành trình",
+    emptyDescription:
+      'Mỗi lần bạn nhấn "Lưu phiên bản" trong trình soạn thảo, một mốc mới sẽ xuất hiện ở đây để theo dõi sự thay đổi văn phong.',
+    title: "Hành trình chữa bài",
+    subtitle: "{count} mốc · theo dõi tiến hóa văn phong theo thời gian",
+    hideCompare: "Ẩn so sánh",
+    showCompare: "So sánh thay đổi",
+    wordCount: "{count} từ",
+    wordDelta: "{delta} từ",
+    wordDeltaZero: "0 từ",
+    collapse: "Thu gọn",
+    expand: "Xem nội dung",
+    restore: "Khôi phục",
+    changeFromMilestone: "Thay đổi so với mốc #{number}",
+    source: {
+      grading_baseline: "Trước khi chữa",
+      manual: "Sửa tay",
+      suggestions: "Từ gợi ý",
+      sample: "Từ bài mẫu",
+      revision_workspace: "Đã lưu khi chữa",
+    },
+  },
+  toast: {
+    saveSuccess:
+      "Đã cập nhật bài viết · mốc #{number} trên hành trình",
+    saveFailed: "Không thể lưu bài viết",
+    appliedToWriting: "Đã áp dụng vào bài viết",
+    marked: "Đã đánh dấu",
+    applyFailed: "Không thể áp dụng gợi ý",
+    saveBeforeRegrade: "Hãy lưu bài viết trước khi chấm lại",
+    regradeSuccess: "Đã chấm lại bài viết",
+    regradeFailed: "Không thể chấm lại. Vui lòng thử lại.",
+    selfEditBeforeSample:
+      "Hãy tự sửa bài ít nhất 50 ký tự trước khi dùng bài mẫu",
+    sampleLoaded: "Đã tải bài mẫu vào trình soạn thảo",
+    selfEditBeforeViewSample:
+      "Hãy tự sửa bài ít nhất 50 ký tự trước khi xem bài mẫu",
+    sampleCopied: "Đã sao chép bài mẫu",
+    selfEditBeforeSuggestions:
+      "Hãy tự sửa bài ít nhất 50 ký tự trước khi xem gợi ý",
+    suggestionsFromAnalysis: "Đã tải gợi ý từ báo cáo chấm",
+    loadSuggestionsFailed: "Không thể tải gợi ý",
+    suggestionsGenerated: "Đã tạo gợi ý chi tiết",
+    generateSuggestionsFailed: "Không thể tạo gợi ý",
+  },
+} as const;

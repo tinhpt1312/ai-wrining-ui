@@ -1,36 +1,38 @@
+import { validationMessages } from "@/messages/validation";
+
 export const validationRules = {
   username: {
-    required: "Vui lòng nhập tên đăng nhập",
+    required: validationMessages.username.required,
     minLength: {
       value: 3,
-      message: "Tên đăng nhập phải có ít nhất 3 ký tự",
+      message: validationMessages.username.minLength,
     },
     maxLength: {
       value: 50,
-      message: "Tên đăng nhập không được quá 50 ký tự",
+      message: validationMessages.username.maxLength,
     },
   },
   email: {
-    required: "Vui lòng nhập email",
+    required: validationMessages.email.required,
     pattern: {
       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      message: "Email không hợp lệ",
+      message: validationMessages.email.invalid,
     },
   },
   password: {
-    required: "Vui lòng nhập mật khẩu",
+    required: validationMessages.password.required,
     minLength: {
       value: 6,
-      message: "Mật khẩu phải có ít nhất 6 ký tự",
+      message: validationMessages.password.minLength,
     },
   },
   title: {
-    required: "Vui lòng nhập tiêu đề",
-    minLength: { value: 3, message: "Tiêu đề phải có ít nhất 3 ký tự" },
-    maxLength: { value: 255, message: "Tiêu đề không được quá 255 ký tự" },
+    required: validationMessages.title.required,
+    minLength: { value: 3, message: validationMessages.title.minLength },
+    maxLength: { value: 255, message: validationMessages.title.maxLength },
   },
   content: {
-    required: "Vui lòng nhập nội dung",
-    minLength: { value: 10, message: "Nội dung phải có ít nhất 10 ký tự" },
+    required: validationMessages.content.required,
+    minLength: { value: 10, message: validationMessages.content.minLength },
   },
 };

@@ -1,3 +1,4 @@
+import { writingMessages } from "@/messages/writing";
 import { WritingType } from "@/types/api";
 import type {
   GeneratedWritingPrompt,
@@ -15,7 +16,7 @@ export function buildWritingPrompt(params: {
 }): WritingPrompt {
   const title = params.title.trim();
   const topic = params.topic?.trim() || title;
-  const hint = params.hint?.trim() || "Viết bài theo đề bạn đã nhập.";
+  const hint = params.hint?.trim() || writingMessages.prompt.defaultHint;
 
   return {
     id: params.id ?? `custom-${Date.now()}`,

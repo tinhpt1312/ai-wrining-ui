@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
+import { commonMessages } from "@/messages/common";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import {
   formatDate,
@@ -60,7 +62,7 @@ export function WritingCard({
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-subtle font-mono tabular-nums">
           <span className="inline-flex items-center gap-1">
             <FileText className="h-3.5 w-3.5" />
-            {wordCount(writing.content)} chữ
+            {wordCount(writing.content)} {commonMessages.words}
           </span>
           <span className="text-border-strong">·</span>
           <span>{estimateReadingTime(writing.content)}</span>
@@ -74,7 +76,7 @@ export function WritingCard({
         <div className="flex items-center gap-2 pt-3 border-t border-border/60">
           <Link href={ROUTES.writing(writing.id)} className="flex-1">
             <Button size="sm" className="gap-1.5 w-full">
-              Đọc bài
+              {writingsMessages.card.readButton}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -84,7 +86,7 @@ export function WritingCard({
             className="text-error hover:text-error hover:bg-error-soft shrink-0"
             onClick={() => onDelete(writing.id)}
             disabled={isDeleting}
-            aria-label="Xóa bài viết"
+            aria-label={writingsMessages.card.deleteAria}
           >
             <Trash2 className="h-4 w-4" />
           </Button>

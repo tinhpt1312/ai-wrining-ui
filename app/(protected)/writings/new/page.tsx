@@ -12,6 +12,8 @@ import {
 import { PageHeader } from "@/components/page-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
 import { toast } from "@/lib/toast";
+import { msg } from "@/messages/format";
+import { writingsMessages } from "@/messages/writings";
 import { ROUTES } from "@/constants/routes.constants";
 import type {
   CreateWritingPayload,
@@ -65,7 +67,7 @@ export default function NewWritingPage() {
       ...(payload as CreateWritingPayload),
       outlineJson: outline ?? undefined,
     });
-    toast.success("Đã tạo bài viết");
+    toast.success(writingsMessages.newPage.createSuccess);
     router.push(ROUTES.WRITINGS);
   };
 
@@ -74,7 +76,7 @@ export default function NewWritingPage() {
     setOutline(null);
     setWizardStep("outline");
     setActiveTab("prompts");
-    toast.success(`Đã chọn đề: ${prompt.title}`);
+    toast.success(msg(writingsMessages.newPage.promptSelected, { title: prompt.title }));
   };
 
   const handleGenerateOutline = async () => {
@@ -84,12 +86,12 @@ export default function NewWritingPage() {
       const result = await generateOutline.mutateAsync({
         title: selectedPrompt.title,
         type: selectedPrompt.type,
-        topic: `${selectedPrompt.topic}\n\nGợi ý: ${selectedPrompt.hint}`,
+        topic: `${selectedPrompt.topic}\n\n${writingsMessages.outline.hintPrefix} ${selectedPrompt.hint}`,
       });
       setOutline(result);
-      toast.success("Đã tạo dàn ý — bạn có thể chỉnh sửa trước khi viết");
+      toast.success(writingsMessages.outline.toastSuccess);
     } catch {
-      toast.error("Không thể tạo dàn ý. Vui lòng thử lại.");
+      toast.error(writingsMessages.outline.toastError);
     }
   };
 
@@ -103,14 +105,14 @@ export default function NewWritingPage() {
     <div className="space-y-8">
       <PageHeader
         variant="glass"
-        title="Viết bài mới"
-        description="Chọn đề (có sẵn, tự nhập hoặc AI) → lập dàn ý → viết bài"
+        title={writingsMessages.newPage.title}
+        description={writingsMessages.newPage.description}
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList>
-          <TabsTrigger value="free">Viết tự do</TabsTrigger>
-          <TabsTrigger value="prompts">Chọn đề & dàn ý</TabsTrigger>
+          <TabsTrigger value="free">{writingsMessages.newPage.tabFree}</TabsTrigger>
+          <TabsTrigger value="prompts">{writingsMessages.newPage.tabPrompts}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="prompts" className="mt-4 space-y-6">
@@ -136,14 +138,15 @@ export default function NewWritingPage() {
             <div className="space-y-4">
               <div className="rounded-xl border border-primary/20 bg-primary-soft/30 px-4 py-3 text-sm text-fg flex flex-wrap items-center justify-between gap-3">
                 <span>
-                  Đang viết theo đề: <strong>{selectedPrompt.title}</strong>
+                  {writingsMessages.newPage.writingFromPrompt}{" "}
+                  <strong>{selectedPrompt.title}</strong>
                 </span>
                 <button
                   type="button"
                   className="text-primary text-sm font-medium hover:underline"
                   onClick={() => setWizardStep("outline")}
                 >
-                  Quay lại dàn ý
+                  {writingsMessages.newPage.backToOutline}
                 </button>
               </div>
               <WritingForm
@@ -160,7 +163,8 @@ export default function NewWritingPage() {
         <TabsContent value="free" className="mt-4">
           {selectedPrompt && wizardStep === "write" && (
             <div className="mb-4 rounded-xl border border-primary/20 bg-primary-soft/30 px-4 py-3 text-sm text-fg">
-              Đang viết theo đề: <strong>{selectedPrompt.title}</strong>
+              {writingsMessages.newPage.writingFromPrompt}{" "}
+              <strong>{selectedPrompt.title}</strong>
             </div>
           )}
           <WritingForm
