@@ -87,62 +87,66 @@ export function AnalysisDetailHeader({
         </div>
       </div>
 
-      <div className="relative flex flex-col sm:flex-row flex-wrap gap-2 pt-4 border-t border-border/60">
-        {writing && (
-          <>
-            <Link
-              href={ROUTES.writingRevise(writing.id, analysis.id)}
-              className="flex-1 sm:flex-none"
-            >
-              <Button size="sm" className="gap-1.5 w-full sm:w-auto btn-glow-solid">
-                <PenLine className="h-4 w-4" />
-                {analysisMessages.header.revise}
-              </Button>
-            </Link>
-            <Link
-              href={ROUTES.writing(analysis.writingId)}
-              className="flex-1 sm:flex-none"
-            >
-              <Button
-                variant="secondary"
-                size="sm"
-                className="gap-1.5 w-full sm:w-auto"
+      <div className="relative flex flex-col gap-3 pt-4 border-t border-border/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+          {writing && (
+            <>
+              <Link
+                href={ROUTES.writingRevise(writing.id, analysis.id)}
+                className="flex-1 sm:flex-none"
               >
-                <FileText className="h-4 w-4" />
-                {analysisMessages.header.writing}
-              </Button>
-            </Link>
-          </>
-        )}
-        <Link href={ROUTES.ANALYSIS} className="flex-1 sm:flex-none">
-          <Button variant="outline" size="sm" className="gap-1.5 w-full sm:w-auto">
-            <ArrowLeft className="h-4 w-4" />
-            {analysisMessages.header.list}
-          </Button>
-        </Link>
-        <ShareFacebookButton
-          shareUrl={buildShareAnalysisUrl(analysis.id)}
-          isPublic={writing?.status === "public"}
-          className="flex-1 sm:flex-none"
-        />
-        {analysis.feedbackJson && (
-          <ExportReportButton
-            analysisId={analysis.id}
-            className="flex-1 sm:flex-none"
+                <Button className="gap-1.5 w-full sm:w-auto btn-glow-solid">
+                  <PenLine className="h-4 w-4" />
+                  {analysisMessages.header.revise}
+                </Button>
+              </Link>
+              <Link
+                href={ROUTES.writing(analysis.writingId)}
+                className="flex-1 sm:flex-none"
+              >
+                <Button
+                  variant="secondary"
+                  className="gap-1.5 w-full sm:w-auto"
+                >
+                  <FileText className="h-4 w-4" />
+                  {analysisMessages.header.writing}
+                </Button>
+              </Link>
+            </>
+          )}
+          <Link href={ROUTES.ANALYSIS} className="flex-1 sm:flex-none">
+            <Button variant="outline" className="gap-1.5 w-full sm:w-auto">
+              <ArrowLeft className="h-4 w-4" />
+              {analysisMessages.header.list}
+            </Button>
+          </Link>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-2 sm:shrink-0">
+          {analysis.feedbackJson && (
+            <ExportReportButton
+              analysisId={analysis.id}
+              size="md"
+              className="w-full sm:w-auto"
+            />
+          )}
+          <ShareFacebookButton
+            shareUrl={buildShareAnalysisUrl(analysis.id)}
+            isPublic={writing?.status === "public"}
+            className="w-full sm:w-auto"
           />
-        )}
-        <Button
-          variant="destructive"
-          size="sm"
-          className="gap-1.5 flex-1 sm:flex-none w-full sm:w-auto"
-          onClick={onDelete}
-          disabled={isDeleting}
-        >
-          <Trash2 className="h-4 w-4" />
-          {isDeleting
-            ? analysisMessages.delete.deleting
-            : analysisMessages.delete.confirm}
-        </Button>
+          <Button
+            variant="destructive"
+            className="gap-1.5 w-full sm:w-auto"
+            onClick={onDelete}
+            disabled={isDeleting}
+          >
+            <Trash2 className="h-4 w-4" />
+            {isDeleting
+              ? analysisMessages.delete.deleting
+              : analysisMessages.delete.confirm}
+          </Button>
+        </div>
       </div>
     </section>
   );

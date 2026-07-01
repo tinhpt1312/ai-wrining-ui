@@ -11,6 +11,7 @@ export const LAYOUT_WIDTH_CLASSES: Record<LayoutWidth, string> = {
 /** Infer content width from route — pages can override via LayoutProvider. */
 export function resolveLayoutWidth(pathname: string): LayoutWidth {
   if (pathname.includes("/revise")) return "full";
+  if (pathname.includes("/books/") && pathname.endsWith("/read")) return "full";
 
   if (
     pathname.includes("/journey") ||

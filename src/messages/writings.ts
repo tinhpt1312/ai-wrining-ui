@@ -127,6 +127,7 @@ export const writingsMessages = {
     description: "Chọn đề (có sẵn, tự nhập hoặc AI) → lập dàn ý → viết bài",
     tabFree: "Viết tự do",
     tabPrompts: "Chọn đề & dàn ý",
+    tabBooks: "Sách gợi ý",
     writingFromPrompt: "Đang viết theo đề:",
     backToOutline: "Quay lại dàn ý",
     promptSelected: "Đã chọn đề: {title}",

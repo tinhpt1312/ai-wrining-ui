@@ -1,5 +1,6 @@
 import type {
   QueryAnalyticsParams,
+  QueryBookParams,
   QueryWritingParams,
   QueryWritingSuggestionsParams,
 } from "@/types/api";
@@ -33,6 +34,20 @@ export const QUERY_KEYS = {
       ["writings", writingId, "revisions"] as const,
     timeline: (writingId: string, analysisId?: string) =>
       ["writings", writingId, "revisions", "timeline", analysisId] as const,
+  },
+  books: {
+    all: (params?: QueryBookParams) => ["books", params] as const,
+    detail: (id: string) => ["books", id] as const,
+    chapters: (bookId: string) => ["books", bookId, "chapters"] as const,
+    chapter: (bookId: string, chapterId: string) =>
+      ["books", bookId, "chapters", chapterId] as const,
+    progress: (bookId: string) => ["books", bookId, "progress"] as const,
+    myUploads: (params?: QueryBookParams) =>
+      ["books", "my-uploads", params] as const,
+    pending: (params?: QueryBookParams) =>
+      ["books", "pending", params] as const,
+    recommendations: (payload?: unknown) =>
+      ["books", "recommendations", payload] as const,
   },
   suggestions: {
     all: (params?: QueryWritingSuggestionsParams) =>

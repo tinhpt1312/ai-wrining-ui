@@ -14,6 +14,12 @@ export const ROUTES = {
       ? `/writings/${id}/revise?analysisId=${analysisId}`
       : `/writings/${id}/revise`,
   writingJourney: (id: string) => `/writings/${id}/journey`,
+  BOOKS: "/books",
+  BOOKS_UPLOAD: "/books/upload",
+  book: (id: string) => `/books/${id}`,
+  bookRead: (id: string, chapterId?: string) =>
+    chapterId ? `/books/${id}/read?chapter=${chapterId}` : `/books/${id}/read`,
+  ADMIN_BOOKS: "/admin/books",
   EXPLORE: "/explore",
   PROFILE: "/profile",
   userProfile: (username: string) => `/users/${username}`,

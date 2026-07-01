@@ -71,6 +71,22 @@ export const errorMessages: Record<ErrorCode, string> = {
   [ERROR_CODE.FILE_EMPTY_OR_CORRUPT]:
     "Không đọc được nội dung tệp. Tệp có thể trống hoặc bị hỏng",
 
+  [ERROR_CODE.BOOK_NOT_FOUND]: "Không tìm thấy sách",
+  [ERROR_CODE.BOOK_RECOMMENDATION_FAILED]:
+    "Không thể gợi ý sách. Vui lòng thử lại sau",
+  [ERROR_CODE.BOOK_CATALOG_EMPTY]:
+    "Thư viện sách đang trống. Liên hệ quản trị viên",
+
+  [ERROR_CODE.CHAPTER_NOT_FOUND]: "Không tìm thấy chương",
+  [ERROR_CODE.BOOK_NO_CHAPTERS]:
+    "Sách này chưa có nội dung đọc online. Admin cần upload file.",
+  [ERROR_CODE.BOOK_INGEST_FAILED]:
+    "Không thể import nội dung sách. Vui lòng thử lại",
+  [ERROR_CODE.UNSUPPORTED_BOOK_FORMAT]:
+    "Định dạng không hỗ trợ. Chỉ chấp nhận file .docx",
+  [ERROR_CODE.BOOK_FILE_TOO_LARGE]:
+    "File quá lớn. Dung lượng tối đa là 15MB",
+
   [ERROR_CODE.EXPORT_ACCESS_DENIED]:
     "Bạn không có quyền xuất bài viết này",
 

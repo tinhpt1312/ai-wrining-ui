@@ -16,6 +16,7 @@ export { exploreMessages } from "./explore";
 export { profileMessages } from "./profile";
 export { shareMessages } from "./share";
 export { exportMessages } from "./export";
+export { booksMessages } from "./books";
 export { componentMessages } from "./components";
 export { errorMessages, getMessageForErrorCode } from "./errors";
 
@@ -35,6 +36,7 @@ import { suggestionLabelMessages } from "./suggestion-labels";
 import { exploreMessages } from "./explore";
 import { profileMessages } from "./profile";
 import { shareMessages } from "./share";
+import { booksMessages } from "./books";
 import { exportMessages } from "./export";
 import { componentMessages } from "./components";
 import { errorMessages } from "./errors";
@@ -58,6 +60,7 @@ export const messages = {
   profile: profileMessages,
   share: shareMessages,
   export: exportMessages,
+  books: booksMessages,
   components: componentMessages,
   errors: errorMessages,
 } as const;

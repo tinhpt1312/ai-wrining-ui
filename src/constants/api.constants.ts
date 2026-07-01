@@ -34,6 +34,21 @@ export const API_PATHS = {
   DOCUMENTS: {
     PARSE: "/documents/parse",
   },
+  BOOKS: {
+    ROOT: "/books",
+    BY_ID: (id: string) => `/books/${id}`,
+    RECOMMEND: "/books/recommend",
+    CHAPTERS: (bookId: string) => `/books/${bookId}/chapters`,
+    CHAPTER: (bookId: string, chapterId: string) =>
+      `/books/${bookId}/chapters/${chapterId}`,
+    PROGRESS: (bookId: string) => `/books/${bookId}/progress`,
+    INGEST: (bookId: string) => `/books/${bookId}/ingest`,
+    UPLOAD: "/books/upload",
+    MY_UPLOADS: "/books/my-uploads",
+    PENDING: "/books/pending",
+    APPROVE: (id: string) => `/books/${id}/approve`,
+    REJECT: (id: string) => `/books/${id}/reject`,
+  },
   ANALYTICS: {
     ROOT: "/analytics",
     AI: "/analytics/ai",

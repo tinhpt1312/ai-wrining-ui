@@ -6,3 +6,4 @@ export * from "./analysis";
 export * from "./suggestion";
 export * from "./revision";
 export * from "./share";
+export * from "./book";
